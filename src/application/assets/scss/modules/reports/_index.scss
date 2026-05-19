@@ -1,0 +1,213 @@
+.report-page {
+  padding: 1.5rem 2rem;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  &__title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  &__actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  &__filter {
+    background-color: var(--surface-ground);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: flex-end;
+  }
+
+  &__filter-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    min-width: 10rem;
+    flex: 1;
+  }
+
+  &__filter-label {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--text-color-secondary);
+    text-transform: uppercase;
+  }
+
+  &__filter-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+    padding-bottom: 0.1rem;
+  }
+
+  &__meta {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+    margin-bottom: 1rem;
+  }
+
+  &__chart {
+    background-color: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__chart-title {
+    font-weight: 700;
+    margin-bottom: 1rem;
+  }
+
+  &__stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__stat-card {
+    background-color: var(--surface-card);
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+    padding: 1.25rem;
+    text-align: center;
+  }
+
+  &__stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--primary-color);
+  }
+
+  &__stat-label {
+    font-size: 0.875rem;
+    color: var(--text-color-secondary);
+    margin-top: 0.25rem;
+  }
+}
+
+.dynamic-report-page {
+  padding: 1.5rem 2rem;
+
+  &__categories {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 14rem;
+    flex-shrink: 0;
+    background-color: var(--surface-ground);
+    border-radius: var(--border-radius);
+    padding: 1rem;
+  }
+
+  &__category-item {
+    padding: 0.5rem 0.75rem;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.875rem;
+    transition: background-color 0.15s;
+
+    &:hover {
+      background-color: var(--surface-hover);
+    }
+
+    &--active {
+      background-color: var(--primary-50);
+      color: var(--primary-color);
+      font-weight: 600;
+    }
+  }
+
+  &__body {
+    display: flex;
+    gap: 1.5rem;
+    align-items: flex-start;
+  }
+
+  &__content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  &__reports-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  &__report-item {
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--surface-border);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    background-color: var(--surface-card);
+    font-size: 0.875rem;
+    transition: border-color 0.15s;
+
+    &:hover {
+      border-color: var(--primary-color);
+    }
+
+    &--active {
+      border-color: var(--primary-color);
+      background-color: var(--primary-50);
+    }
+  }
+}
+
+.shelves-comparison {
+  &__files {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  &__results {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin-top: 1.5rem;
+  }
+
+  &__result-link {
+    display: block;
+    padding: 1rem;
+    background-color: var(--surface-ground);
+    border-radius: var(--border-radius);
+    text-align: center;
+    text-decoration: none;
+    color: var(--primary-color);
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.barcode-page {
+  &__stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+  }
+}
