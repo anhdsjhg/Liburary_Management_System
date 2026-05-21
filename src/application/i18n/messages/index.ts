@@ -24,6 +24,6 @@ function restructureMessages<T extends Record<string, any>>(
 
 export const i18nMessages = restructureMessages(messages);
 
-export type MessageSchema = typeof i18nMessages.en;
+export type MessageSchema = typeof i18nMessages[keyof typeof i18nMessages];
 
 export type Locale = keyof typeof i18nMessages;

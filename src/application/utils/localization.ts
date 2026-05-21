@@ -10,7 +10,7 @@ export function lt(
   lang?: Locale
 ): ComputedRef<string> {
   return computed(() => {
-    const locale = lang ?? (i18n.global.locale.value as Locale);
+    const locale = lang ?? (i18n.global.locale as Locale);
     const key = `${property}_${locale}`;
 
     if (!object) return "";
@@ -31,7 +31,7 @@ export function ltCamel(
   lang?: Locale
 ): ComputedRef<string> {
   return computed(() => {
-    const locale = lang ?? (i18n.global.locale.value as Locale);
+    const locale = lang ?? (i18n.global.locale as Locale);
     const key = `${property}${capitalizeString(locale)}`;
 
     if (!object) return "";
@@ -51,7 +51,7 @@ export function lk<TBase extends string>(
   locale?: Locale
 ): ComputedRef<`${TBase}${Capitalize<Locale>}`> {
   return computed(() => {
-    const lang = (locale ?? (i18n.global.locale.value as Locale)) as Locale;
+    const lang = (locale ?? (i18n.global.locale as Locale)) as Locale;
     const capitalized = capitalizeString(lang);
     return `${base}${capitalized}` as `${TBase}${Capitalize<Locale>}`;
   });
@@ -61,6 +61,6 @@ export function getLocalizedKey<TBase extends string>(
   base: TBase,
   locale?: Locale
 ): string {
-  const lang = locale ?? (i18n.global.locale.value as Locale);
+  const lang = locale ?? (i18n.global.locale as Locale);
   return `${base}${capitalizeString(lang)}`;
 }
