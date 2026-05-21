@@ -1,3 +1,7 @@
+@use './book-detail';
+@use './arrivals';
+@use './my-books-page';
+
 .home-landing {
   --home-accent: #f9a825;  
   --home-primary: #381F6E;   
@@ -30,16 +34,6 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-  }
-
-  &__lang-select {
-    width: auto !important;
-    min-width: 5rem;
-  }
-
-  &__user-name {
-    font-size: 1.125rem;
-    color: var(--text-color-secondary);
   }
 
   .search-bar {
@@ -100,6 +94,10 @@
       width: 140px !important;
       flex-shrink: 0;
       padding: 0.3rem !important;
+
+      @media (max-width: 480px) {
+        width: 100px !important;
+      }
     }
 
     &__input-wrapper {
@@ -171,6 +169,14 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    @media (max-width: 1024px) {
+      padding: 1.25rem 2rem;
+    }
+
+    @media (max-width: 768px) {
+      padding: 1rem 1.25rem;
+    }
   }
 
   &__hero-title {
@@ -181,6 +187,18 @@
     text-align: center;
     margin: 0;
     line-height: 1.3;
+
+    @media (max-width: 1024px) {
+      font-size: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 1.4rem;
+    }
+
+    @media (max-width: 480px) {
+      font-size: 1.1rem;
+    }
   }
 
   &__hero-title-accent {
@@ -191,6 +209,14 @@
     position: relative;
     height: 55vh;
     overflow: hidden;
+
+    @media (max-width: 1024px) {
+      height: 45vh;
+    }
+
+    @media (max-width: 768px) {
+      height: 280px;
+    }
   }
 
   &__hero-search-wrapper {
@@ -200,6 +226,23 @@
     z-index: 2;
     width: 600px;
     max-width: 50%;
+
+    @media (max-width: 1024px) {
+      width: 480px;
+      right: 2rem;
+    }
+
+    @media (max-width: 768px) {
+      top: auto;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      width: 100%;
+      max-width: 100%;
+      padding: 0.75rem 1rem;
+      background: rgba(45, 27, 105, 0.85);
+      backdrop-filter: blur(4px);
+    }
   }
 
   &__search {
@@ -208,6 +251,14 @@
 
   &__section {
     padding: 4rem 0;
+
+    @media (max-width: 1024px) {
+      padding: 3rem 0;
+    }
+
+    @media (max-width: 768px) {
+      padding: 2rem 0;
+    }
 
     &--white {
       background: var(--surface-card);
@@ -222,13 +273,22 @@
     max-width: 1600px;
     margin: 0 auto;
     padding: 0 3rem;
+
+    @media (max-width: 1024px) { padding: 0 2rem; }
+    @media (max-width: 768px)  { padding: 0 1.25rem; }
   }
 
   &__section-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     margin-bottom: 2rem;
+
+    @media (max-width: 768px) {
+      margin-bottom: 1.25rem;
+    }
   }
 
   &__section-title {
@@ -236,6 +296,15 @@
     font-weight: 700;
     color: var(--home-primary);
     margin: 0 0 2rem 0;
+
+    @media (max-width: 1024px) {
+      font-size: 1.6rem;
+    }
+
+    @media (max-width: 768px) {
+      font-size: 1.35rem;
+      margin-bottom: 1.25rem;
+    }
   }
 
   &__see-all {
@@ -257,7 +326,11 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
 
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @media (max-width: 600px) {
       grid-template-columns: 1fr;
     }
   }
@@ -331,6 +404,10 @@
     color: white;
     padding: 3rem 0 1.5rem;
     margin-top: auto;
+
+    @media (max-width: 768px) {
+      padding: 2rem 0 1rem;
+    }
   }
 
   &__footer-grid {
@@ -339,9 +416,14 @@
     gap: 3rem;
     margin-bottom: 2rem;
 
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 2rem;
+    }
+
     @media (max-width: 768px) {
       grid-template-columns: 1fr;
-      gap: 2rem;
+      gap: 1.5rem;
     }
   }
 
@@ -488,6 +570,25 @@
       background-color: var(--surface-ground);
       position: relative;
       flex-shrink: 0;
+
+      @media (max-width: 768px) {
+        height: 200px;
+      }
+
+      @media (max-width: 480px) {
+        height: 160px;
+      }
+    }
+
+    &__body {
+      padding: 1rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+
+      @media (max-width: 768px) {
+        padding: 0.875rem;
+      }
     }
 
     &__date-badge {
@@ -518,13 +619,6 @@
       letter-spacing: 0.05em;
     }
 
-    &__body {
-      padding: 1rem;
-      display: flex;
-      flex-direction: column;
-      flex: 1;
-    }
-
     &__title {
       font-weight: 600;
       font-size: 0.9rem;
@@ -537,9 +631,11 @@
       line-height: 1.4;
       flex: 1;
 
-      &:hover {
+      &:not(&--plain):hover {
         color: var(--home-primary);
       }
+
+      &--plain { cursor: default; }
     }
 
     &__place {
@@ -577,17 +673,28 @@
       i {
         font-size: 0.75rem;
       }
+
+      &--plain {
+        color: var(--text-color-secondary);
+        cursor: default;
+      }
     }
   }
 
   &__events-layout {
     display: grid;
-    grid-template-columns: 280px 1fr;
+    grid-template-columns: 300px minmax(0, 1fr);
     gap: 2rem;
     align-items: start;
 
+    @media (max-width: 1024px) {
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 1.5rem;
+    }
+
     @media (max-width: 768px) {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.25rem;
     }
   }
 
@@ -598,24 +705,49 @@
     padding: 1.25rem;
     position: sticky;
     top: 5rem;
+    min-width: 0;
+    box-sizing: border-box;
+
+    @media (max-width: 1024px) {
+      padding: 0.875rem;
+    }
+
+    @media (max-width: 768px) {
+      position: static;
+      padding: 0.75rem;
+    }
+
+    @media (max-width: 480px) {
+      padding: 0.625rem;
+    }
   }
 
   &__calendar-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+
+    @media (max-width: 768px) {
+      font-size: 0.85rem;
+      margin-bottom: 0.5rem;
+    }
 
     button {
       background: none;
       border: none;
       cursor: pointer;
       color: var(--text-color-secondary);
-      padding: 0.25rem;
+      padding: 0.3rem;
+      min-width: 1.75rem;
+      min-height: 1.75rem;
       border-radius: 4px;
       transition: background 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
 
       &:hover {
         background: var(--surface-ground);
@@ -625,27 +757,40 @@
 
   &__calendar-grid {
     display: grid;
-    grid-template-columns: repeat(7, 1fr);
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 2px;
   }
 
   &__calendar-weekday {
     text-align: center;
-    font-size: 0.7rem;
+    font-size: 0.65rem;
     font-weight: 600;
     color: var(--text-color-secondary);
-    padding: 0.25rem 0;
+    padding: 0.2rem 0;
+    line-height: 1;
+
+    @media (max-width: 768px) {
+      font-size: 0.6rem;
+    }
   }
 
   &__calendar-day {
     position: relative;
     text-align: center;
-    padding: 0.4rem 0;
-    font-size: 0.8rem;
-    border-radius: 6px;
+    font-size: 0.75rem;
+    border-radius: 4px;
     cursor: pointer;
     transition: background 0.15s;
     color: var(--text-color);
+    aspect-ratio: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 3px;
+
+    @media (max-width: 768px) {
+      font-size: 0.7rem;
+    }
 
     &:hover {
       background: var(--surface-ground);
@@ -668,7 +813,7 @@
 
   &__calendar-dot {
     position: absolute;
-    bottom: 2px;
+    bottom: 3px;
     left: 50%;
     transform: translateX(-50%);
     width: 4px;
@@ -679,6 +824,14 @@
 
   &__events-list {
     min-height: auto;
+
+    .p-carousel-item {
+      padding: 0 0.4rem;
+
+      @media (max-width: 768px) {
+        padding: 0 0.25rem;
+      }
+    }
   }
 
   &__events-empty {
@@ -686,6 +839,10 @@
     color: var(--text-color-secondary);
     padding: 3rem;
     font-size: 0.875rem;
+
+    @media (max-width: 768px) {
+      padding: 2rem 1rem;
+    }
   }
 
   &__calendar-events {
@@ -697,6 +854,10 @@
     gap: 0.5rem;
     max-height: 200px;
     overflow-y: auto;
+
+    @media (max-width: 768px) {
+      max-height: 160px;
+    }
   }
 
   &__calendar-event-item {
@@ -792,91 +953,38 @@
     }
   }
 
-  &__user-menu {
-    position: relative;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    padding: 0.4rem 0.75rem;
-    border-radius: 8px;
-    border: 1px solid var(--surface-border);
-    transition: background 0.15s;
-    user-select: none;
+  .events-page,
+  .arrivals-page {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem 3rem;
 
-    &:hover {
-      background: var(--surface-ground);
-    }
-  }
-
-  &__user-name {
-    font-size: 0.875rem;
-    color: var(--text-color);
-    font-weight: 500;
-  }
-
-  &__user-dropdown {
-    position: absolute;
-    top: calc(100% + 0.5rem);
-    right: 0;
-    background: var(--surface-card);
-    border: 1px solid var(--surface-border);
-    border-radius: 10px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
-    min-width: 200px;
-    z-index: 200;
-    overflow: hidden;
-  }
-
-  &__user-dropdown-header {
-    padding: 0.75rem 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-  }
-
-  &__user-dropdown-name {
-    font-weight: 600;
-    font-size: 1rem;
-    color: var(--text-color);
-  }
-
-  &__user-dropdown-username {
-    font-size: 0.85rem;
-    color: var(--text-color-secondary);
-  }
-
-  &__user-dropdown-divider {
-    height: 1px;
-    background: var(--surface-border);
-  }
-
-  &__user-dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 0.75rem 1rem;
-    font-size: 0.875rem;
-    color: var(--text-color);
-    cursor: pointer;
-    transition: background 0.15s;
-    text-decoration: none;
-
-    &:hover {
-      background: var(--surface-ground);
+    &__header {
+      margin-bottom: 2rem;
     }
 
-    i {
-      font-size: 1rem;
+    &__title {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--text-color);
+    }
+
+    &__empty {
+      text-align: center;
       color: var(--text-color-secondary);
+      padding: 4rem;
     }
+  }
 
-    &--danger {
-      color: var(--red-500);
+  .events-page__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
 
-      i {
-        color: var(--red-500);
-      }
-    }
+  .arrivals-page__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
   }
 }

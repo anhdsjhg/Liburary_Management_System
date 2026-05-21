@@ -30,7 +30,8 @@ watchEffect(async () => {
       imageUrl.value = '';
     }
   } else {
-    imageUrl.value = `http://localhost:8000${img}`;
+    // relative path — goes through Vite proxy /images → backend
+    imageUrl.value = img;
   }
 });
 
@@ -71,12 +72,15 @@ const monthKey = computed(() =>
 
     <div class="event-card__body">
       <a
-        :href="event.link ?? `/events/${event.announcement_id}`"
-        :target="event.link ? '_blank' : undefined"
+        v-if="event.link"
+        :href="event.link"
+        target="_blank"
+        rel="noopener noreferrer"
         class="event-card__title"
       >
         {{ title }}
       </a>
+      <span v-else class="event-card__title event-card__title--plain">{{ title }}</span>
 
       <div v-if="place" class="event-card__place">{{ place }}</div>
 
@@ -93,13 +97,18 @@ const monthKey = computed(() =>
 
       <div class="event-card__divider" />
       <a
-        :href="event.link ?? `/events/${event.announcement_id}`"
-        :target="event.link ? '_blank' : undefined"
+        v-if="event.link"
+        :href="event.link"
+        target="_blank"
+        rel="noopener noreferrer"
         class="event-card__footer"
       >
         <span>{{ $t(event.type === "event" ? "home.event" : "home.announcement") }}</span>
         <i class="pi pi-arrow-right" />
       </a>
+      <div v-else class="event-card__footer event-card__footer--plain">
+        <span>{{ $t(event.type === "event" ? "home.event" : "home.announcement") }}</span>
+      </div>
     </div>
   </div>
 </template>

@@ -2,16 +2,20 @@
     box-sizing: border-box;
 }
 
-html {
+html,
+body {
     height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+html {
     font-size: 14px;
     line-height: 1.2;
 }
 
 body {
     font-weight: 400;
-    padding: 0;
-    margin: 0;
     min-height: 100%;
     background: var(--surface-ground);
     color: var(--text-color);
@@ -24,7 +28,41 @@ body {
     }
 }
 
+#app {
+    margin: 0;
+    padding: 0;
+}
+
+.public-layout {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    gap: 0;
+}
+
+.public-layout__main {
+    margin: 0;
+    padding: 0;
+}
+
+.public-layout__header {
+    margin: 0;
+    padding: 0;
+    border: none;
+}
+
 .layout-container {
     background: var(--v-body-bg);
     min-height: 100vh;
+}
+
+// Shared public-page container — single source of truth for all public pages.
+// max-width / horizontal padding / responsive breakpoints are defined here once.
+.pub-container {
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 0 3rem;
+
+    @media (max-width: 1024px) { padding: 0 2rem; }
+    @media (max-width: 768px)  { padding: 0 1.25rem; }
 }

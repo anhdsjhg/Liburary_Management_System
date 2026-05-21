@@ -60,6 +60,10 @@ export enum RouteNames {
   ADMIN_PERMISSIONS = "admin-permissions",
   ADMIN_CONTROL = "admin-control",
 
+  // Home portal
+  HOME_EVENTS = "home-events",
+  HOME_ARRIVALS = "home-arrivals",
+
   // Website (public portal)
   WEBSITE = "website",
   WEBSITE_HOME = "website-home",

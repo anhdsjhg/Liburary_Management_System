@@ -29,4 +29,31 @@ export const homeRoutes: AppRouteRecordRaw[] = [
       title: "Book",
     },
   },
+  {
+    path: "/all-arrivals",
+    name: RouteNames.HOME_ARRIVALS,
+    component: () => import("@/modules/home/pages/arrivals/Page.vue"),
+    meta: {
+      layout: "public",
+      title: "New Arrivals",
+    },
+  },
+  {
+    path: "/all-events",
+    name: RouteNames.HOME_EVENTS,
+    component: () => import("@/modules/home/pages/events/Page.vue"),
+    meta: {
+      layout: "public",
+      title: "All Events",
+    },
+  },
+  {
+    path: "/my-books",
+    name: RouteNames.WEBSITE_MY_BOOKS,
+    component: () => import("@/modules/home/pages/my-books/Page.vue"),
+    meta: {
+      layout: "public",
+      title: "My Books",
+    },
+  },
 ];
