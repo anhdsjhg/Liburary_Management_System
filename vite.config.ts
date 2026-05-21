@@ -19,7 +19,7 @@ export default defineConfig({
   server: {
       proxy: {
         '/images': {
-          target: 'https://6e0f-109-175-215-60.ngrok-free.app',
+          target: 'https://2b39-109-175-215-60.ngrok-free.app',
           changeOrigin: true,
         },
       },

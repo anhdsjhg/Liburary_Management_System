@@ -38,7 +38,7 @@ import ToggleConfigComponent from "./components/ToggleConfigComponent.vue";
 const { toggleMenu, layoutConfig, isDarkTheme } = useLayout();
 
 const logo = computed(() => {
-  const base = "https://6e0f-109-175-215-60.ngrok-free.app/images/";
+  const base = "https://2b39-109-175-215-60.ngrok-free.app/images/";
   
   if (
     isDarkTheme.value ||
