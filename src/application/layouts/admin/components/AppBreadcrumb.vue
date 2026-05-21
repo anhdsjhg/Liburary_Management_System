@@ -43,32 +43,38 @@ function goBack(): void {
 </script>
 
 <template>
-  <nav v-if="!shouldHideBreadcrumb" class="mb-12 flex items-center">
+  <nav v-if="!shouldHideBreadcrumb" class="mb-12 flex items-center" style="gap: 12px">
     <Button
-      class="mr-6 size-[25px]"
+      class="size-[25px]"
       :disabled="!canGoBack"
       @click="goBack"
     >
       <i class="pi pi-chevron-left text-xs font-bold" />
     </Button>
 
-    <ol class="flex items-center gap-4">
-      <li>
-        <router-link :to="home.to" style="color: inherit">
-          <i :class="home.icon" />
-        </router-link>
-      </li>
-
-      <li class="layout-breadcrumb-chevron">/</li>
+    <div class="flex items-center" style="gap: 10px">
+      <router-link :to="home.to" style="color: inherit">
+        <i :class="home.icon" />
+      </router-link>
 
       <template v-if="breadcrumbs.length">
+        <span style="color: var(--text-color-secondary)">/</span>
+
         <template v-for="(breadcrumb, i) in breadcrumbs" :key="i">
-          <router-link :to="{ path: breadcrumb.link ?? '', query: $route.query }">
+          <router-link
+            :to="{ path: breadcrumb.link ?? '', query: $route.query }"
+            style="color: inherit"
+          >
             {{ $t(breadcrumb.name) }}
           </router-link>
-          <span v-if="i !== breadcrumbs.length - 1">/</span>
+          <span
+            v-if="i !== breadcrumbs.length - 1"
+            style="color: var(--text-color-secondary)"
+          >
+            /
+          </span>
         </template>
       </template>
-    </ol>
+    </div>
   </nav>
 </template>

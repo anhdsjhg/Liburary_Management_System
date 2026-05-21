@@ -23,14 +23,14 @@ export const websiteRoutes: AppRouteRecordRaw[] = [
       },
       {
         path: "announcements",
-        name: RouteNames.WEBSITE_EVENTS,
+        name: RouteNames.WEBSITE_ANNOUNCEMENTS,
         component: () =>
           import("@/modules/website/pages/announcements/search/Page.vue"),
         meta: { title: "Announcements" },
       },
       {
         path: "announcements/:id",
-        name: RouteNames.WEBSITE_EVENT_DETAIL,
+        name: RouteNames.WEBSITE_ANNOUNCEMENT_DETAIL,
         component: () =>
           import("@/modules/website/pages/announcements/[id]/Page.vue"),
         meta: { title: "Announcement" },
@@ -44,7 +44,7 @@ export const websiteRoutes: AppRouteRecordRaw[] = [
       },
       {
         path: "quick-links",
-        name: RouteNames.WEBSITE_MY_BOOKS,
+        name: RouteNames.WEBSITE_QUICK_LINKS,
         component: () =>
           import("@/modules/website/pages/quick-links/index/Page.vue"),
         meta: { title: "Quick Links" },

@@ -6,7 +6,7 @@ export type MediaSearchOption = {
 
 export type MediaFilterOption = {
   key: string;
-  value: string | string[];
+  value: string | string[] | { from?: string; to?: string };
 };
 
 export type MediaSearchRequest = {

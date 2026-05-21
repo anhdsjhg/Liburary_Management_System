@@ -3,7 +3,7 @@ import type { AppRouteRecordRaw } from "@/application/router";
 
 export const settingsRoutes: AppRouteRecordRaw[] = [
   {
-    path: "/settings",
+    path: "/admin/settings",
     name: RouteNames.SETTINGS,
     component: { template: '<router-view />' },
     meta: { requiresAuth: true, layout: 'admin', title: "Settings" },

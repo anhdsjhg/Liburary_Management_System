@@ -69,4 +69,10 @@ export default {
   requestTimeout:
     "Request timed out. Please check your connection and try again.",
   save: "Сақтау",
+  move_to: "Бетке өту",
+  from: "Бастап",
+  until: "Дейін",
+  forbidden: "Сізде бұл бетке өту мүмкіндігі жоқ",
+  goHome: "Басты бетке",
+  notFound: "Бет табылмады",
 };

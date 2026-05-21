@@ -1,5 +1,4 @@
 export default {
-  acquisitions: {
     batches: "Batches",
     acts: "Acts",
     items: "Items",
@@ -88,5 +87,4 @@ export default {
       phone: "Phone",
       fax: "Fax",
     },
-  },
 };

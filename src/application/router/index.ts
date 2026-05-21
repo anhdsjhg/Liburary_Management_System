@@ -17,6 +17,9 @@ import { serviceDeskRoutes } from "@/modules/service-desk/routes";
 import { settingsRoutes } from "@/modules/settings/routes";
 import { adminRoutes } from "@/modules/admin/routes";
 import { homeRoutes } from "@/modules/home/routes";
+import ForbiddenPage from "@/application/components/errors/ForbiddenPage.vue";
+import NotFoundPage from "@/application/components/errors/NotFoundPage.vue";
+import { RouteNames } from "@/application/router/routeNames";
 
 export type { AppRouteMeta, AppRouteRecordRaw } from "./types/route-meta.types";
 export { RouteNames } from "@/application/router/routeNames"
@@ -33,6 +36,8 @@ const router: Router = createRouter({
     ...serviceDeskRoutes,
     ...settingsRoutes,
     ...adminRoutes,
+    { path: "/403", name: RouteNames.FORBIDDEN, component: ForbiddenPage, meta: { layout: "public" } },
+    { path: "/:pathMatch(.*)*", name: RouteNames.NOT_FOUND, component: NotFoundPage, meta: { layout: "public" } },
   ],
 });
 

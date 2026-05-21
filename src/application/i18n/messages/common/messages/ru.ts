@@ -69,4 +69,10 @@ export default {
   requestTimeout:
     "Request timed out. Please check your connection and try again.",
   save: "Сохранить",
+  move_to: "На страницу",
+  from: "С",
+  until: "По",
+  forbidden: "У вас нет доступа для перехода на эту страницу",
+  goHome: "На главную",
+  notFound: "Страница не найдена",
 };

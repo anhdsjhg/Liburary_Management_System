@@ -42,83 +42,146 @@ const paginationMeta = computed<PaginationMeta>(() => ({
 const hasPagination = computed(
   () => results.value.total > results.value.per_page
 );
+
+const hasResults = computed(
+  () => !isLoading.value && results.value.data.length > 0
+);
+
+const isEmpty = computed(
+  () => !isLoading.value && results.value.data.length === 0
+);
 </script>
 
 <template>
-  <div>
-    <div class="book-search-page__header">
-      <span class="book-search-page__query-label">
-        {{ $t("home.results_for") }}:
-      </span>
-      <span class="book-search-page__query-value">{{ queryLabel }}</span>
-    </div>
+  <div class="book-search-page">
+    <div class="book-search-page__container">
+      <!-- Header -->
+      <header class="book-search-page__header">
+        <div class="book-search-page__heading">
+          <h1 class="book-search-page__title">
+            {{ $t("home.results_for") }}
+            <span class="book-search-page__query-value">{{ queryLabel || $t("home.all") }}</span>
+          </h1>
+          <p v-if="!isLoading" class="book-search-page__subtitle">
+            {{ results.total }} {{ $t("home.results") }}
+            <span class="book-search-page__dot">•</span>
+            {{ results.last_page }} {{ $t("home.pages") }}
+          </p>
+        </div>
+      </header>
 
-    <div class="book-search-page__meta">
-      <span class="book-search-page__count">
-        {{ results.total }} {{ $t("home.results") }},
-        {{ results.last_page }} {{ $t("home.pages") }}
-      </span>
-
-      <div class="book-search-page__actions">
-        <AppCheckbox
-          :model-value="isAllSelected"
-          @update:model-value="toggleSelectAll"
-        />
-        <span>
-          {{ $t("home.select_all") }} ({{ selectedIds.length }})
-        </span>
-
-        <Button
-          :label="displayMode === 'card' ? $t('home.list_view') : $t('home.card_view')"
-          severity="secondary"
-          outlined
-          size="small"
-          @click="toggleDisplayMode"
-        />
-      </div>
-    </div>
-
-    <div class="book-search-page__body">
-      <FilterPanel
-        :filter-data="filterData"
-        :model-value="filterState"
-        @apply="applyFilter"
-        @reset="resetFilter"
-      />
-
-      <div class="book-search-page__results">
-        <Skeleton v-if="isLoading" height="30rem" />
-
-        <template v-else>
-          <div v-if="displayMode === 'card'" class="book-search-page__grid">
-            <BookCard
-              v-for="item in results.data"
-              :key="item.id"
-              :item="item"
-              :selected="isSelected(item.id)"
-              @toggle-select="toggleSelect(item.id)"
-            />
-          </div>
-
-          <div v-else>
-            <BookList
-              v-for="item in results.data"
-              :key="item.id"
-              :item="item"
-              :selected="isSelected(item.id)"
-              @toggle-select="toggleSelect(item.id)"
-            />
-          </div>
-
-          <AppPaginator
-            v-if="hasPagination"
-            class="book-search-page__pagination"
-            :meta="paginationMeta"
-            :page="currentPage"
-            @update:page="onPageChange"
+      <!-- Toolbar -->
+      <div class="book-search-page__toolbar">
+        <label class="book-search-page__select-all">
+          <AppCheckbox
+            :model-value="isAllSelected"
+            @update:model-value="toggleSelectAll"
           />
-        </template>
+          <span>
+            {{ $t("home.select_all") }}
+            <span
+              v-if="selectedIds.length"
+              class="book-search-page__count-badge"
+            >{{ selectedIds.length }}</span>
+          </span>
+        </label>
+
+        <div class="book-search-page__view-toggle">
+          <Button
+            :icon="'pi pi-th-large'"
+            :severity="displayMode === 'card' ? undefined : 'secondary'"
+            :outlined="displayMode !== 'card'"
+            size="small"
+            :aria-label="$t('home.card_view')"
+            @click="displayMode !== 'card' && toggleDisplayMode()"
+          />
+          <Button
+            :icon="'pi pi-list'"
+            :severity="displayMode === 'list' ? undefined : 'secondary'"
+            :outlined="displayMode !== 'list'"
+            size="small"
+            :aria-label="$t('home.list_view')"
+            @click="displayMode !== 'list' && toggleDisplayMode()"
+          />
+        </div>
+      </div>
+
+      <!-- Body -->
+      <div class="book-search-page__body">
+        <aside class="book-search-page__sidebar">
+          <FilterPanel
+            :filter-data="filterData"
+            :model-value="filterState"
+            @apply="applyFilter"
+            @reset="resetFilter"
+          />
+        </aside>
+
+        <section class="book-search-page__results">
+          <!-- Loading skeletons -->
+          <div v-if="isLoading" class="book-search-page__grid">
+            <div v-for="n in 8" :key="n" class="book-search-page__skeleton">
+              <Skeleton height="280px" border-radius="12px" />
+              <Skeleton height="1rem" width="80%" class="mt-3" />
+              <Skeleton height="0.75rem" width="60%" class="mt-2" />
+            </div>
+          </div>
+
+          <!-- Empty state -->
+          <div v-else-if="isEmpty" class="book-search-page__empty">
+            <i class="pi pi-search book-search-page__empty-icon" />
+            <h3 class="book-search-page__empty-title">{{ $t("home.no_results") }}</h3>
+            <p class="book-search-page__empty-text">
+              {{ $t("home.try_different_filters") }}
+            </p>
+            <Button
+              :label="$t('home.reset')"
+              severity="secondary"
+              outlined
+              size="small"
+              @click="resetFilter"
+            />
+          </div>
+
+          <!-- Results -->
+          <template v-else-if="hasResults">
+            <div
+              v-if="displayMode === 'card'"
+              class="book-search-page__grid"
+            >
+              <BookCard
+                v-for="item in results.data"
+                :key="item.id"
+                :item="item"
+                :selected="isSelected(item.id)"
+                @toggle-select="toggleSelect(item.id)"
+              />
+            </div>
+
+            <div v-else class="book-search-page__list">
+              <BookList
+                v-for="item in results.data"
+                :key="item.id"
+                :item="item"
+                :selected="isSelected(item.id)"
+                @toggle-select="toggleSelect(item.id)"
+              />
+            </div>
+
+            <AppPaginator
+              v-if="hasPagination"
+              class="book-search-page__pagination"
+              :meta="paginationMeta"
+              :page="currentPage"
+              @update:page="onPageChange"
+            />
+          </template>
+        </section>
       </div>
     </div>
   </div>
 </template>
+
+<style lang="scss" scoped>
+@use "@/application/assets/scss/modules/home/_book-search-page.scss";
+</style>

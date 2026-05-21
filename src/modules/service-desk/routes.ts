@@ -3,7 +3,7 @@ import type { AppRouteRecordRaw } from "@/application/router";
 
 export const serviceDeskRoutes: AppRouteRecordRaw[] = [
   {
-    path: "/service-desk",
+    path: "/admin/service-desk",
     name: RouteNames.SERVICE_DESK,
     component: { template: '<router-view />' },
     meta: { requiresAuth: true, layout: 'admin', title: "Service Desk" },

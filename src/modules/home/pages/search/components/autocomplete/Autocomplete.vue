@@ -56,14 +56,54 @@ function onSelect(value: string) {
 </script>
 
 <template>
-  <AutoComplete
-    :model-value="localValue"
-    :suggestions="suggestions"
-    :placeholder="placeholder"
-    :class="inputClass"
-    complete-on-focus
-    @update:model-value="onInput"
-    @item-select="(e: { value: string }) => onSelect(e.value)"
-    @keydown.enter="$emit('submit')"
-  />
+  <div class="search-autocomplete">
+    <i class="pi pi-search search-autocomplete__icon" />
+    <AutoComplete
+      :model-value="localValue"
+      :suggestions="suggestions"
+      :placeholder="placeholder"
+      :class="['search-autocomplete__input', inputClass]"
+      complete-on-focus
+      @update:model-value="onInput"
+      @item-select="(e: { value: string }) => onSelect(e.value)"
+      @keydown.enter="$emit('submit')"
+    />
+  </div>
 </template>
+
+<style lang="scss" scoped>
+.search-autocomplete {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+
+  &__icon {
+    position: absolute;
+    left: 0.85rem;
+    color: var(--text-color-secondary);
+    font-size: 0.85rem;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  &__input {
+    width: 100%;
+
+    :deep(.p-autocomplete-input),
+    :deep(input) {
+      width: 100%;
+      padding: 0.75rem 0.85rem 0.75rem 2.25rem !important;
+      border-radius: 10px !important;
+      font-size: 0.95rem;
+      transition: box-shadow 0.15s, border-color 0.15s;
+    }
+
+    :deep(.p-autocomplete-input:focus),
+    :deep(input:focus) {
+      box-shadow: 0 0 0 3px rgba(56, 31, 110, 0.12);
+      border-color: var(--bsp-primary, #381f6e);
+    }
+  }
+}
+</style>

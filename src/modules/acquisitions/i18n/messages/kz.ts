@@ -1,5 +1,4 @@
 export default {
-  acquisitions: {
     batches: "Партиялар",
     acts: "Актілер",
     items: "Данасы",
@@ -88,5 +87,4 @@ export default {
       phone: "Телефон",
       fax: "Факс",
     },
-  },
 };

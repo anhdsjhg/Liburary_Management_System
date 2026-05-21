@@ -3,10 +3,11 @@ import { ref, onMounted, onUnmounted, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/application/stores/auth.store";
-import { storeToRefs } from "pinia";
+// import { storeToRefs } from "pinia";
 import { useHomeIndex } from "./composables/useComposables";
 import { useAuthLogout } from "@/modules/auth/components/login/composables/useAuthLogin";
 import { EPermissions } from "@/application/enums/permissions";
+import { RouteNames } from "@/application/router/routeNames";
 import SearchBar from "./components/searchBar/SearchBar.vue";
 import ArrivalsGlider from "./components/arrivalsGlider/ArrivalsGlider.vue";
 import EventCard from "./components/eventCard/EventCard.vue";
@@ -16,7 +17,7 @@ import LoginDialog from "@/modules/auth/components/login/LoginDialog.vue";
 const { locale } = useI18n();
 const router = useRouter();
 const authStore = useAuthStore();
-const { user, userDisplayName, loginVisible } = storeToRefs(authStore);
+// const { user, userDisplayName, loginVisible } = storeToRefs(authStore);
 const { submitLogout } = useAuthLogout();
 
 const userMenuOpen = ref(false);
@@ -38,15 +39,15 @@ function goToAdmin() {
   const modules = authStore.moduleRouteNames;
 
   if (modules.includes(EPermissions.batches)) {
-    router.push("/acquisition/acts");
+    router.push("/admin/acquisition/acts");
   } else if (modules.includes(EPermissions.serviceDesk)) {
-    router.push("/service-desk/users");
+    router.push("/admin/service-desk/users");
   } else if (modules.includes(EPermissions.cataloging)) {
-    router.push("/cataloging/search");
+    router.push("/admin/cataloging/search");
   } else if (modules.includes(EPermissions.report)) {
-    router.push("/reports/inventory-books");
+    router.push("/admin/reports/inventory-books");
   } else if (modules.includes(EPermissions.website)) {
-    router.push("/settings/announcements");
+    router.push("/admin/settings/announcements");
   } else if (modules.includes(EPermissions.admin)) {
     router.push("/admin/permissions");
   }
@@ -154,65 +155,6 @@ const monthEvents = computed(() => {
 
 <template>
   <div class="home-landing">
-    <!-- Topbar -->
-    <div class="home-landing__topbar-wrapper">
-      <div class="home-landing__topbar">
-        <router-link to="/" class="home-landing__logo">
-          <img src="http://localhost:8000/images/logo_horizontal.png" alt="SDU Library" class="home-landing__logo-img" />
-        </router-link>
-
-        <div class="home-landing__topbar-actions">
-          <Select
-            v-model="locale"
-            :options="locales"
-            option-label="label"
-            option-value="value"
-            class="home-landing__lang-select"
-          />
-
-          <!-- Залогинен -->
-          <div v-if="user" ref="userMenuRef" class="home-landing__user-menu" @click="userMenuOpen = !userMenuOpen">
-            <Avatar icon="pi pi-user" shape="circle" size="small" />
-            <span class="home-landing__user-name">{{ userDisplayName }}</span>
-            <i class="pi" :class="userMenuOpen ? 'pi-angle-up' : 'pi-angle-down'" />
-
-            <div v-if="userMenuOpen" class="home-landing__user-dropdown">
-              <div class="home-landing__user-dropdown-header">
-                <span class="home-landing__user-dropdown-name">{{ userDisplayName }}</span>
-                <span class="home-landing__user-dropdown-username">{{ user.username }}</span>
-              </div>
-              <div class="home-landing__user-dropdown-divider" />
-              <a
-                v-if="hasAdminAccess"
-                class="home-landing__user-dropdown-item"
-                @click.stop="goToAdmin"
-              >
-                <i class="pi pi-th-large" />
-                {{ $t('home.admin_panel') }}
-              </a>
-              <a
-                class="home-landing__user-dropdown-item home-landing__user-dropdown-item--danger"
-                @click.stop="handleLogout"
-              >
-                <i class="pi pi-sign-out" />
-                {{ $t('home.logout') }}
-              </a>
-            </div>
-          </div>
-
-          <!-- Не залогинен -->
-          <Button
-            v-else
-            :label="$t('home.login')"
-            icon="pi pi-sign-in"
-            size="small"
-            @click="loginVisible = true"
-          />
-        </div>
-      </div>
-    </div>
-    
-
     <!-- Hero -->
     <div class="home-landing__hero">
       <!-- Фиолетовая полоска с приветствием -->
@@ -270,6 +212,9 @@ const monthEvents = computed(() => {
       <div class="home-landing__container">
         <div class="home-landing__section-header">
           <h2 class="home-landing__section-title">{{ $t("home.new_arrivals") }}</h2>
+          <router-link :to="{ name: RouteNames.HOME_ARRIVALS }" class="home-landing__see-all">
+            {{ $t("home.show_more") }} <i class="pi pi-arrow-right" />
+          </router-link>
         </div>
         <Skeleton v-if="arrivalsLoading" height="18rem" />
         <ArrivalsGlider v-else :arrivals="arrivals" />
@@ -281,7 +226,7 @@ const monthEvents = computed(() => {
       <div class="home-landing__container">
         <div class="home-landing__section-header">
           <h2 class="home-landing__section-title">{{ $t("home.upcoming_events") }}</h2>
-          <router-link :to="{ name: 'website-events' }" class="home-landing__see-all">
+          <router-link :to="{ name: RouteNames.HOME_EVENTS }" class="home-landing__see-all">
             {{ $t("home.see_all_events") }} <i class="pi pi-arrow-right" />
           </router-link>
         </div>
@@ -353,12 +298,13 @@ const monthEvents = computed(() => {
               :value="filteredEvents"
               :numVisible="2"
               :numScroll="1"
-              :responsiveOptions="[{ breakpoint: '768px', numVisible: 1, numScroll: 1 }]"
+              :responsiveOptions="[
+                { breakpoint: '1024px', numVisible: 2, numScroll: 1 },
+                { breakpoint: '768px', numVisible: 1, numScroll: 1 },
+              ]"
             >
               <template #item="{ data }">
-                <div style="padding: 0 0.5rem;">
-                  <EventCard :event="data" />
-                </div>
+                <EventCard :event="data" />
               </template>
             </Carousel>
           </div>

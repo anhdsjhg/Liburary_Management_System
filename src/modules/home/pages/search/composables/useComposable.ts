@@ -51,6 +51,15 @@ export function useSearchPage() {
     if (filterState.value.available) {
       filter.push({ key: "available", value: "1" });
     }
+    if (filterState.value.year.from != null || filterState.value.year.to != null) {
+      filter.push({
+        key: "year",
+        value: {
+          from: filterState.value.year.from != null ? String(filterState.value.year.from) : undefined,
+          to: filterState.value.year.to != null ? String(filterState.value.year.to) : undefined,
+        } as unknown as string,
+      });
+    }
 
     return {
       search_options: options,

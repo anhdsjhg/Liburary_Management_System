@@ -16,7 +16,7 @@ export const adminRoutes: AppRouteRecordRaw[] = [
         meta: { requiresAuth: true, adminOnly: true, layout: 'admin', title: "Permissions" },
       },
       {
-        path: "control",
+        path: "control/:userId",
         name: RouteNames.ADMIN_CONTROL,
         component: () => import("@/modules/admin/pages/control/Page.vue"),
         meta: { requiresAuth: true, adminOnly: true, layout: 'admin', title: "Control Panel" },

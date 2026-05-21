@@ -3,7 +3,7 @@ import type { AppRouteRecordRaw } from "@/application/router";
 
 export const catalogingRoutes: AppRouteRecordRaw[] = [
   {
-    path: "/cataloging",
+    path: "/admin/cataloging",
     name: RouteNames.CATALOGING,
     component: { template: '<router-view />' },
     meta: { requiresAuth: true, layout: 'admin', title: "Cataloging" },

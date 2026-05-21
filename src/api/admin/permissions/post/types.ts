@@ -1,5 +1,5 @@
 export type GivePermissionsRequest = {
-  user_id: number
+  user_id: number | string
   permissions: number[]
 }
 
