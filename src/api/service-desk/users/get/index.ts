@@ -8,9 +8,13 @@ export function useServiceUsersSearchApi() {
     mutationKey: [EServiceUserKeys.listQueryKey],
     mutationFn: async (data) => {
       const userType = data.add_options.find((o) => o.key === "type")?.value ?? "student";
+      const payload = {
+        ...data,
+        add_options: data.add_options.filter((o) => o.key !== "type"),
+      };
       const res = await axiosInstance.post(
         `service/user/${userType}/search`,
-        data
+        payload
       );
       return res.data;
     },

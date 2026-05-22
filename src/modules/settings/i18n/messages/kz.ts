@@ -41,5 +41,11 @@ export default {
     type: "Түрі",
     announcement: "Хабарландыру",
     event: "Іс-шара",
+    error: "Қате орын алды",
+    configuration: "Конфигурация",
+    book_title: "Атауы",
+    author: "Автор",
+    year: "Жыл",
+    isbn: "ISBN",
   },
 };

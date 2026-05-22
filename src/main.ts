@@ -11,6 +11,7 @@ import { VueQueryPlugin } from '@tanstack/vue-query'
 import { installToastService } from './application/services/toastService'
 import { useAuthStore } from './application/stores/auth.store'
 import StyleClass from 'primevue/styleclass'
+import Tooltip from 'primevue/tooltip'
 
 import PrimeVue from "primevue/config";
 import Aura from '@primevue/themes/aura';
@@ -57,6 +58,7 @@ app.component('InputNumber', InputNumber)
 app.component('Carousel', Carousel)
 
 app.directive('styleclass', StyleClass)
+app.directive('tooltip', Tooltip)
 
 app.use(ToastService);
 

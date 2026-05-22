@@ -15,6 +15,7 @@ export type AnnouncementUpdateRequest = {
   start_time: string;
   end_time?: string | null;
   image: string;
+  type: "announcement" | "event";
 };
 
 export type AnnouncementUpdateResponse = {

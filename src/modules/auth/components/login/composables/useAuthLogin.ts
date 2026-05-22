@@ -1,4 +1,5 @@
 import { useI18n } from "vue-i18n";
+import { useRouter } from "vue-router";
 import { useAuthStore } from "@/application/stores/auth.store";
 import { useAuthLoginApi } from "@/api/auth/login/post";
 import { useAuthLogoutApi } from "@/api/auth/logout/post";
@@ -8,6 +9,7 @@ import {
 } from "@/application/services/toastService";
 import type { LoginForm } from "./useFormComposable";
 import axiosInstance from "@/application/configs/axios";
+import { RouteNames } from "@/application/router/routeNames";
 
 export function useAuthLogin(onSuccess?: () => void) {
   const { t } = useI18n();
@@ -47,16 +49,19 @@ export function useAuthLogin(onSuccess?: () => void) {
 export function useAuthLogout() {
   const { t } = useI18n();
   const authStore = useAuthStore();
+  const router = useRouter();
   const { mutate: logoutMutate } = useAuthLogoutApi();
 
   function submitLogout(): void {
     logoutMutate(undefined, {
       onSuccess() {
         authStore.logout();
+        router.push({ name: RouteNames.WEBSITE_HOME });
         showSuccessToast(t("auth.logout_success"));
       },
       onError() {
         authStore.logout();
+        router.push({ name: RouteNames.WEBSITE_HOME });
         showErrorToast(t("auth.logout_error"));
       },
     });

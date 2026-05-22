@@ -8,7 +8,7 @@ export function useVideoContentUpdateApi() {
   return useMutation<VideoContentUpdateResponse, Error, VideoContentUpdateRequest>({
     mutationKey: [EVideoContentKeys.mutationKey],
     mutationFn: async (data) => {
-      const res = await axiosInstance.post("video/update", data);
+      const res = await axiosInstance.put("video/update", data);
       return res.data;
     },
     onSuccess: () => {

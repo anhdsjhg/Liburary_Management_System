@@ -5,14 +5,26 @@ import { EAnnouncementKeys } from "./enums";
 
 export function useAnnouncementUpdateApi() {
   const queryClient = useQueryClient();
-  return useMutation<AnnouncementUpdateResponse, Error, AnnouncementUpdateRequest>({
-    mutationKey: [EAnnouncementKeys.mutationKey],
+
+  return useMutation<
+    AnnouncementUpdateResponse,
+    Error,
+    AnnouncementUpdateRequest
+  >({
     mutationFn: async (data) => {
-      const res = await axiosInstance.post("announcement/update", data);
+      const { announcement_id, ...body } = data;
+
+      const res = await axiosInstance.patch(
+        `announcement/${announcement_id}`,
+        body
+      );
+
       return res.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: [EAnnouncementKeys.queryKey] });
+      queryClient.invalidateQueries({
+        queryKey: [EAnnouncementKeys.queryKey],
+      });
     },
   });
 }

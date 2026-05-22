@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useMostReadBooksApi } from "@/api/reports/most-read-books/search/get";
 import type { MostReadBook } from "@/api/reports/most-read-books/search/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 import { useExportComposable } from "../../../composables/useExportComposable";
 
 export function useMostReadBooksPage() {
@@ -37,13 +37,6 @@ export function useMostReadBooksPage() {
     per_page: results.value.per_page,
   }));
 
-  const columns: TableColumnDef<MostReadBook>[] = [
-    { name: "reports.title", link: "title" },
-    { name: "reports.author", link: "author" },
-    { name: "acquisitions.item.item_type", link: "type" },
-    { name: "reports.status", link: "borrow_count" },
-  ];
-
   function load(page = 1) {
     currentPage.value = page;
     search(
@@ -76,7 +69,6 @@ export function useMostReadBooksPage() {
 
   return {
     searchQuery,
-    columns,
     results,
     meta,
     isLoading,

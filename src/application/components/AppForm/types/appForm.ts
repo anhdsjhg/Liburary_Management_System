@@ -18,6 +18,8 @@ export interface FormFieldDef<TModel = Record<string, unknown>> {
   placeholder?: string
   required?: boolean
   disabled?: boolean
+  hide?: boolean
+  nativeProps?: Record<string, unknown>
   options?: SelectOption[] | (() => SelectOption[])
   slot?: string
   component?: Component

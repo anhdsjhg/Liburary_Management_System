@@ -34,20 +34,16 @@ import LocaleSelector from "./components/LocaleSelector.vue";
 import ProfileComponent from "./components/ProfileComponent.vue";
 import SearchComponent from "./components/SearchComponent.vue";
 import ToggleConfigComponent from "./components/ToggleConfigComponent.vue";
+import logoDark from '@/application/assets/images/logo.png'
+import logoLight from '@/application/assets/images/logo_black.png'
 
 const { toggleMenu, layoutConfig, isDarkTheme } = useLayout();
 
 const logo = computed(() => {
-  const base = "https://2b39-109-175-215-60.ngrok-free.app/images/";
-  
-  if (
-    isDarkTheme.value ||
-    layoutConfig.value.layoutTheme === "primaryColor"
-  ) {
-    return `${base}logo.png`;
+  if (isDarkTheme.value || layoutConfig.value.layoutTheme === "primaryColor") {
+    return logoDark;
   }
-  
-  return `${base}logo_black.png`;
+  return logoLight;
 });
 
 </script>

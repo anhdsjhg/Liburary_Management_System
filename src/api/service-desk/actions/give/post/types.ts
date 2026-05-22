@@ -2,8 +2,10 @@ export type GiveMaterialRequest = {
   inv_id: string | number;
   user_cid: string;
   material_id: number | string;
-  duration: number;
-  loan_id?: number;
+  librarian_user_cid: string;
+  loan_id: number;
+  duration?: number;
+  due_date?: string;
 };
 
 export type GiveMaterialResponse = {

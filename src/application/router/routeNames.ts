@@ -37,13 +37,16 @@ export enum RouteNames {
   REPORTS_PERIODICALS = "reports-periodicals",
   REPORTS_SHELVES = "reports-shelves",
   REPORTS_STAT = "reports-stat",
+  REPORTS_CATALOGING = "reports-cataloging",
   REPORTS_DYNAMIC = "reports-dynamic",
   REPORTS_DYNAMIC_DETAIL = "reports-dynamic-detail",
 
   // Service Desk
   SERVICE_DESK = "service-desk",
   SERVICE_DESK_USERS = "service-desk-users",
-  SERVICE_DESK_SERVICE = "service-desk-service",
+  SERVICE_DESK_SHELVES = "service-desk-shelves",
+  SERVICE_DESK_BOOK_HISTORY = "service-desk-book-history",
+
 
   // Settings (CMS)
   SETTINGS = "settings",

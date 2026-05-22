@@ -31,3 +31,46 @@ withDefaults(defineProps<Props>(), { variant: 'table', rows: 6, cols: 4 })
     <Skeleton height="100%" />
   </div>
 </template>
+
+<style scoped>
+.app-skeleton--table {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  border: 1px solid var(--p-datatable-border-color, #e2e8f0);
+  border-radius: 0.5rem;
+  overflow: hidden;
+  padding: 0.5rem;
+  background: var(--p-datatable-header-background, #fff);
+}
+
+.app-skeleton__head,
+.app-skeleton__row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.app-skeleton__head .app-skeleton__cell {
+  border-radius: 0.25rem;
+}
+
+.app-skeleton__row .app-skeleton__cell {
+  border-radius: 0.25rem;
+}
+
+.app-skeleton__cell {
+  flex: 1;
+}
+
+.app-skeleton--form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.app-skeleton__form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+</style>

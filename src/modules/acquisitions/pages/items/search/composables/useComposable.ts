@@ -1,11 +1,9 @@
 import { ref, computed } from "vue";
-import { useI18n } from "vue-i18n";
 import { useItemsGetApi } from "@/api/acquisitions/items/get";
 import type { AcquisitionItem } from "@/api/acquisitions/items/get/types";
 import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
 
 export function useItemsSearch() {
-  const { t } = useI18n();
   const { mutate: search, isPending: isLoading } = useItemsGetApi();
 
   const currentPage = ref(1);
@@ -57,12 +55,12 @@ export function useItemsSearch() {
 
   function load(page = 1) {
     currentPage.value = page;
+    const q = searchQuery.value.trim();
     search(
       {
-        add_options: searchQuery.value.trim()
-          ? [{ key: "all", value: searchQuery.value.trim() }]
-          : [],
-        order: { key: "id", mode: "desc" },
+        ...(q && {
+          add_options: [{ key: "id", value: q }],
+        }),
         page,
         per_page: 25,
       },

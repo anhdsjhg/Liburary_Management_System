@@ -15,10 +15,11 @@ export function useRenewDialog(onSuccess?: () => void) {
         onSuccess?.();
       },
       onError() {
-        showErrorToast(t("serviceDesk.renew_success"));
+        showErrorToast(t("common.error"));
       },
     });
   }
+
 
   return { form, isRenewing, setLoan, submit };
 }

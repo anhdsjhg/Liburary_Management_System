@@ -42,7 +42,7 @@ export function useQuickLinkManageDialog(onSuccess?: () => void) {
             onSuccess?.();
           },
           onError() {
-            showErrorToast(t("settings.saved"));
+            showErrorToast(t("settings.error"));
           },
         }
       );
@@ -53,7 +53,7 @@ export function useQuickLinkManageDialog(onSuccess?: () => void) {
           onSuccess?.();
         },
         onError() {
-          showErrorToast(t("settings.created"));
+          showErrorToast(t("settings.error"));
         },
       });
     }

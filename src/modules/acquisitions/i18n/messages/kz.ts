@@ -1,4 +1,5 @@
 export default {
+    title: "Сатып алу",
     batches: "Партиялар",
     acts: "Актілер",
     items: "Данасы",
@@ -13,11 +14,16 @@ export default {
     filter: "Сүзгі",
     reset: "Тазалау",
     manage: "Басқару",
+    export: "Экспорт",
+    print: "Басып шығару",
+    items_of_act: "Акт даналары",
+    items_of_batch: "Партия даналары",
     batch: {
       id: "ID",
       status: "Мәртебе",
       invoice_date: "Шот күні",
       supply_type: "Жеткізу түрі",
+      sup_type: "Жеткізу түрі",
       supplier: "Жеткізуші",
       titles_no: "Атаулар (жоспар)",
       items_no: "Даналар (жоспар)",

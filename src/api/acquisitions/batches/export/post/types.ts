@@ -1,10 +1,6 @@
 export type BatchExportRequest = {
-  ids?: number[]
-  filters?: Record<string, unknown>
-  format?: 'xlsx' | 'pdf'
-}
+  id: number | string;
+  locale?: string;
+};
 
-export type BatchExportResponse = {
-  url: string
-  filename: string
-}
+export type BatchExportResponse = Blob;

@@ -5,6 +5,12 @@ import { useKsuPage } from "./composables/useComposable";
 import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
 
 const { t } = useI18n();
+
+const supplyTypeOptions = computed(() => [
+  { label: t("reports.supply_type_donated"), value: "donated" },
+  { label: t("reports.supply_type_bought"), value: "bought" },
+  { label: t("reports.supply_type_replacement"), value: "replacement" },
+]);
 const { filter, results, meta, isLoading, currentPage, load, onPageChange, doExport } = useKsuPage();
 
 const columns = computed(() =>
@@ -55,7 +61,15 @@ const columns = computed(() =>
       </div>
       <div class="report-page__filter-field">
         <div class="report-page__filter-label">{{ $t("reports.supply_type") }}</div>
-        <InputText v-model="filter.supply_type" class="w-full" />
+        <Select
+          v-model="filter.supply_type"
+          :options="supplyTypeOptions"
+          option-label="label"
+          option-value="value"
+          :placeholder="$t('reports.supply_type')"
+          show-clear
+          class="w-full"
+        />
       </div>
     </div>
 

@@ -1,10 +1,12 @@
 <script setup lang="ts">
 import { useBackgroundImagePage } from "./composables/useComposable";
+import AppSkeleton from "@/application/components/AppSkeleton.vue";
 
 const {
   images,
   isLoading,
   isUploading,
+  isDeleting,
   imageUrl,
   onFileChange,
   doUpload,
@@ -35,7 +37,7 @@ const {
       />
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
+    <AppSkeleton v-if="isLoading" variant="table" :rows="3" :cols="1" />
 
     <div v-else class="bg-images-grid">
       <div
@@ -49,6 +51,7 @@ const {
             icon="pi pi-trash"
             severity="danger"
             rounded
+            :loading="isDeleting"
             @click="doDelete(img)"
           />
         </div>

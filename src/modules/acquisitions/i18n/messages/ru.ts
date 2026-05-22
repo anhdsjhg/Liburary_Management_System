@@ -1,4 +1,5 @@
 export default {
+    title: "Закупки",
     batches: "Партии",
     acts: "Акты",
     items: "Экземпляры",
@@ -13,11 +14,16 @@ export default {
     filter: "Фильтр",
     reset: "Сбросить",
     manage: "Управление",
+    export: "Экспорт",
+    print: "Печать",
+    items_of_act: "Экземпляры акта",
+    items_of_batch: "Экземпляры партии",
     batch: {
       id: "ID",
       status: "Статус",
       invoice_date: "Дата счёта",
       supply_type: "Тип поставки",
+      sup_type: "Тип поставки",
       supplier: "Поставщик",
       titles_no: "Назв. (план)",
       items_no: "Экз. (план)",

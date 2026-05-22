@@ -10,10 +10,8 @@ export const authGuard: NavigationGuard = (to) => {
   const authStore = useAuthStore();
 
   if (!authStore.token) {
-    return {
-      name: RouteNames.LOGIN,
-      query: { redirect: to.fullPath },
-    };
+    authStore.loginVisible = true;
+    return { name: RouteNames.WEBSITE_HOME };
   }
 
   return true;

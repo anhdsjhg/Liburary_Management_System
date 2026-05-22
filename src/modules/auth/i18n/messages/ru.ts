@@ -1,5 +1,4 @@
 export default {
-  auth: {
     login: "Войти",
     logout: "Выйти",
     username: "Имя пользователя",
@@ -10,5 +9,5 @@ export default {
     logout_success: "Вы вышли из системы",
     logout_error: "Ошибка выхода",
     logging_in: "Вход...",
-  },
-};
+    cancel: "Отмена",
+  };

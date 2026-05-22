@@ -1,17 +1,16 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useQuickLinksSearch } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import QuickLinksTable from "./components/QuickLinksTable.vue";
 import ManageDialog from "../manage/Page.vue";
 import type { QuickLink } from "@/api/settings/quick-links/get/types";
 
 const {
   items,
-  columns,
   isLoading,
   deleteLoading,
   refetch,
-  onDelete,
+  doDelete,
 } = useQuickLinksSearch();
 
 const manageVisible = ref(false);
@@ -37,18 +36,12 @@ function openEdit(row: QuickLink) {
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <QuickLinksTable
       :rows="items"
+      :loading="isLoading"
       :delete-loading="deleteLoading"
-      :edit-config="{ available: true }"
-      :delete-config="{ available: true }"
-      :pagination="false"
-      @edit="(row) => openEdit(row as QuickLink)"
-      @delete="(row) => onDelete(row as QuickLink)"
+      @edit="openEdit"
+      @delete="(row) => doDelete(row as QuickLink)"
       @refresh="refetch"
     />
 

@@ -18,13 +18,21 @@ export default defineConfig({
   },
   server: {
       proxy: {
-        '/api': {  // ← добавь это
-          target: 'https://2b39-109-175-215-60.ngrok-free.app',
+        '/api': {
+          target: 'https://5879-109-175-215-60.ngrok-free.app',
           changeOrigin: true,
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
+
         },
         '/images': {
-          target: 'https://2b39-109-175-215-60.ngrok-free.app',
+          target: 'https://5879-109-175-215-60.ngrok-free.app',
           changeOrigin: true,
+          headers: {
+            'ngrok-skip-browser-warning': 'true',
+          },
+
         },
       },
     },

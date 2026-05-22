@@ -1,7 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 import { useBatchesSearch } from "./composables/useComposable";
 import BatchesTable from "./components/batchesTable/BatchesTable.vue";
+import BatchItemsDialog from "./components/BatchItemsDialog.vue";
+import type { Batch } from "@/api/acquisitions/batches/get/types";
 
 const {
   results,
@@ -15,6 +17,14 @@ const {
   goToManage,
   onDelete,
 } = useBatchesSearch();
+
+const dialogVisible = ref(false);
+const selectedBatchId = ref<number | null>(null);
+
+function onShowItems(row: Batch) {
+  selectedBatchId.value = row.id;
+  dialogVisible.value = true;
+}
 
 onMounted(() => load(1));
 </script>
@@ -44,18 +54,22 @@ onMounted(() => load(1));
       <Button :label="$t('acquisitions.search')" @click="load(1)" />
     </div>
 
-    <Skeleton v-if="isLoading && !results.data.length" height="20rem" />
-
     <BatchesTable
-      v-else
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
+      :loading="isLoading"
       :delete-loading="deleteLoading"
       @edit="goToManage"
       @delete="onDelete"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
+      @show-items="onShowItems"
+    />
+
+    <BatchItemsDialog
+      v-model:visible="dialogVisible"
+      :batch-id="selectedBatchId"
     />
   </div>
 </template>

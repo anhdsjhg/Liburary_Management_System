@@ -2,7 +2,7 @@ import axios from "axios";
 import { StorageKeys } from "./constants";
 
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.APP_URL ?? "https://2b39-109-175-215-60.ngrok-free.app/api",
+  baseURL: import.meta.env.APP_URL ?? "https://5879-109-175-215-60.ngrok-free.app/api",
   timeout: 20_000,
   headers: {
     'ngrok-skip-browser-warning': 'true',

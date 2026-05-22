@@ -30,5 +30,5 @@ export function useArrivalsAll() {
     isLoading,
     getImageUrl,
     goToBook,
-  };
+  };    
 }

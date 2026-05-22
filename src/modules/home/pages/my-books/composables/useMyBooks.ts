@@ -22,6 +22,10 @@ export function useMyBooks() {
   const userInfo = computed(() => myBooksData.value?.info ?? null);
   const total = computed(() => myBooksData.value?.total ?? null);
   const isUnlimited = computed(() => myBooksData.value?.isUnlimited ?? false);
+  const duration = computed(() => {
+    const d = myBooksData.value?.duration;
+    return d ? Number(d) : 30;
+  });
   const photo = computed(() => {
     const raw = myBooksData.value?.photo;
     if (!raw) return null;
@@ -39,6 +43,7 @@ export function useMyBooks() {
     photo,
     total,
     isUnlimited,
+    duration,
     loansLoading,
     reservesLoading,
   };

@@ -1,4 +1,5 @@
 export default {
+    title: "Acquisitions",
     batches: "Batches",
     acts: "Acts",
     items: "Items",
@@ -13,11 +14,16 @@ export default {
     filter: "Filter",
     reset: "Reset",
     manage: "Manage",
+    export: "Export",
+    print: "Print",
+    items_of_act: "Items of Act",
+    items_of_batch: "Items of Batch",
     batch: {
       id: "ID",
       status: "Status",
       invoice_date: "Invoice Date",
       supply_type: "Supply Type",
+      sup_type: "Supply Type",
       supplier: "Supplier",
       titles_no: "Titles (planned)",
       items_no: "Items (planned)",

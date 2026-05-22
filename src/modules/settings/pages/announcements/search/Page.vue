@@ -1,20 +1,20 @@
 <script setup lang="ts">
 import { useAnnouncementsSearch } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import AnnouncementsTable from "./components/AnnouncementsTable.vue";
 import type { AnnouncementItem } from "@/api/settings/announcements/get/types";
 
 const {
   searchQuery,
-  columns,
   results,
   meta,
   isLoading,
   deleteLoading,
   currentPage,
   load,
+  reset,
   onPageChange,
   goToManage,
-  onDelete,
+  doDelete,
 } = useAnnouncementsSearch();
 </script>
 
@@ -46,25 +46,20 @@ const {
           :label="$t('settings.reset')"
           severity="secondary"
           outlined
-          @click="() => { searchQuery = ''; }"
+          @click="reset"
         />
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <AnnouncementsTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
+      :loading="isLoading"
       :delete-loading="deleteLoading"
-      :edit-config="{ available: true }"
-      :delete-config="{ available: true }"
-      @update:page="onPageChange"
       @edit="(row) => goToManage(row as AnnouncementItem)"
-      @delete="(row) => onDelete(row as AnnouncementItem)"
+      @delete="(row) => doDelete(row as AnnouncementItem)"
+      @update:page="onPageChange"
       @refresh="load(currentPage)"
     />
   </div>

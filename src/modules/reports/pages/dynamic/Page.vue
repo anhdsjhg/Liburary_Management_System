@@ -28,7 +28,7 @@ const {
           :class="{ 'dynamic-report-page__category-item--active': selectedCategoryId === cat.category_id }"
           @click="selectCategory(cat.category_id)"
         >
-          {{ cat.category_title }}
+          {{ cat.label }}
         </div>
       </div>
 

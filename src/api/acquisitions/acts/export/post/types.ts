@@ -1,10 +1,6 @@
 export type ActExportRequest = {
-  ids?: number[]
-  filters?: Record<string, unknown>
-  format?: 'xlsx' | 'pdf'
-}
+  id: number | string;
+  locale?: string;
+};
 
-export type ActExportResponse = {
-  url: string
-  filename: string
-}
+export type ActExportResponse = Blob;

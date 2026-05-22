@@ -1,6 +1,8 @@
 import { reactive } from "vue";
 import type { SupplierCreateRequest } from "@/api/acquisitions/suppliers/post/types";
+import { supplierCreateSchema } from "@/api/acquisitions/suppliers/post/types";
 import type { SupplierUpdateRequest } from "@/api/acquisitions/suppliers/[id]/patch/types";
+import type { AppFormConfig } from "@/application/components/AppForm/types/appForm";
 
 export interface SupplierForm {
   sup_name: string;
@@ -56,4 +58,21 @@ export function useSupplierForm() {
   }
 
   return { form, toCreateRequest, toUpdateRequest, fillFromExisting, reset };
+}
+
+export function buildSupplierFormConfig(): AppFormConfig<SupplierForm> {
+  return {
+    schema: supplierCreateSchema,
+    submitLabel: "acquisitions.save",
+    cancelLabel: "acquisitions.cancel",
+    fields: [
+      { key: "sup_name", label: "acquisitions.supplier.name", type: "text", required: true, cols: 6 },
+      { key: "com_name", label: "acquisitions.supplier.com_name", type: "text", cols: 6 },
+      { key: "bin", label: "acquisitions.supplier.bin", type: "text", cols: 4 },
+      { key: "phone", label: "acquisitions.supplier.phone", type: "text", cols: 4 },
+      { key: "email", label: "acquisitions.supplier.email", type: "email", cols: 4 },
+      { key: "fax", label: "acquisitions.supplier.fax", type: "text", cols: 4 },
+      { key: "address", label: "acquisitions.supplier.address", type: "textarea", cols: 12 },
+    ],
+  };
 }

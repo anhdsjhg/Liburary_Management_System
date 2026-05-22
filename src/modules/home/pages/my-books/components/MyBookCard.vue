@@ -15,6 +15,15 @@ const props = defineProps<{
   statusSeverity?: Severity;
   dates?: Array<{ label: string; value: string; danger?: boolean }>;
   history?: boolean;
+  canRenew?: boolean;
+  canCancel?: boolean;
+  isRenewing?: boolean;
+  isCanceling?: boolean;
+}>();
+
+const emit = defineEmits<{
+  renew: [];
+  cancel: [];
 }>();
 
 const linkTo = computed(() =>
@@ -64,8 +73,33 @@ const linkTo = computed(() =>
       </div>
     </dl>
 
-    <div v-if="statusLabel" class="mb-book-card__status">
-      <Tag :value="statusLabel" :severity="statusSeverity" />
+    <div class="mb-book-card__right">
+      <div v-if="statusLabel" class="mb-book-card__status">
+        <Tag :value="statusLabel" :severity="statusSeverity" />
+      </div>
+
+      <div v-if="canRenew || canCancel" class="mb-book-card__actions">
+        <Button
+          v-if="canRenew"
+          v-tooltip.top="$t('home.renew')"
+          icon="pi pi-refresh"
+          size="small"
+          text
+          severity="secondary"
+          :loading="isRenewing"
+          @click.prevent="emit('renew')"
+        />
+        <Button
+          v-if="canCancel"
+          v-tooltip.top="$t('home.cancel_reserve')"
+          icon="pi pi-times-circle"
+          size="small"
+          text
+          severity="danger"
+          :loading="isCanceling"
+          @click.prevent="emit('cancel')"
+        />
+      </div>
     </div>
   </article>
 </template>
@@ -102,7 +136,7 @@ const linkTo = computed(() =>
     gap: 0.85rem 1rem;
 
     .mb-book-card__dates { grid-column: 2 / -1; grid-row: 2; }
-    .mb-book-card__status { grid-row: 1; align-self: center; }
+    .mb-book-card__right { grid-row: 1; align-self: center; }
   }
 
   @media (max-width: 480px) {
@@ -207,14 +241,31 @@ const linkTo = computed(() =>
     }
   }
 
-  &__status {
+  &__right {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 0.5rem;
     flex-shrink: 0;
+  }
 
+  &__status {
     :deep(.p-tag) {
       font-weight: 700;
       letter-spacing: 0.02em;
       border-radius: 999px;
       padding: 0.3rem 0.7rem;
+    }
+  }
+
+  &__actions {
+    display: flex;
+    gap: 0.1rem;
+
+    :deep(.p-button) {
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
     }
   }
 }

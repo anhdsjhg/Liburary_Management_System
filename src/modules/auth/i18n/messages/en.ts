@@ -1,5 +1,4 @@
 export default {
-  auth: {
     login: "Login",
     logout: "Logout",
     username: "Username",
@@ -11,5 +10,4 @@ export default {
     logout_error: "Logout failed",
     logging_in: "Logging in...",
     cancel: "Cancel",
-  },
 };

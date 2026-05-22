@@ -40,7 +40,7 @@ export function useVideoManageDialog(onSuccess?: () => void) {
             onSuccess?.();
           },
           onError() {
-            showErrorToast(t("settings.saved"));
+            showErrorToast(t("settings.error"));
           },
         }
       );
@@ -51,7 +51,7 @@ export function useVideoManageDialog(onSuccess?: () => void) {
           onSuccess?.();
         },
         onError() {
-          showErrorToast(t("settings.created"));
+          showErrorToast(t("settings.error"));
         },
       });
     }

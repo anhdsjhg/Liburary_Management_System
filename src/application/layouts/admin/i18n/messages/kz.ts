@@ -39,6 +39,7 @@ export default {
       myBooks: "Менің кітаптарым",
       login: "Кіру",
       logout: "Шығу",
+      logout_confirm: "Сіз шынымен шыққыңыз келе ме?",
     },
   },
 };

@@ -1,9 +1,7 @@
 export type BatchPrintRequest = {
-  ids?: number[]
-  filters?: Record<string, unknown>
-}
+  id: number | string;
+  location?: string;
+  locale?: string;
+};
 
-export type BatchPrintResponse = {
-  url: string
-  filename: string
-}
+export type BatchPrintResponse = Blob;

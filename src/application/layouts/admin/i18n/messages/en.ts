@@ -24,6 +24,7 @@ export default {
       ksu: "KSU",
       periodicals: "Periodicals",
       dynamicReports: "Dynamic Reports",
+      form2: "Form 2",
     },
     website: {
       title: "Website",
@@ -39,6 +40,7 @@ export default {
       myBooks: "My Books",
       login: "Login",
       logout: "Logout",
+      logout_confirm: "Are you sure you want to sign out?",
     },
   },
 };

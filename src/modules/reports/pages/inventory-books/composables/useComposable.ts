@@ -2,7 +2,7 @@ import { ref, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useInventoryBooksSearchApi } from "@/api/reports/inventory-books/search/get";
 import type { InventoryBook } from "@/api/reports/inventory-books/search/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 import { useExportComposable } from "../../../composables/useExportComposable";
 
 export function useInventoryBooksPage() {
@@ -37,15 +37,6 @@ export function useInventoryBooksPage() {
     last_page: results.value.last_page,
     per_page: results.value.per_page,
   }));
-
-  const columns: TableColumnDef<InventoryBook>[] = [
-    { name: "reports.inv_id", link: "id" },
-    { name: "reports.barcode_label", link: "barcode" },
-    { name: "reports.title", link: "title" },
-    { name: "reports.author", link: "author" },
-    { name: "reports.location", link: "location_title" },
-    { name: "reports.status", link: "status" },
-  ];
 
   function load(page = 1) {
     currentPage.value = page;
@@ -83,7 +74,6 @@ export function useInventoryBooksPage() {
 
   return {
     searchQuery,
-    columns,
     results,
     meta,
     isLoading,

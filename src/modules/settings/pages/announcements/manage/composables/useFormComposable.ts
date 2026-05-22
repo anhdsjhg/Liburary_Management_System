@@ -20,6 +20,7 @@ export function useAnnouncementForm(initial?: Partial<AnnouncementForm>) {
     start_time: "",
     end_time: null,
     image: "",
+    type: "announcement",
     ...initial,
   });
 

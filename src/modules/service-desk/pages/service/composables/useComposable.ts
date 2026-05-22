@@ -1,7 +1,8 @@
-import { ref, computed } from "vue";
+import { ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useServiceGiveApi } from "@/api/service-desk/actions/give/post";
 import { useServiceReturnApi } from "@/api/service-desk/actions/return/post";
+import { useAuthStore } from "@/application/stores/auth.store";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 import axiosInstance from "@/application/configs/axios";
 
@@ -28,6 +29,7 @@ export interface ScannedUser {
 
 export function useServiceDesk() {
   const { t } = useI18n();
+  const authStore = useAuthStore();
 
   const { mutate: giveMaterial, isPending: isGiving } = useServiceGiveApi();
   const { mutate: returnMaterial, isPending: isReturning } = useServiceReturnApi();
@@ -46,7 +48,7 @@ export function useServiceDesk() {
     isLoadingMaterial.value = true;
     try {
       const res = await axiosInstance.get("service/media/search/by-barcode", {
-        params: { barcodes: [materialBarcode.value.trim()] },
+        params: { "barcodes[]": materialBarcode.value.trim() },
       });
       const items: ScannedMaterial[] = res.data?.res ?? [];
       scannedMaterials.value = items;
@@ -62,10 +64,14 @@ export function useServiceDesk() {
     if (!userQuery.value.trim()) return;
     isLoadingUser.value = true;
     try {
-      const res = await axiosInstance.get(
-        `service/user/${userQuery.value.trim()}`
-      );
-      selectedUser.value = res.data?.res ?? null;
+      const res = await axiosInstance.post("service/user/student/search", {
+        add_options: [{ key: "all", value: userQuery.value.trim() }],
+        per_page: 1,
+        page: 1,
+      });
+      const users = res.data?.res?.data ?? [];
+      selectedUser.value = users[0] ?? null;
+      if (!selectedUser.value) showErrorToast(t("serviceDesk.no_results"));
     } catch {
       showErrorToast(t("serviceDesk.no_results"));
     } finally {
@@ -80,7 +86,9 @@ export function useServiceDesk() {
         inv_id: material.inv_id,
         user_cid: selectedUser.value.user_cid,
         material_id: material.material_id,
+        loan_id: material.loan_id ?? 0,
         duration: duration.value,
+        librarian_user_cid: authStore.user?.user_cid ?? "",
       },
       {
         onSuccess() {
@@ -88,7 +96,7 @@ export function useServiceDesk() {
           scannedMaterials.value = [];
         },
         onError() {
-          showErrorToast(t("serviceDesk.give_success"));
+          showErrorToast(t("common.error"));
         },
       }
     );
@@ -101,6 +109,8 @@ export function useServiceDesk() {
         inv_id: material.inv_id,
         user_cid: material.user_cid ?? selectedUser.value.user_cid,
         loan_id: material.loan_id,
+        librarian_user_cid: authStore.user?.user_cid ?? "",
+        material_id: material.material_id,
       },
       {
         onSuccess() {
@@ -110,7 +120,7 @@ export function useServiceDesk() {
           );
         },
         onError() {
-          showErrorToast(t("serviceDesk.return_success"));
+          showErrorToast(t("common.error"));
         },
       }
     );

@@ -41,5 +41,11 @@ export default {
     type: "Type",
     announcement: "Announcement",
     event: "Event",
+    error: "An error occurred",
+    configuration: "Configuration",
+    book_title: "Title",
+    author: "Author",
+    year: "Year",
+    isbn: "ISBN",
   },
 };

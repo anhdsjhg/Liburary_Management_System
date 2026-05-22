@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(ls -Recurse \"c:\\\\Users\\\\Нурманап\\\\Desktop\\\\Liburary-SDU\\\\src\" -Directory | Where-Object { $_.Name -eq 'website' -or $_.Name -eq 'modules' -or $_.Name -eq 'api' } | Select-Object FullName)",
+      "PowerShell(ls -Recurse \"c:\\\\Users\\\\Нурманап\\\\Desktop\\\\Liburary-SDU\\\\src\\\\modules\\\\website\" -File | ForEach-Object { $_.FullName })"
+    ]
+  }
+}

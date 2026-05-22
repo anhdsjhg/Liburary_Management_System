@@ -1,9 +1,7 @@
 export type ActPrintRequest = {
-  ids?: number[]
-  filters?: Record<string, unknown>
-}
+  id: number | string;
+  type?: string;
+  locale?: string;
+};
 
-export type ActPrintResponse = {
-  url: string
-  filename: string
-}
+export type ActPrintResponse = Blob;

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useNotFoundBooksPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import NotFoundBooksTable from "./components/NotFoundBooksTable.vue";
 
-const { searchQuery, columns, results, meta, isLoading, currentPage, load, onPageChange } = useNotFoundBooksPage();
+const { searchQuery, results, meta, isLoading, currentPage, load, onPageChange } =
+  useNotFoundBooksPage();
 </script>
 
 <template>
@@ -21,15 +22,11 @@ const { searchQuery, columns, results, meta, isLoading, currentPage, load, onPag
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <NotFoundBooksTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :show-actions="false"
+      :loading="isLoading"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
     />

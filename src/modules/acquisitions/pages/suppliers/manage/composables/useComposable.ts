@@ -1,9 +1,11 @@
 import { computed, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
+import type { AxiosError } from "axios";
 import { useSupplierCreateApi } from "@/api/acquisitions/suppliers/post";
 import { useSupplierUpdateApi } from "@/api/acquisitions/suppliers/[id]/patch";
-import { useSupplierForm } from "./useFormComposable";
+import { useSupplierForm, buildSupplierFormConfig } from "./useFormComposable";
+import { useFormErrors } from "@/application/composables/useFormErrors";
 import { RouteNames } from "@/application/router/routeNames";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 import { useQuery } from "@tanstack/vue-query";
@@ -21,6 +23,8 @@ export function useSupplierManage() {
   const isEdit = computed(() => !!id.value);
 
   const { form, toCreateRequest, toUpdateRequest, fillFromExisting } = useSupplierForm();
+  const { serverErrors, setFromAxiosError, clearAll } = useFormErrors();
+  const formConfig = buildSupplierFormConfig();
 
   const { data: supplierData, isLoading: loadingSupplier } = useQuery<{ res: Supplier }>({
     queryKey: ["get:supplier-show", id],
@@ -51,15 +55,18 @@ export function useSupplierManage() {
   const isSaving = computed(() => creating.value || updating.value);
 
   function submit() {
+    clearAll();
+    const onError = (err: unknown) => {
+      if ((err as AxiosError)?.response?.status === 422) setFromAxiosError(err);
+      else showErrorToast(t("acquisitions.save"));
+    };
     if (isEdit.value && id.value) {
       updateSupplier(toUpdateRequest(id.value), {
         onSuccess() {
           showSuccessToast(t("acquisitions.save"));
           router.push({ name: RouteNames.ACQUISITION_SUPPLIERS });
         },
-        onError() {
-          showErrorToast(t("acquisitions.save"));
-        },
+        onError,
       });
     } else {
       createSupplier(toCreateRequest(), {
@@ -67,9 +74,7 @@ export function useSupplierManage() {
           showSuccessToast(t("acquisitions.save"));
           router.push({ name: RouteNames.ACQUISITION_SUPPLIERS });
         },
-        onError() {
-          showErrorToast(t("acquisitions.save"));
-        },
+        onError,
       });
     }
   }
@@ -78,5 +83,5 @@ export function useSupplierManage() {
     router.push({ name: RouteNames.ACQUISITION_SUPPLIERS });
   }
 
-  return { form, isEdit, isSaving, loadingSupplier, submit, cancel };
+  return { form, formConfig, serverErrors, isEdit, isSaving, loadingSupplier, submit, cancel };
 }

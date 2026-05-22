@@ -44,8 +44,16 @@ export function useAnnouncementManage() {
         link: item.link ?? "",
         start_time: item.start_time ?? "",
         end_time: item.end_time ?? null,
-        image: item.image ?? "",
+        type: item.type ?? "announcement",
+        image: "",
       });
+      // image is stored as a path to a base64 txt file — fetch its content
+      if (item.image) {
+        fetch(item.image)
+          .then((r) => r.text())
+          .then((base64) => fill({ image: base64 }))
+          .catch(() => {});
+      }
     }
   });
 
@@ -59,7 +67,7 @@ export function useAnnouncementManage() {
             router.push({ name: RouteNames.SETTINGS_ANNOUNCEMENTS });
           },
           onError() {
-            showErrorToast(t("settings.saved"));
+            showErrorToast(t("settings.error"));
           },
         }
       );
@@ -70,7 +78,7 @@ export function useAnnouncementManage() {
           router.push({ name: RouteNames.SETTINGS_ANNOUNCEMENTS });
         },
         onError() {
-          showErrorToast(t("settings.created"));
+          showErrorToast(t("settings.error"));
         },
       });
     }
@@ -80,5 +88,7 @@ export function useAnnouncementManage() {
     router.push({ name: RouteNames.SETTINGS_ANNOUNCEMENTS });
   }
 
-  return { form, isEdit, isLoadingData, isSaving, save, cancel };
+  const showLoading = computed(() => isEdit.value && isLoadingData.value);
+
+  return { form, isEdit, isLoadingData: showLoading, isSaving, save, cancel };
 }

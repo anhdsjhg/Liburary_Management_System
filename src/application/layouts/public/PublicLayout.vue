@@ -17,6 +17,7 @@ const { submitLogout } = useAuthLogout();
 
 const userMenuOpen = ref(false);
 const userMenuRef = ref<HTMLElement | null>(null);
+const showLogoutConfirm = ref(false);
 
 function handleClickOutside(e: MouseEvent) {
   if (userMenuRef.value && !userMenuRef.value.contains(e.target as Node)) {
@@ -40,8 +41,13 @@ function goToAdmin() {
   else if (modules.includes(EPermissions.admin)) router.push("/admin/permissions");
 }
 
-function handleLogout() {
+function openLogoutConfirm() {
   userMenuOpen.value = false;
+  showLogoutConfirm.value = true;
+}
+
+function confirmLogout() {
+  showLogoutConfirm.value = false;
   submitLogout();
 }
 
@@ -107,7 +113,7 @@ const locales = [
               </a>
               <a
                 class="public-layout__user-dropdown-item public-layout__user-dropdown-item--danger"
-                @click.stop="handleLogout"
+                @click.stop="openLogoutConfirm"
               >
                 <i class="pi pi-sign-out" />
                 {{ $t("home.logout") }}
@@ -130,6 +136,32 @@ const locales = [
     </main>
 
     <LoginDialog />
+
+    <Dialog
+      v-model:visible="showLogoutConfirm"
+      :header="$t('home.logout')"
+      :modal="true"
+      :draggable="false"
+      :style="{ width: '22rem' }"
+    >
+      <p class="logout-confirm__message">
+        {{ $t("home.logout_confirm") }}
+      </p>
+      <template #footer>
+        <Button
+          :label="$t('common.cancel')"
+          severity="secondary"
+          text
+          @click="showLogoutConfirm = false"
+        />
+        <Button
+          :label="$t('home.logout')"
+          severity="danger"
+          icon="pi pi-sign-out"
+          @click="confirmLogout"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
 
@@ -279,5 +311,12 @@ const locales = [
   min-width: 0;
   margin: 0;
   padding: 0;
+}
+
+.logout-confirm__message {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
 }
 </style>

@@ -1,11 +1,10 @@
 export type ItemMarkReceivedRequest = {
-  id: number | string
-  received_at?: string
-  quantity_received?: number
-}
+  j_issue_id: number | string;
+};
 
 export type ItemMarkReceivedResponse = {
-  id: number
-  received: boolean
-  received_at: string
-}
+  res: {
+    message: string;
+    result: boolean;
+  };
+};

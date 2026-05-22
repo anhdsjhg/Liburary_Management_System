@@ -41,5 +41,11 @@ export default {
     type: "Тип",
     announcement: "Объявление",
     event: "Событие",
+    error: "Произошла ошибка",
+    configuration: "Конфигурация",
+    book_title: "Название",
+    author: "Автор",
+    year: "Год",
+    isbn: "ISBN",
   },
 };

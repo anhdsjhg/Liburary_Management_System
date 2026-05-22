@@ -2,6 +2,7 @@ import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useServiceUserShowApi } from "@/api/service-desk/users/[id]/get";
 import { useServiceSetActivityApi } from "@/api/service-desk/actions/reserve/post";
+import { useServiceUnlimToggleApi } from "@/api/service-desk/actions/unlim-toggle/post";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 import type { Ref, ComputedRef } from "vue";
 
@@ -13,6 +14,7 @@ export function useUserCard(
 
   const { data, isLoading, refetch } = useServiceUserShowApi(type, id);
   const { mutate: setActivity } = useServiceSetActivityApi();
+  const { mutate: toggleUnlim } = useServiceUnlimToggleApi();
 
   const user = computed(() => data.value?.res ?? null);
   const info = computed(() => user.value?.info ?? null);
@@ -43,6 +45,22 @@ export function useUserCard(
     );
   }
 
+  function toggleUnlimited() {
+    if (!info.value) return;
+    toggleUnlim(
+      { user_cid: info.value.user_cid },
+      {
+        onSuccess() {
+          showSuccessToast(t("serviceDesk.toggle_unlim"));
+          refetch();
+        },
+        onError() {
+          showErrorToast(t("serviceDesk.toggle_unlim"));
+        },
+      }
+    );
+  }
+
   return {
     info,
     photo,
@@ -55,5 +73,6 @@ export function useUserCard(
     isLoading,
     refetch,
     toggleActivity,
+    toggleUnlimited,
   };
 }

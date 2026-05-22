@@ -28,7 +28,7 @@ const { data, isLoading } = useQuery({
 const columns = computed(() => [
   { name: "User", link: "username" },
   { name: "Type", link: "type" },
-  { name: t("serviceDesk.renew_times"), link: "renew_times" },
+  { name: t("service-desk.renew_times"), link: "renew_times" },
   { name: "Count", link: "count" },
 ]);
 </script>

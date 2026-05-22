@@ -1,6 +1,6 @@
 export type ArrivalCreateRequest = {
   inv_id: string | number;
-  image?: string | null;
+  image_url?: string | null;
 };
 
 export type ArrivalCreateResponse = {

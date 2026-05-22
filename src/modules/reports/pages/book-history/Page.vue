@@ -1,12 +1,9 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
 import { useBookHistoryPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
-import type { BookHistoryEntry } from "@/api/reports/book-history/search/get/types";
+import BookHistoryTable from "./components/BookHistoryTable.vue";
 
 const {
   searchQuery,
-  columns,
   results,
   meta,
   isLoading,
@@ -45,17 +42,13 @@ const {
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <BookHistoryTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :selectable="{ available: true, func: (rows) => { selectedIds.length = 0; rows.forEach(r => selectedIds.push((r as BookHistoryEntry).id)) } }"
-      :show-actions="false"
+      :loading="isLoading"
       @update:page="onPageChange"
+      @update:selected-ids="(ids) => { selectedIds.length = 0; ids.forEach(id => selectedIds.push(id)); }"
       @refresh="load(currentPage)"
     />
   </div>

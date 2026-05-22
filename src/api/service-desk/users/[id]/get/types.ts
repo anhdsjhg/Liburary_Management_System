@@ -7,9 +7,10 @@ export type LoanRecord = {
   borrow_date: string;
   due_date: string;
   delivery_date: string | null;
-  status: "issued" | "returned" | "overdue";
+  status: "issued" | "returned" | "overdue" | "returned/overdue";
   renew_times: number;
   comments: string | null;
+  material_id?: number | string;
 };
 
 export type PenaltyRecord = {

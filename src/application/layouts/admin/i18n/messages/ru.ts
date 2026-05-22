@@ -36,6 +36,7 @@ export default {
       myBooks: "Мои книги",
       login: "Вход",
       logout: "Выход",
+      logout_confirm: "Вы уверены, что хотите выйти?",
     },
   },
 };

@@ -1,11 +1,9 @@
 <script setup lang="ts">
 import { useInventoryBooksPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
-import type { InventoryBook } from "@/api/reports/inventory-books/search/get/types";
+import InventoryBooksTable from "./components/InventoryBooksTable.vue";
 
 const {
   searchQuery,
-  columns,
   results,
   meta,
   isLoading,
@@ -49,17 +47,14 @@ const {
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <InventoryBooksTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :selectable="{ available: true, func: (rows) => { selectedIds.length = 0; rows.forEach(r => selectedIds.push((r as InventoryBook).id)) } }"
-      :show-actions="false"
+      :loading="isLoading"
+      :selected-ids="selectedIds"
       @update:page="onPageChange"
+      @update:selected-ids="(ids) => { selectedIds.length = 0; ids.forEach(id => selectedIds.push(id)); }"
       @refresh="load(currentPage)"
     />
   </div>

@@ -63,10 +63,11 @@ export function useBatchesSearch() {
 
   function load(page = 1) {
     currentPage.value = page;
+    const q = searchQuery.value.trim();
     search(
       {
-        add_options: searchQuery.value.trim()
-          ? [{ key: "all", value: searchQuery.value.trim() }]
+        add_options: q
+          ? [{ key: "id", value: q }]
           : [],
         order: { key: "id", mode: "desc" },
         page,

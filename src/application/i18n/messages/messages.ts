@@ -1,5 +1,6 @@
 import { homeI18n } from "@/modules/home/i18n";
 import { commonMessages } from "./common";
+import { validationI18n } from "./validation";
 import { acquisitionsI18n } from "@/modules/acquisitions/i18n";
 import { settingsI18n } from "@/modules/settings/i18n";
 import { reportsI18n } from "@/modules/reports/i18n";
@@ -11,6 +12,7 @@ import { defaultLayoutMessages } from "@/application/layouts/admin/i18n";
 
 const messages = {
   ...commonMessages,
+  ...validationI18n,
   ...homeI18n,
   ...defaultLayoutMessages,
   ...acquisitionsI18n,

@@ -10,7 +10,7 @@ export function useArrivalManageDialog(onSuccess?: () => void) {
 
   function save() {
     create(
-      { inv_id: form.inv_id, image: form.image_url || undefined },
+      { inv_id: form.inv_id, image_url: form.image_url || undefined },
       {
         onSuccess() {
           showSuccessToast(t("settings.created"));
@@ -18,7 +18,7 @@ export function useArrivalManageDialog(onSuccess?: () => void) {
           onSuccess?.();
         },
         onError() {
-          showErrorToast(t("settings.created"));
+          showErrorToast(t("settings.error"));
         },
       }
     );

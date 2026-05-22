@@ -10,40 +10,6 @@ export type AppMenuItemType = MenuItem & {
 
 export const menuItems = ref<AppMenuItemType[]>([
   {
-    label: "defaultLayout.sidebar.serviceDesk.title",
-    icon: "pi pi-desktop",
-    permission: EPermissions.serviceDesk,
-    items: [
-      {
-        label: "defaultLayout.sidebar.serviceDesk.users",
-        icon: "pi pi-users",
-        to: "/admin/service-desk/users",
-      },
-      {
-        label: "defaultLayout.sidebar.serviceDesk.shelves",
-        icon: "pi pi-shelf",
-        to: "/admin/service-desk/shelves",
-      },
-      {
-        label: "defaultLayout.sidebar.serviceDesk.bookHistory",
-        icon: "pi pi-history",
-        to: "/admin/service-desk/book-history",
-      },
-    ],
-  },
-  {
-    label: "defaultLayout.sidebar.cataloging.title",
-    icon: "pi pi-book",
-    permission: EPermissions.cataloging,
-    items: [
-      {
-        label: "defaultLayout.sidebar.cataloging.search",
-        icon: "pi pi-search",
-        to: "/admin/cataloging/search",
-      },
-    ],
-  },
-  {
     label: "defaultLayout.sidebar.acquisitions.title",
     icon: "pi pi-shopping-cart",
     permission: EPermissions.batches,
@@ -86,14 +52,58 @@ export const menuItems = ref<AppMenuItemType[]>([
         to: "/admin/reports/inventory-books",
       },
       {
+        label: "defaultLayout.sidebar.reports.ksu",
+        icon: "pi pi-file",
+        to: "/admin/reports/ksu",
+      },
+      {
+        label: "defaultLayout.sidebar.reports.form2",
+        icon: "pi pi-file",
+        to: "/admin/reports/form2",
+      },
+      {
         label: "defaultLayout.sidebar.reports.periodicals",
-        icon: "pi pi-newspaper",
+        icon: "pi pi-book",
         to: "/admin/reports/periodicals",
       },
       {
         label: "defaultLayout.sidebar.reports.dynamicReports",
         icon: "pi pi-chart-line",
         to: "/admin/reports/dynamic",
+      },
+    ],
+  },
+  {
+    label: "defaultLayout.sidebar.serviceDesk.title",
+    icon: "pi pi-desktop",
+    permission: EPermissions.serviceDesk,
+    items: [
+      {
+        label: "defaultLayout.sidebar.serviceDesk.users",
+        icon: "pi pi-users",
+        to: "/admin/service-desk/users",
+      },
+      {
+        label: "defaultLayout.sidebar.serviceDesk.shelves",
+        icon: "pi pi-shelf",
+        to: "/admin/service-desk/shelves",
+      },
+      {
+        label: "defaultLayout.sidebar.serviceDesk.bookHistory",
+        icon: "pi pi-history",
+        to: "/admin/service-desk/book-history",
+      },
+    ],
+  },
+  {
+    label: "defaultLayout.sidebar.cataloging.title",
+    icon: "pi pi-book",
+    permission: EPermissions.cataloging,
+    items: [
+      {
+        label: "defaultLayout.sidebar.cataloging.search",
+        icon: "pi pi-search",
+        to: "/admin/cataloging/search",
       },
     ],
   },

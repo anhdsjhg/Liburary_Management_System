@@ -1,5 +1,4 @@
 export default {
-  auth: {
     login: "Кіру",
     logout: "Шығу",
     username: "Пайдаланушы аты",
@@ -10,5 +9,5 @@ export default {
     logout_success: "Жүйеден шықтыңыз",
     logout_error: "Шығу қатесі",
     logging_in: "Кіру...",
-  },
+    cancel: "Болдырмау",
 };

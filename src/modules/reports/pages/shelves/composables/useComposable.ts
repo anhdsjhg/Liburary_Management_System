@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import { useShelvesSearchApi } from "@/api/reports/shelves/search/get";
 import type { ShelfItem } from "@/api/reports/shelves/search/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 import { useExportComposable } from "../../../composables/useExportComposable";
 
 export function useShelvesPage() {
@@ -33,13 +33,6 @@ export function useShelvesPage() {
     last_page: results.value.last_page,
     per_page: results.value.per_page,
   }));
-
-  const columns: TableColumnDef<ShelfItem>[] = [
-    { name: "reports.inv_id", link: "inv_id" },
-    { name: "reports.barcode_label", link: "barcode" },
-    { name: "reports.title", link: "title" },
-    { name: "reports.status", link: "callnumber" },
-  ];
 
   function load(page = 1) {
     currentPage.value = page;
@@ -77,5 +70,5 @@ export function useShelvesPage() {
     );
   }
 
-  return { callNumberQuery, columns, results, meta, isLoading, currentPage, load, onPageChange, doExport };
+  return { callNumberQuery, results, meta, isLoading, currentPage, load, onPageChange, doExport };
 }

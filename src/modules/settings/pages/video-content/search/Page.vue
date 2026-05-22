@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useVideoContentSearch } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import VideoContentTable from "./components/VideoContentTable.vue";
+import AppConfirmDialog from "@/application/components/AppConfirmDialog.vue";
 import ManageDialog from "../manage/Page.vue";
 import type { VideoContentItem } from "@/api/settings/video-content/get/types";
 
 const {
   items,
-  columns,
   isLoading,
   deleteLoading,
   refetch,
-  onDelete,
+  doDelete,
 } = useVideoContentSearch();
 
 const manageVisible = ref(false);
@@ -37,18 +37,12 @@ function openEdit(row: VideoContentItem) {
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <VideoContentTable
       :rows="items"
+      :loading="isLoading"
       :delete-loading="deleteLoading"
-      :edit-config="{ available: true }"
-      :delete-config="{ available: true }"
-      :pagination="false"
-      @edit="(row) => openEdit(row as VideoContentItem)"
-      @delete="(row) => onDelete(row as VideoContentItem)"
+      @edit="openEdit"
+      @delete="(row) => doDelete(row as VideoContentItem)"
       @refresh="refetch"
     />
 

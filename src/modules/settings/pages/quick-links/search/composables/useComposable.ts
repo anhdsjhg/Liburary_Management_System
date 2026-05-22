@@ -1,4 +1,4 @@
-import { computed } from "vue";
+import { computed, ref } from "vue";
 import { useI18n } from "vue-i18n";
 import { useQuickLinkGetApi } from "@/api/settings/quick-links/get";
 import { useQuickLinkDeleteApi } from "@/api/settings/quick-links/[id]/delete";
@@ -20,17 +20,40 @@ export function useQuickLinksSearch() {
     { name: "settings.link", link: "link" },
   ];
 
-  function onDelete(row: QuickLink) {
+  const deleteTarget = ref<QuickLink | null>(null);
+  const deleteConfirmVisible = ref(false);
+
+  function requestDelete(row: QuickLink) {
+    deleteTarget.value = row;
+    deleteConfirmVisible.value = true;
+  }
+
+  function confirmDelete() {
+    if (!deleteTarget.value) return;
+    deleteLink(deleteTarget.value.id, {
+      onSuccess() {
+        showSuccessToast(t("settings.deleted"));
+        deleteTarget.value = null;
+        refetch();
+      },
+      onError() {
+        showErrorToast(t("settings.error"));
+        deleteTarget.value = null;
+      },
+    });
+  }
+
+  function doDelete(row: QuickLink) {
     deleteLink(row.id, {
       onSuccess() {
         showSuccessToast(t("settings.deleted"));
         refetch();
       },
       onError() {
-        showErrorToast(t("settings.deleted"));
+        showErrorToast(t("settings.error"));
       },
     });
   }
 
-  return { items, columns, isLoading, deleteLoading, refetch, onDelete };
+  return { items, columns, isLoading, deleteLoading, deleteConfirmVisible, refetch, requestDelete, confirmDelete, doDelete };
 }

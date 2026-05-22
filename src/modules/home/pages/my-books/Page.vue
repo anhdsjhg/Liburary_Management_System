@@ -1,13 +1,22 @@
 <script setup lang="ts">
 import { ref, computed } from "vue";
 import { storeToRefs } from "pinia";
+import { useI18n } from "vue-i18n";
+import { useQueryClient } from "@tanstack/vue-query";
 import { useAuthStore } from "@/application/stores/auth.store";
 import { RouteNames } from "@/application/router/routeNames";
 import { useMyBooks } from "./composables/useMyBooks";
 import MyBookCard from "./components/MyBookCard.vue";
+import { useUserRenewApi } from "@/api/user/renew/post";
+import { useServiceCancelReserveApi } from "@/api/service-desk/actions/cancel-reserve/post";
+import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
+import type { UserMyBooksLoan } from "@/api/user/my-books/get/types";
+import type { UserReserveItem } from "@/api/user/reserve-list/get/types";
 
+const { t } = useI18n();
 const authStore = useAuthStore();
 const { user, loginVisible } = storeToRefs(authStore);
+const queryClient = useQueryClient();
 
 const activeTab = ref<"loans" | "reserves">("loans");
 
@@ -19,10 +28,74 @@ const {
   photo,
   total,
   isUnlimited,
+  duration,
   loansLoading,
   reservesLoading,
 } = useMyBooks();
 
+// ── Renew ──────────────────────────────────────────────────────────────────
+const { mutate: renewBook, isPending: isRenewing } = useUserRenewApi();
+const showRenewDialog = ref(false);
+const selectedLoan = ref<UserMyBooksLoan | null>(null);
+const renewDuration = ref(30);
+
+function openRenewDialog(loan: UserMyBooksLoan) {
+  selectedLoan.value = loan;
+  renewDuration.value = duration.value || 21;
+  showRenewDialog.value = true;
+}
+
+function confirmRenew() {
+  if (!selectedLoan.value || !user.value) return;
+  renewBook(
+    {
+      loan_id: Number(selectedLoan.value.loan_id),
+      inv_id: selectedLoan.value.inv_id,
+      user_cid: user.value.user_cid,
+      duration: renewDuration.value || 21,
+      librarian_user_cid: "0",
+    },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: ["get:user-my-books"] });
+        showRenewDialog.value = false;
+        showSuccessToast(t("home.renew_success"));
+      },
+      onError() {
+        showErrorToast(t("home.renew_error"));
+      },
+    }
+  );
+}
+
+// ── Cancel reservation ─────────────────────────────────────────────────────
+const { mutate: cancelReserve, isPending: isCanceling } = useServiceCancelReserveApi();
+const showCancelDialog = ref(false);
+const selectedReserve = ref<UserReserveItem | null>(null);
+
+function openCancelDialog(reserve: UserReserveItem) {
+  selectedReserve.value = reserve;
+  showCancelDialog.value = true;
+}
+
+function confirmCancel() {
+  if (!selectedReserve.value) return;
+  cancelReserve(
+    { material_id: selectedReserve.value.material_id },
+    {
+      onSuccess() {
+        queryClient.invalidateQueries({ queryKey: ["get:user-reserve-list"] });
+        showCancelDialog.value = false;
+        showSuccessToast(t("home.cancel_reserve_success"));
+      },
+      onError() {
+        showErrorToast(t("home.cancel_reserve_error"));
+      },
+    }
+  );
+}
+
+// ── Helpers ────────────────────────────────────────────────────────────────
 function loanStatusSeverity(
   status: string
 ): "info" | "success" | "danger" | "secondary" {
@@ -295,6 +368,8 @@ const totalBorrowed = computed(
               :status="loan.status"
               :status-label="$t(statusKey(loan.status))"
               :status-severity="loanStatusSeverity(loan.status)"
+              :can-renew="loan.status !== 'returned' && Number(loan.renew_times ?? 0) < 2"
+              :is-renewing="isRenewing && selectedLoan?.loan_id === loan.loan_id"
               :dates="[
                 { label: $t('home.given_at'), value: formatDate(loan.issue_date) },
                 {
@@ -303,6 +378,7 @@ const totalBorrowed = computed(
                   danger: loan.status === 'overdue',
                 },
               ]"
+              @renew="openRenewDialog(loan)"
             />
           </div>
 
@@ -372,16 +448,125 @@ const totalBorrowed = computed(
               :status="reserve.status"
               :status-label="$t(statusKey(reserve.status))"
               :status-severity="reserveStatusSeverity(reserve.status)"
+              :can-cancel="reserve.status.toLowerCase() !== 'expired'"
+              :is-canceling="isCanceling && selectedReserve?.material_id === reserve.material_id"
               :dates="[
                 {
                   label: $t('home.reserved_at'),
                   value: formatDate(reserve.reservation_date),
                 },
               ]"
+              @cancel="openCancelDialog(reserve)"
             />
           </div>
         </div>
       </div>
     </template>
+
+    <!-- ── Renew Dialog ── -->
+    <Dialog
+      v-model:visible="showRenewDialog"
+      :header="$t('home.renew')"
+      :modal="true"
+      :draggable="false"
+      :style="{ width: '22rem' }"
+    >
+      <div class="renew-dialog__body">
+        <p v-if="selectedLoan" class="renew-dialog__book-title">
+          {{ selectedLoan.title }}
+        </p>
+        <label class="renew-dialog__label">{{ $t("home.renew_days") }}</label>
+        <InputNumber
+          v-model="renewDuration"
+          :min="1"
+          :max="duration"
+          show-buttons
+          class="w-full"
+        />
+      </div>
+      <template #footer>
+        <Button
+          :label="$t('common.cancel')"
+          severity="secondary"
+          text
+          @click="showRenewDialog = false"
+        />
+        <Button
+          :label="$t('home.renew')"
+          icon="pi pi-refresh"
+          :loading="isRenewing"
+          @click="confirmRenew"
+        />
+      </template>
+    </Dialog>
+
+    <!-- ── Cancel Reservation Dialog ── -->
+    <Dialog
+      v-model:visible="showCancelDialog"
+      :header="$t('home.cancel_reserve')"
+      :modal="true"
+      :draggable="false"
+      :style="{ width: '22rem' }"
+    >
+      <p class="cancel-dialog__message">
+        {{ $t("home.cancel_reserve_confirm") }}
+      </p>
+      <p v-if="selectedReserve" class="cancel-dialog__book-title">
+        {{ selectedReserve.title }}
+      </p>
+      <template #footer>
+        <Button
+          :label="$t('common.cancel')"
+          severity="secondary"
+          text
+          @click="showCancelDialog = false"
+        />
+        <Button
+          :label="$t('home.cancel_reserve')"
+          icon="pi pi-times-circle"
+          severity="danger"
+          :loading="isCanceling"
+          @click="confirmCancel"
+        />
+      </template>
+    </Dialog>
   </div>
 </template>
+
+<style scoped>
+.renew-dialog__body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.renew-dialog__book-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.renew-dialog__label {
+  font-size: 0.875rem;
+  color: var(--text-color-secondary);
+}
+
+.cancel-dialog__message {
+  margin: 0 0 0.5rem;
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+}
+
+.cancel-dialog__book-title {
+  margin: 0;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--text-color);
+}
+</style>

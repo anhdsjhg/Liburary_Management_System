@@ -4,6 +4,7 @@ import { useServiceDeskUsers } from "./composables/useComposable";
 import { useUserCard } from "./components/userCard/composables/useComposable";
 import { useServiceReturnApi } from "@/api/service-desk/actions/return/post";
 import { useServiceSetPenaltyApi, useServiceCancelPenaltyApi } from "@/api/service-desk/actions/penalty/post";
+import { useAuthStore } from "@/application/stores/auth.store";
 import { useI18n } from "vue-i18n";
 import UserCard from "./components/userCard/UserCard.vue";
 import BooksTable from "./components/booksTable/BooksTable.vue";
@@ -14,6 +15,7 @@ import type { ServiceUser } from "@/api/service-desk/users/get/types";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 
 const { t } = useI18n();
+const authStore = useAuthStore();
 
 const {
   searchQuery,
@@ -36,11 +38,13 @@ const {
   photo,
   total,
   currentLoans,
+  history,
   penalty,
   duration,
   isUnlimited,
   refetch,
   toggleActivity,
+  toggleUnlimited,
 } = useUserCard(selectedUserType, selectedUserId);
 
 const { mutate: returnMaterial } = useServiceReturnApi();
@@ -62,46 +66,52 @@ function onRenew(loan: LoanRecord) {
 function onReturn(loan: LoanRecord) {
   if (!info.value) return;
   returnMaterial(
-    { inv_id: loan.inv_id, user_cid: info.value.user_cid, loan_id: loan.loan_id },
+    {
+      inv_id: loan.inv_id,
+      user_cid: info.value.user_cid,
+      loan_id: loan.loan_id,
+      librarian_user_cid: authStore.user?.user_cid ?? "",
+      material_id: loan.material_id,
+    },
     {
       onSuccess() {
         showSuccessToast(t("serviceDesk.return_success"));
         refetch();
       },
       onError() {
-        showErrorToast(t("serviceDesk.return_success"));
+        showErrorToast(t("common.error"));
       },
     }
   );
 }
 
 function onSetPenalty() {
-  if (!penalty.value) return;
+  if (!penalty.value || !info.value) return;
   setPenalty(
-    { penalty_id: penalty.value.penalty_id },
+    { penalty_id: penalty.value.penalty_id, user_cid: info.value.user_cid },
     {
       onSuccess() {
         showSuccessToast(t("serviceDesk.penalty_set"));
         refetch();
       },
       onError() {
-        showErrorToast(t("serviceDesk.penalty_set"));
+        showErrorToast(t("common.error"));
       },
     }
   );
 }
 
 function onCancelPenalty() {
-  if (!penalty.value) return;
+  if (!penalty.value || !info.value) return;
   cancelPenalty(
-    { penalty_id: penalty.value.penalty_id },
+    { penalty_id: penalty.value.penalty_id, user_cid: info.value.user_cid },
     {
       onSuccess() {
         showSuccessToast(t("serviceDesk.penalty_cancelled"));
         refetch();
       },
       onError() {
-        showErrorToast(t("serviceDesk.penalty_cancelled"));
+        showErrorToast(t("common.error"));
       },
     }
   );
@@ -134,6 +144,7 @@ function onCancelPenalty() {
     </div>
 
     <div style="display: flex; gap: 1.5rem; align-items: flex-start">
+      <!-- Left: user search results -->
       <div style="flex: 1; min-width: 0">
         <Skeleton v-if="isLoading" height="12rem" />
 
@@ -141,15 +152,8 @@ function onCancelPenalty() {
           <div
             v-for="user in results.data"
             :key="user.id"
-            style="
-              padding: 0.75rem;
-              border: 1px solid var(--surface-border);
-              border-radius: var(--border-radius);
-              margin-bottom: 0.5rem;
-              cursor: pointer;
-              background-color: var(--surface-card);
-            "
-            :style="selectedUser?.id === user.id ? { borderColor: 'var(--primary-color)' } : {}"
+            class="service-desk-users-page__user-row"
+            :class="{ 'service-desk-users-page__user-row--selected': selectedUser?.id === user.id }"
             @click="selectUser(user)"
           >
             <div style="font-weight: 600">{{ user.full_name }}</div>
@@ -174,6 +178,7 @@ function onCancelPenalty() {
         </template>
       </div>
 
+      <!-- Right: selected user details -->
       <div v-if="selectedUser" style="flex: 2; min-width: 0">
         <UserCard
           :info="info"
@@ -184,14 +189,15 @@ function onCancelPenalty() {
           :duration="duration"
           :is-unlimited="isUnlimited"
           @toggle-activity="toggleActivity"
-          @toggle-unlim="refetch"
+          @toggle-unlim="toggleUnlimited"
           @set-penalty="onSetPenalty"
           @cancel-penalty="onCancelPenalty"
         />
 
         <BooksTable
-          v-if="currentLoans.length"
+          v-if="currentLoans.length || history.length"
           :loans="currentLoans"
+          :history="history"
           :duration="duration"
           @renew="onRenew"
           @return="onReturn"
@@ -202,8 +208,27 @@ function onCancelPenalty() {
     <RenewBooksDialog
       v-model:visible="renewDialogVisible"
       :loan="selectedLoan"
+      :user-cid="info?.user_cid ?? ''"
       :default-duration="duration"
       @success="refetch"
     />
   </div>
 </template>
+
+<style scoped>
+.service-desk-users-page__user-row {
+  padding: 0.75rem;
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  background-color: var(--surface-card);
+  transition: border-color 0.15s;
+}
+.service-desk-users-page__user-row--selected {
+  border-color: var(--primary-color);
+}
+.service-desk-users-page__user-row:hover {
+  border-color: var(--primary-color);
+}
+</style>

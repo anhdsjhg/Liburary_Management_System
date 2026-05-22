@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { useBookHistorySearchApi } from "@/api/reports/book-history/search/get";
 import { useBookHistoryExportApi } from "@/api/reports/book-history/export/post";
 import type { BookHistoryEntry } from "@/api/reports/book-history/search/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 
 export function useBookHistoryPage() {
@@ -38,15 +38,6 @@ export function useBookHistoryPage() {
     last_page: results.value.last_page,
     per_page: results.value.per_page,
   }));
-
-  const columns: TableColumnDef<BookHistoryEntry>[] = [
-    { name: "reports.inv_id", link: "id" },
-    { name: "reports.barcode_label", link: "barcode" },
-    { name: "reports.title", link: "title" },
-    { name: "reports.author", link: "author" },
-    { name: "reports.location", link: "location_title" },
-    { name: "reports.status", link: "location" },
-  ];
 
   function load(page = 1) {
     currentPage.value = page;
@@ -88,7 +79,6 @@ export function useBookHistoryPage() {
 
   return {
     searchQuery,
-    columns,
     results,
     meta,
     isLoading,

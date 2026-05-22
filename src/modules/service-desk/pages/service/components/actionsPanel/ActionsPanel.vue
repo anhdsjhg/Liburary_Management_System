@@ -37,7 +37,7 @@ const { form, isGiving, isReturning, submitGive, submitReturn } =
         :label="$t('serviceDesk.give')"
         :loading="isGiving"
         icon="pi pi-arrow-right"
-        @click="submitGive(material.inv_id, user.user_cid, material.material_id)"
+        @click="submitGive(material.inv_id, user.user_cid, material.material_id, material.loan_id ?? 0)"
       />
       <Button
         v-if="material.status === 'borrowed' && material.loan_id"

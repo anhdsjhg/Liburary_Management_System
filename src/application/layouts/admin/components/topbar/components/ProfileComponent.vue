@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useAuthStore } from "@/application/stores/auth.store";
 import { useAuthLogout } from "@/modules/auth/components/login/composables/useAuthLogin";
@@ -7,56 +7,85 @@ import LoginDialog from "@/modules/auth/components/login/LoginDialog.vue";
 
 const authStore = useAuthStore();
 const { user, userDisplayName } = storeToRefs(authStore);
+const { loginVisible } = storeToRefs(authStore);
 const { submitLogout } = useAuthLogout();
 
-const { loginVisible } = storeToRefs(authStore);
+const menuOpen = ref(false);
+const menuRef = ref<HTMLElement | null>(null);
+const showLogoutConfirm = ref(false);
 
+function handleClickOutside(e: MouseEvent) {
+  if (menuRef.value && !menuRef.value.contains(e.target as Node)) {
+    menuOpen.value = false;
+  }
+}
+
+onMounted(() => document.addEventListener("click", handleClickOutside));
+onUnmounted(() => document.removeEventListener("click", handleClickOutside));
+
+function openLogoutConfirm() {
+  menuOpen.value = false;
+  showLogoutConfirm.value = true;
+}
+
+function confirmLogout() {
+  showLogoutConfirm.value = false;
+  submitLogout();
+}
 </script>
 
 <template>
   <template v-if="user">
-    <button
-      v-styleclass="{
-        selector: '@next',
-        enterFromClass: 'hidden',
-        enterActiveClass: 'animate-scalein',
-        leaveToClass: 'hidden',
-        leaveActiveClass: 'animate-fadeout',
-        hideOnOutsideClick: true,
-      }"
-      class="topbar-profile-button"
-      type="button"
+    <div
+      ref="menuRef"
+      class="admin-profile"
+      @click="menuOpen = !menuOpen"
     >
-      <Avatar
-        icon="pi pi-user"
-        class="me-3"
-        size="large"
-        shape="circle"
-      />
+      <Avatar icon="pi pi-user" shape="circle" size="small" />
+      <span class="admin-profile__name">{{ userDisplayName }}</span>
+      <i class="pi" :class="menuOpen ? 'pi-angle-up' : 'pi-angle-down'" />
 
-      <span class="profile-details">
-        <span class="profile-name">{{ userDisplayName }}</span>
-        <span class="profile-job">{{ user.username }}</span>
-      </span>
-
-      <i class="pi pi-angle-down" />
-    </button>
-
-    <ul
-      class="absolute right-0 top-auto m-0 mt-2 hidden w-full origin-top list-none rounded-border bg-surface-0 p-4 shadow sm:w-48 dark:bg-surface-900"
-    >
-      <li>
+      <div v-if="menuOpen" class="admin-profile__dropdown">
+        <div class="admin-profile__dropdown-header">
+          <span class="admin-profile__dropdown-name">{{ userDisplayName }}</span>
+          <span class="admin-profile__dropdown-username">{{ user.username }}</span>
+        </div>
+        <div class="admin-profile__dropdown-divider" />
         <a
-          class="flex cursor-pointer items-center rounded-border p-2 transition-colors duration-150 hover:bg-emphasis"
-          @click="submitLogout"
+          class="admin-profile__dropdown-item admin-profile__dropdown-item--danger"
+          @click.stop="openLogoutConfirm"
         >
-          <i class="pi pi-power-off !mr-4" />
-          <span class="hidden sm:inline">
-            {{ $t("defaultLayout.topbar.profile.logout") }}
-          </span>
+          <i class="pi pi-sign-out" />
+          {{ $t("defaultLayout.topbar.profile.logout") }}
         </a>
-      </li>
-    </ul>
+      </div>
+    </div>
+
+    <Dialog
+      v-model:visible="showLogoutConfirm"
+      :header="$t('defaultLayout.topbar.profile.logout')"
+      :modal="true"
+      :draggable="false"
+      :style="{ width: '22rem' }"
+    >
+      <p class="logout-confirm__message">
+        {{ $t("defaultLayout.topbar.profile.logout_confirm") }}
+      </p>
+      <template #footer>
+        <Button
+          :label="$t('common.cancel')"
+          severity="secondary"
+          text
+          @click="showLogoutConfirm = false"
+        />
+        <Button
+          :label="$t('defaultLayout.topbar.profile.logout')"
+          severity="danger"
+          icon="pi pi-sign-out"
+          @click="confirmLogout"
+        />
+      </template>
+    </Dialog>
   </template>
 
   <template v-else>
@@ -67,3 +96,93 @@ const { loginVisible } = storeToRefs(authStore);
 
   <LoginDialog />
 </template>
+
+<style scoped>
+.admin-profile {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  padding: 0.4rem 0.75rem;
+  border-radius: var(--border-radius);
+  border: 1px solid var(--surface-border);
+  background: var(--surface-card);
+  position: relative;
+  user-select: none;
+}
+
+.admin-profile__name {
+  font-size: 0.875rem;
+  font-weight: 500;
+
+  @media (max-width: 480px) {
+    display: none;
+  }
+}
+
+.admin-profile__dropdown {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  right: 0;
+  min-width: 14rem;
+  background: var(--surface-card);
+  border: 1px solid var(--surface-border);
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+  z-index: 200;
+  overflow: hidden;
+}
+
+.admin-profile__dropdown-header {
+  padding: 0.75rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.admin-profile__dropdown-name {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.admin-profile__dropdown-username {
+  font-size: 0.8rem;
+  color: var(--text-color-secondary);
+}
+
+.admin-profile__dropdown-divider {
+  height: 1px;
+  background: var(--surface-border);
+}
+
+.admin-profile__dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+  color: var(--text-color);
+  text-decoration: none;
+  transition: background 0.15s;
+
+  &:hover {
+    background: var(--surface-hover);
+  }
+
+  &--danger {
+    color: var(--red-500);
+
+    &:hover {
+      background: var(--red-50);
+    }
+  }
+}
+
+.logout-confirm__message {
+  margin: 0;
+  color: var(--text-color-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+</style>

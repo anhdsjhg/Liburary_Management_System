@@ -32,13 +32,11 @@ onMounted(() => load(1));
       <Button :label="$t('acquisitions.search')" @click="load(1)" />
     </div>
 
-    <Skeleton v-if="isLoading && !results.data.length" height="20rem" />
-
     <ItemsTable
-      v-else
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
+      :loading="isLoading"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
     />

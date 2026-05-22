@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useShelvesPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ShelvesTable from "./components/ShelvesTable.vue";
 import FileComparisonDialog from "./components/fileComparisonDialog/FileComparisonDialog.vue";
 
 const {
   callNumberQuery,
-  columns,
   results,
   meta,
   isLoading,
@@ -41,7 +40,7 @@ const comparisonVisible = ref(false);
 
     <div class="report-page__filter">
       <div class="report-page__filter-field">
-        <div class="report-page__filter-label">Call number</div>
+        <div class="report-page__filter-label">{{ $t("reports.callnumber") }}</div>
         <InputText v-model="callNumberQuery" class="w-full" @keydown.enter="load(1)" />
       </div>
       <div class="report-page__filter-actions">
@@ -49,15 +48,11 @@ const comparisonVisible = ref(false);
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <ShelvesTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :show-actions="false"
+      :loading="isLoading"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
     />

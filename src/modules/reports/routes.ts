@@ -5,93 +5,192 @@ export const reportsRoutes: AppRouteRecordRaw[] = [
   {
     path: "/admin/reports",
     name: RouteNames.REPORTS,
-    component: { template: '<router-view />' },
-    meta: { requiresAuth: true, layout: 'admin', title: "Reports" },
-    redirect: { name: RouteNames.REPORTS_ATTENDANCE },
+    component: () => import("@/application/layouts/admin/AdminLayout.vue"),
+    meta: { requiresAuth: true, title: "Reports" },
+    redirect: { name: RouteNames.REPORTS_INVENTORY_BOOKS },
     children: [
       {
         path: "attendance",
         name: RouteNames.REPORTS_ATTENDANCE,
         component: () => import("@/modules/reports/pages/attendance/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.attendance"], layout: 'admin', title: "Attendance" },
+        meta: {
+          requiresAuth: true,
+          title: "Attendance",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.attendance", link: "/admin/reports/attendance" },
+          ],
+        },
       },
       {
         path: "barcode",
         name: RouteNames.REPORTS_BARCODE,
         component: () => import("@/modules/reports/pages/barcode/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.barcode"], layout: 'admin', title: "Barcode" },
+        meta: {
+          requiresAuth: true,
+          title: "Barcode",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.barcode", link: "/admin/reports/barcode" },
+          ],
+        },
       },
       {
         path: "book-history",
         name: RouteNames.REPORTS_BOOK_HISTORY,
         component: () => import("@/modules/reports/pages/book-history/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.book_history"], layout: 'admin', title: "Book History" },
+        meta: {
+          requiresAuth: true,
+          title: "Book History",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.book_history", link: "/admin/reports/book-history" },
+          ],
+        },
       },
       {
         path: "most-read",
         name: RouteNames.REPORTS_MOST_READ,
         component: () => import("@/modules/reports/pages/most-read-books/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.most_read"], layout: 'admin', title: "Most Read" },
+        meta: {
+          requiresAuth: true,
+          title: "Most Read Books",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.most_read", link: "/admin/reports/most-read" },
+          ],
+        },
       },
       {
         path: "inventory-books",
         name: RouteNames.REPORTS_INVENTORY_BOOKS,
         component: () => import("@/modules/reports/pages/inventory-books/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.inventory_books"], layout: 'admin', title: "Inventory Books" },
+        meta: {
+          requiresAuth: true,
+          title: "Inventory Books",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.inventory_books", link: "/admin/reports/inventory-books" },
+          ],
+        },
       },
       {
         path: "not-found-books",
         name: RouteNames.REPORTS_NOT_FOUND_BOOKS,
         component: () => import("@/modules/reports/pages/not-found-books/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.not_found_books"], layout: 'admin', title: "Not Found Books" },
+        meta: {
+          requiresAuth: true,
+          title: "Not Found Books",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.not_found_books", link: "/admin/reports/not-found-books" },
+          ],
+        },
       },
       {
         path: "ksu",
         name: RouteNames.REPORTS_KSU,
         component: () => import("@/modules/reports/pages/ksu/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.ksu"], layout: 'admin', title: "KSU Report" },
+        meta: {
+          requiresAuth: true,
+          title: "KSU Report",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.ksu", link: "/admin/reports/ksu" },
+          ],
+        },
       },
       {
         path: "form2",
         name: RouteNames.REPORTS_FORM2,
         component: () => import("@/modules/reports/pages/ksu/components/form2/Form2.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.form2"], layout: 'admin', title: "Form 2" },
+        meta: {
+          requiresAuth: true,
+          title: "Form 2",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.form2", link: "/admin/reports/form2" },
+          ],
+        },
       },
       {
         path: "periodicals",
         name: RouteNames.REPORTS_PERIODICALS,
         component: () => import("@/modules/reports/pages/periodicals/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.periodicals"], layout: 'admin', title: "Periodicals" },
+        meta: {
+          requiresAuth: true,
+          title: "Periodicals",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.periodicals", link: "/admin/reports/periodicals" },
+          ],
+        },
       },
       {
         path: "shelves",
         name: RouteNames.REPORTS_SHELVES,
         component: () => import("@/modules/reports/pages/shelves/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.shelves"], layout: 'admin', title: "Shelves" },
+        meta: {
+          requiresAuth: true,
+          title: "Shelves",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.shelves", link: "/admin/reports/shelves" },
+          ],
+        },
       },
       {
         path: "stat",
         name: RouteNames.REPORTS_STAT,
         component: () => import("@/modules/reports/pages/service-desk-report/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.stat"], layout: 'admin', title: "Stat Report" },
+        meta: {
+          requiresAuth: true,
+          title: "Statistics",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.stat", link: "/admin/reports/stat" },
+          ],
+        },
       },
       {
-        path: "cataloging-report",
-        name: "reports-cataloging",
+        path: "cataloging",
+        name: RouteNames.REPORTS_CATALOGING,
         component: () => import("@/modules/reports/pages/cataloging-report/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.cataloging"], layout: 'admin', title: "Cataloging Report" },
+        meta: {
+          requiresAuth: true,
+          title: "Cataloging Report",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.cataloging", link: "/admin/reports/cataloging" },
+          ],
+        },
       },
       {
         path: "dynamic",
         name: RouteNames.REPORTS_DYNAMIC,
         component: () => import("@/modules/reports/pages/dynamic/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.dynamic"], layout: 'admin', title: "Dynamic Reports" },
+        meta: {
+          requiresAuth: true,
+          title: "Dynamic Reports",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.dynamic", link: "/admin/reports/dynamic" },
+          ],
+        },
       },
       {
         path: "dynamic/:reportId",
         name: RouteNames.REPORTS_DYNAMIC_DETAIL,
         component: () => import("@/modules/reports/pages/dynamic/[reportId]/Page.vue"),
-        meta: { requiresAuth: true, permissions: ["reports.dynamic"], layout: 'admin', title: "Dynamic Report" },
+        meta: {
+          requiresAuth: true,
+          title: "Dynamic Report Detail",
+          breadcrumbs: [
+            { name: "reports.title", link: "/admin/reports" },
+            { name: "reports.dynamic", link: "/admin/reports/dynamic" },
+            { name: "reports.dynamic_detail", link: "" },
+          ],
+        },
       },
     ],
   },

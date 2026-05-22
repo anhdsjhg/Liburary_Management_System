@@ -1,7 +1,7 @@
 import { ref, computed } from "vue";
 import { useNotFoundBooksApi } from "@/api/reports/not-found-books/search/get";
 import type { NotFoundBook } from "@/api/reports/not-found-books/search/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 
 export function useNotFoundBooksPage() {
   const { mutate: search, isPending: isLoading } = useNotFoundBooksApi();
@@ -32,15 +32,6 @@ export function useNotFoundBooksPage() {
     per_page: results.value.per_page,
   }));
 
-  const columns: TableColumnDef<NotFoundBook>[] = [
-    { name: "reports.inv_id", link: "id" },
-    { name: "reports.barcode_label", link: "barcode" },
-    { name: "reports.title", link: "title" },
-    { name: "reports.author", link: "author" },
-    { name: "reports.location", link: "location" },
-    { name: "reports.status", link: "status" },
-  ];
-
   function load(page = 1) {
     currentPage.value = page;
     search(
@@ -63,5 +54,5 @@ export function useNotFoundBooksPage() {
     load(page);
   }
 
-  return { searchQuery, columns, results, meta, isLoading, currentPage, load, onPageChange };
+  return { searchQuery, results, meta, isLoading, currentPage, load, onPageChange };
 }

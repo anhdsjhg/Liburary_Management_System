@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useMostReadBooksPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import MostReadBooksTable from "./components/MostReadBooksTable.vue";
 import BookInfoDialog from "./components/bookInfoDialog/BookInfoDialog.vue";
-import type { MostReadBook } from "@/api/reports/most-read-books/search/get/types";
 
 const {
   searchQuery,
-  columns,
   results,
   meta,
   isLoading,
@@ -21,6 +19,11 @@ const {
 } = useMostReadBooksPage();
 
 const bookInfoVisible = ref(false);
+
+function onShowInfo(id: number) {
+  showBookInfo(id);
+  bookInfoVisible.value = true;
+}
 </script>
 
 <template>
@@ -47,18 +50,14 @@ const bookInfoVisible = ref(false);
       </div>
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <MostReadBooksTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :selectable="{ available: true, func: (rows) => { selectedIds.length = 0; rows.forEach(r => selectedIds.push((r as MostReadBook).id)) } }"
-      :show-more-config="{ available: true, title: 'reports.title', func: (row) => { showBookInfo((row as MostReadBook).id); bookInfoVisible = true; } }"
-      :show-actions="true"
+      :loading="isLoading"
       @update:page="onPageChange"
+      @update:selected-ids="(ids) => { selectedIds.length = 0; ids.forEach(id => selectedIds.push(id)); }"
+      @show-info="onShowInfo"
       @refresh="load(currentPage)"
     />
 
