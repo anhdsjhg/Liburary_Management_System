@@ -43,7 +43,7 @@ export function useCatalogingEdit() {
 
   async function loadHistory() {
     const res = await axiosInstance.get(
-      `cataloging/material/${type.value}/${id.value}/history`
+      `cataloging/material/made-by-history/${type.value}/${id.value}`
     );
     historyItems.value = res.data.res ?? [];
   }
@@ -64,15 +64,15 @@ export function useCatalogingEdit() {
   }
 
   async function markComplete() {
-    await axiosInstance.post(
-      `cataloging/material/${type.value}/${id.value}/complete`
+    await axiosInstance.put(
+      `cataloging/material/complete/${type.value}/${id.value}`
     );
     showSuccessToast(t("cataloging.complete"));
   }
 
   function exportXml() {
     window.open(
-      `${axiosInstance.defaults.baseURL}cataloging/material/export/${type.value}/${id.value}`,
+      `${axiosInstance.defaults.baseURL}cataloging/material/export-xml/${type.value}/${id.value}`,
       "_blank"
     );
   }

@@ -5,8 +5,7 @@ export type AuthorityLanguage = {
 };
 
 export type AuthoritySubjectTerm = {
-  id: number;
-  [key: string]: unknown;
+  subject_term: string;
 };
 
 export type AuthorityType = {

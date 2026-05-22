@@ -5,8 +5,8 @@ export const catalogingRoutes: AppRouteRecordRaw[] = [
   {
     path: "/admin/cataloging",
     name: RouteNames.CATALOGING,
-    component: { template: '<router-view />' },
-    meta: { requiresAuth: true, layout: 'admin', title: "Cataloging" },
+    component: () => import("@/application/layouts/admin/AdminLayout.vue"),
+    meta: { requiresAuth: true, title: "Cataloging" },
     redirect: { name: RouteNames.CATALOGING_SEARCH },
     children: [
       {
@@ -14,14 +14,28 @@ export const catalogingRoutes: AppRouteRecordRaw[] = [
         name: RouteNames.CATALOGING_SEARCH,
         component: () =>
           import("@/modules/cataloging/pages/search/Page.vue"),
-        meta: { requiresAuth: true, layout: 'admin', title: "Cataloging Search" },
+        meta: {
+          requiresAuth: true,
+          title: "Cataloging Search",
+          breadcrumbs: [
+            { name: "cataloging.title", link: "/admin/cataloging" },
+            { name: "cataloging.search", link: "/admin/cataloging/search" },
+          ],
+        },
       },
       {
         path: "edit/:id",
         name: RouteNames.CATALOGING_EDIT,
         component: () =>
           import("@/modules/cataloging/pages/edit/[id]/Page.vue"),
-        meta: { requiresAuth: true, layout: 'admin', title: "Cataloging Editor" },
+        meta: {
+          requiresAuth: true,
+          title: "Cataloging Editor",
+          breadcrumbs: [
+            { name: "cataloging.title", link: "/admin/cataloging" },
+            { name: "cataloging.edit", link: "/admin/cataloging/search" },
+          ],
+        },
       },
     ],
   },

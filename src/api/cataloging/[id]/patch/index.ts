@@ -8,8 +8,8 @@ export function useCatalogingUpdateApi() {
   return useMutation<CatalogingUpdateResponse, Error, CatalogingUpdateRequest>({
     mutationKey: [ECatalogingKeys.mutationKey],
     mutationFn: async ({ type, id, data }) => {
-      const res = await axiosInstance.post(
-        `cataloging/material/${type}/${id}/edit`,
+      const res = await axiosInstance.patch(
+        `cataloging/material/${type}/${id}`,
         { data }
       );
       return res.data;

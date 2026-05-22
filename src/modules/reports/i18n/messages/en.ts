@@ -1,5 +1,4 @@
 export default {
-  reports: {
     title: "Reports",
     attendance: "Attendance",
     barcode: "Barcode",
@@ -77,7 +76,7 @@ export default {
     total_items: "Total items",
     barcode_label: "Barcode",
     inv_id: "Inv №",
-    title: "Title",
+    // title: "Title",
     author: "Author",
     isbn: "ISBN",
     pub_year: "Year",
@@ -104,5 +103,4 @@ export default {
     extra: "Extra",
     invalid: "Invalid barcodes",
     download: "Download",
-  },
 };

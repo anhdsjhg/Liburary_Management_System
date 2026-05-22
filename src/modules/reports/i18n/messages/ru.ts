@@ -1,5 +1,4 @@
 export default {
-  reports: {
     title: "Отчёты",
     attendance: "Посещаемость",
     barcode: "Штрих-код",
@@ -77,7 +76,7 @@ export default {
     total_items: "Всего экземпляров",
     barcode_label: "Штрих-код",
     inv_id: "Инв. №",
-    title: "Название",
+    // title: "Название",
     author: "Автор",
     isbn: "ISBN",
     pub_year: "Год",
@@ -104,5 +103,4 @@ export default {
     extra: "Лишние",
     invalid: "Неверные штрих-коды",
     download: "Скачать",
-  },
 };

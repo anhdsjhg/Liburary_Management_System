@@ -44,14 +44,14 @@ const typeOptions = computed(() => authorityData.value?.res?.type ?? []);
 
       <div class="cataloging-search-page__results">
         <div class="cataloging-search-page__meta">
-          {{ results.total }} {{ $t("cataloging.results") }},
-          {{ results.last_page }} {{ $t("cataloging.pages") }}
+          {{ results?.total ?? 0 }} {{ $t("cataloging.results") }},
+          {{ results?.last_page ?? 0 }} {{ $t("cataloging.pages") }}
         </div>
 
         <Skeleton v-if="isLoading" height="20rem" />
 
         <div
-          v-else-if="!results.data.length"
+          v-else-if="!results?.data?.length"
           class="cataloging-search-page__meta"
         >
           {{ $t("cataloging.no_results") }}

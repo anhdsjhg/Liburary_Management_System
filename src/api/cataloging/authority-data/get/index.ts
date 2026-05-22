@@ -6,7 +6,7 @@ export function useCatalogingAuthorityDataApi() {
   return useQuery<AuthorityDataResponse>({
     queryKey: ['get:cataloging-authority-data'],
     queryFn: async () => {
-      const res = await axiosInstance.get('cataloging/authority')
+      const res = await axiosInstance.get('cataloging/authority-data')
       return res.data
     },
   })

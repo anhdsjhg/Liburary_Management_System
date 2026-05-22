@@ -1,5 +1,4 @@
 export default {
-  reports: {
     title: "Есептер",
     attendance: "Қатысу",
     barcode: "Штрих-код",
@@ -77,7 +76,7 @@ export default {
     total_items: "Жалпы даналар",
     barcode_label: "Штрих-код",
     inv_id: "Инв. №",
-    title: "Атауы",
+    // title: "Атауы",
     author: "Автор",
     isbn: "ISBN",
     pub_year: "Жыл",
@@ -104,5 +103,4 @@ export default {
     extra: "Артықтар",
     invalid: "Қате штрих-кодтар",
     download: "Жүктеу",
-  },
 };

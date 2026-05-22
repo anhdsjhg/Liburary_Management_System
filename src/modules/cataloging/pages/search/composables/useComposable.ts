@@ -76,7 +76,7 @@ export function useCatalogingSearch() {
       { add_options: options, page, per_page: 10 },
       {
         onSuccess(data) {
-          results.value = data.res;
+          results.value = data?.res ?? (data as unknown as typeof results.value);
         },
       }
     );
