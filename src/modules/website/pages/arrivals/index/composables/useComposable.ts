@@ -3,7 +3,7 @@ import { useI18n } from "vue-i18n";
 import { useArrivalGetApi } from "@/api/settings/arrivals/get";
 import { useRouter } from "vue-router";
 import { RouteNames } from "@/application/router/routeNames";
-import { ASSETS } from "@/application/configs/constants";
+import { ASSETS, buildBackendImageUrl } from "@/application/configs/constants";
 import type { ArrivalItem } from "@/api/settings/arrivals/get/types";
 
 export function useArrivalsAll() {
@@ -15,8 +15,8 @@ export function useArrivalsAll() {
   const arrivals = computed<ArrivalItem[]>(() => data.value?.res ?? []);
 
   function getImageUrl(item: ArrivalItem): string {
-    return item.image ?? ASSETS.NO_COVER;
-  }
+  return buildBackendImageUrl(item.image) ?? ASSETS.NO_COVER;
+}
 
   function goToBook(id: number) {
     router.push({

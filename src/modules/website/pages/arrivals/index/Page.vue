@@ -18,7 +18,7 @@ const { arrivals, isLoading, getImageUrl, goToBook } = useArrivalsAll();
         :key="arrival.id"
         class="arrival-card"
       >
-        
+        <div
           class="arrival-card__image"
           :style="{ backgroundImage: `url(${getImageUrl(arrival)})` }"
           @click="goToBook(arrival.id)"
