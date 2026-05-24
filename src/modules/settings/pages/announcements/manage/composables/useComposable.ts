@@ -7,6 +7,8 @@ import { useAnnouncementUpdateApi } from "@/api/settings/announcements/[id]/patc
 import { useAnnouncementForm } from "./useFormComposable";
 import { RouteNames } from "@/application/router/routeNames";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
+import { build } from "vite";
+import { buildBackendImageUrl } from "@/application/utils/urls";
 
 export function useAnnouncementManage() {
   const route = useRoute();
@@ -48,8 +50,8 @@ export function useAnnouncementManage() {
         image: "",
       });
       // image is stored as a path to a base64 txt file — fetch its content
-      if (item.image) {
-        fetch(item.image)
+      if (buildBackendImageUrl(item.image)) {
+        fetch(buildBackendImageUrl(item.image)!)
           .then((r) => r.text())
           .then((base64) => fill({ image: base64 }))
           .catch(() => {});

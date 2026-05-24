@@ -3,6 +3,7 @@ import { onMounted } from "vue";
 import { useAnnouncementsSearch } from "./composables/useComposable";
 import AppPaginator from "@/application/components/AppPaginator.vue";
 import { RouteNames } from "@/application/router/routeNames";
+import { buildBackendImageUrl } from "@/application/configs/constants";
 
 const {
   filter,
@@ -106,7 +107,7 @@ onMounted(() => search(1));
               <div
                 class="website-event-card__image"
                 :style="
-                  item.image ? { backgroundImage: `url(${item.image})` } : {}
+                  item.image ? { backgroundImage: `url(${buildBackendImageUrl(item.image)})` } : {}
                 "
               />
 

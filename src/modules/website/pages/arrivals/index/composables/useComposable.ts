@@ -15,8 +15,8 @@ export function useArrivalsAll() {
   const arrivals = computed<ArrivalItem[]>(() => data.value?.res ?? []);
 
   function getImageUrl(item: ArrivalItem): string {
-  return buildBackendImageUrl(item.image) ?? ASSETS.NO_COVER;
-}
+    return buildBackendImageUrl(item.image) ?? ASSETS.NO_COVER;
+  }
 
   function goToBook(id: number) {
     router.push({

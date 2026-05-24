@@ -5,6 +5,7 @@ import type { MediaSearchItem } from "@/api/media/search/get/types";
 import { AppCheckbox } from "@/application/components";
 import { ASSETS } from "@/application/configs/constants";
 import { RouteNames } from "@/application/router/routeNames";
+import { buildBackendImageUrl } from "@/application/utils/urls";
 
 const props = defineProps<{
   item: MediaSearchItem;
@@ -17,7 +18,9 @@ defineEmits<{
 
 const router = useRouter();
 
-const imageUrl = computed(() => props.item.image ?? ASSETS.NO_COVER);
+const imageUrl = computed(() => buildBackendImageUrl(props.item.image) ?? ASSETS.NO_COVER);
+
+
 
 const availabilityText = computed(
   () => `${props.item.available ?? 0} / ${props.item.total ?? 0}`

@@ -5,7 +5,7 @@ import AppSkeleton from "@/application/components/AppSkeleton.vue";
 import AppConfirmDialog from "@/application/components/AppConfirmDialog.vue";
 import ManageDialog from "../manage/Page.vue";
 import type { ArrivalItem } from "@/api/settings/arrivals/get/types";
-import { ASSETS } from "@/application/configs/constants";
+import { ASSETS, buildBackendImageUrl } from "@/application/configs/constants";
 
 const {
   items,
@@ -20,7 +20,7 @@ const {
 const manageVisible = ref(false);
 
 function getImage(item: ArrivalItem): string {
-  return item.image ?? ASSETS.NO_COVER;
+  return buildBackendImageUrl(item.image) ?? ASSETS.NO_COVER;
 }
 </script>
 
