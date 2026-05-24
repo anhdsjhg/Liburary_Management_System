@@ -75,4 +75,8 @@ export default {
   forbidden: "Сізде бұл бетке өту мүмкіндігі жоқ",
   goHome: "Басты бетке",
   notFound: "Бет табылмады",
+  pagination_nav: "Бет навигациясы",
+  previous_page: "Алдыңғы бет",
+  next_page: "Келесі бет",
+  go_to_page: "Бетке өту",
 };

@@ -8,7 +8,7 @@ export function useMediaUpdateApi() {
   return useMutation<MediaUpdateResponse, Error, MediaUpdateRequest>({
     mutationKey: [EMediaKeys.mutationKey],
     mutationFn: async ({ id, ...data }) => {
-      const res = await axiosInstance.patch(`media/${id}`, data)
+      const res = await axiosInstance.patch(`item/${id}`, data)
       return res.data
     },
     onSuccess: () => {

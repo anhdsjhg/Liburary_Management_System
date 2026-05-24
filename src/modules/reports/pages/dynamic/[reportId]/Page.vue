@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDynamicReportDetail } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "../../components/ReportTable.vue";
 
 const {
   reportInfo,
@@ -59,14 +59,10 @@ const columns = computed(() => {
         </div>
       </div>
 
-      <AppDataTable
+      <ReportTable
         v-if="results.length"
         :columns="columns"
         :rows="results"
-        :show-row-numbers="false"
-        :show-actions="false"
-        :pagination="false"
-        :sortable="false"
       />
     </template>
   </div>

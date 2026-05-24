@@ -30,6 +30,10 @@ export default {
       videoContent: "Видео контент",
       settings: "Настройки",
     },
+    admin: {
+      title: "Администрирование",
+      permissions: "Права пользователей",
+    },
   },
   topbar: {
     profile: {

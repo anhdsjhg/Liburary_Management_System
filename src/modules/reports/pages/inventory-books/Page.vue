@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useInventoryBooksPage } from "./composables/useComposable";
 import InventoryBooksTable from "./components/InventoryBooksTable.vue";
 
@@ -14,6 +15,8 @@ const {
   doExport,
   doPrint,
 } = useInventoryBooksPage();
+
+onMounted(() => load(1));
 </script>
 
 <template>
@@ -37,14 +40,14 @@ const {
       </div>
     </div>
 
-    <div class="report-page__filter">
-      <div class="report-page__filter-field">
-        <div class="report-page__filter-label">{{ $t("reports.search") }}</div>
-        <InputText v-model="searchQuery" class="w-full" @keydown.enter="load(1)" />
-      </div>
-      <div class="report-page__filter-actions">
-        <Button :label="$t('reports.apply')" @click="load(1)" />
-      </div>
+    <div class="report-page__search-bar">
+      <InputText
+        v-model="searchQuery"
+        :placeholder="$t('reports.search')"
+        class="report-page__search-input"
+        @keydown.enter="load(1)"
+      />
+      <Button :label="$t('reports.apply')" @click="load(1)" />
     </div>
 
     <InventoryBooksTable
@@ -59,3 +62,14 @@ const {
     />
   </div>
 </template>
+
+<style scoped>
+.report-page__search-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.report-page__search-input {
+  flex: 1;
+}
+</style>

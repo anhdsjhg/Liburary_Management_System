@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useAttendancePage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "../../components/ReportTable.vue";
 import type { TableColumnDef } from "@/application/types/table";
 
 const { weekDays, monthNames, byWeek, byMonth, isLoading } = useAttendancePage();
@@ -38,26 +38,12 @@ const monthRows = computed<Record<string, unknown>[]>(() => [
     <template v-else>
       <div class="report-page__chart">
         <div class="report-page__chart-title">{{ $t("reports.by_week") }}</div>
-        <AppDataTable
-          :columns="weekColumns"
-          :rows="weekRows"
-          :show-row-numbers="false"
-          :show-actions="false"
-          :pagination="false"
-          :sortable="false"
-        />
+        <ReportTable :columns="weekColumns" :rows="weekRows" />
       </div>
 
       <div class="report-page__chart">
         <div class="report-page__chart-title">{{ $t("reports.by_month") }}</div>
-        <AppDataTable
-          :columns="monthColumns"
-          :rows="monthRows"
-          :show-row-numbers="false"
-          :show-actions="false"
-          :pagination="false"
-          :sortable="false"
-        />
+        <ReportTable :columns="monthColumns" :rows="monthRows" />
       </div>
     </template>
   </div>

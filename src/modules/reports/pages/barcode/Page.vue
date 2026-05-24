@@ -1,28 +1,24 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 import { useBarcodePage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
-import AppPaginator from "@/application/components/AppPaginator.vue";
+import BarcodeTable from "./components/BarcodeTable.vue";
 import PrintDialog from "./components/printDialog/PrintDialog.vue";
-import type { BarcodeItem } from "@/api/reports/barcode/search/get/types";
 
 const {
   searchQuery,
-  columns,
   results,
   meta,
   stats,
   isLoading,
-  isPrinting,
   currentPage,
   selectedIds,
   load,
   onPageChange,
-  toggleSelect,
-  printSelected,
 } = useBarcodePage();
 
 const printDialogVisible = ref(false);
+
+onMounted(() => load(1));
 </script>
 
 <template>
@@ -32,7 +28,6 @@ const printDialogVisible = ref(false);
       <div class="report-page__actions">
         <Button
           :label="$t('reports.print')"
-          :loading="isPrinting"
           :disabled="!selectedIds.length"
           icon="pi pi-print"
           @click="printDialogVisible = true"
@@ -63,19 +58,14 @@ const printDialogVisible = ref(false);
       </div>
     </div>
 
-    <div class="report-page__filter">
-      <div class="report-page__filter-field">
-        <div class="report-page__filter-label">{{ $t("reports.search") }}</div>
-        <InputText
-          v-model="searchQuery"
-          class="w-full"
-          @keydown.enter="load(1)"
-        />
-      </div>
-      <div class="report-page__filter-actions">
-        <Button :label="$t('reports.apply')" @click="load(1)" />
-        <Button :label="$t('reports.reset')" severity="secondary" outlined @click="searchQuery = ''" />
-      </div>
+    <div class="report-page__search-bar">
+      <InputText
+        v-model="searchQuery"
+        :placeholder="$t('reports.search')"
+        class="report-page__search-input"
+        @keydown.enter="load(1)"
+      />
+      <Button :label="$t('reports.apply')" @click="load(1)" />
     </div>
 
     <div class="report-page__meta">
@@ -83,17 +73,14 @@ const printDialogVisible = ref(false);
       {{ selectedIds.length }} {{ $t("reports.results") }} selected
     </div>
 
-    <Skeleton v-if="isLoading" height="20rem" />
-
-    <AppDataTable
-      v-else
-      :columns="columns"
+    <BarcodeTable
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
-      :selectable="{ available: true, func: (rows) => { selectedIds.length = 0; rows.forEach(r => selectedIds.push((r as BarcodeItem).id)) } }"
-      :show-actions="false"
+      :loading="isLoading"
+      :selected-ids="selectedIds"
       @update:page="onPageChange"
+      @update:selected-ids="(ids) => { selectedIds.length = 0; ids.forEach(id => selectedIds.push(id)); }"
       @refresh="load(currentPage)"
     />
 
@@ -104,3 +91,14 @@ const printDialogVisible = ref(false);
     />
   </div>
 </template>
+
+<style scoped>
+.report-page__search-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.report-page__search-input {
+  flex: 1;
+}
+</style>

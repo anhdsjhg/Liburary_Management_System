@@ -1,9 +1,8 @@
-import { computed, ref } from "vue";
+import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useVideoContentGetApi } from "@/api/settings/video-content/get";
 import { useVideoContentDeleteApi } from "@/api/settings/video-content/[id]/delete";
 import type { VideoContentItem } from "@/api/settings/video-content/get/types";
-import type { TableColumnDef } from "@/application/types/table";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 
 export function useVideoContentSearch() {
@@ -14,36 +13,7 @@ export function useVideoContentSearch() {
 
   const items = computed<VideoContentItem[]>(() => data.value?.res ?? []);
 
-  const deleteTarget = ref<VideoContentItem | null>(null);
-  const deleteConfirmVisible = ref(false);
-
-  const columns: TableColumnDef<VideoContentItem>[] = [
-    { name: "settings.title_en", link: "title_en" },
-    { name: "settings.title_ru", link: "title_ru" },
-    { name: "settings.link", link: "link" },
-  ];
-
-  function requestDelete(row: VideoContentItem) {
-    deleteTarget.value = row;
-    deleteConfirmVisible.value = true;
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget.value) return;
-    deleteVideo(deleteTarget.value.video_id, {
-      onSuccess() {
-        showSuccessToast(t("settings.deleted"));
-        deleteTarget.value = null;
-        refetch();
-      },
-      onError() {
-        showErrorToast(t("settings.error"));
-        deleteTarget.value = null;
-      },
-    });
-  }
-
-  function doDelete(row: VideoContentItem) {
+  function onDelete(row: VideoContentItem) {
     deleteVideo(row.video_id, {
       onSuccess() {
         showSuccessToast(t("settings.deleted"));
@@ -55,5 +25,5 @@ export function useVideoContentSearch() {
     });
   }
 
-  return { items, columns, isLoading, deleteLoading, deleteConfirmVisible, refetch, requestDelete, confirmDelete, doDelete };
+  return { items, isLoading, deleteLoading, refetch, onDelete };
 }

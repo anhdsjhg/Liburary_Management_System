@@ -1,10 +1,10 @@
-import { ref, computed, onMounted } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useI18n } from "vue-i18n";
 import { useAnnouncementSearchApi } from "@/api/settings/announcements/post";
 import { useAnnouncementDeleteApi } from "@/api/settings/announcements/[id]/delete";
 import type { AnnouncementItem } from "@/api/settings/announcements/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
 import { RouteNames } from "@/application/router/routeNames";
 import { showSuccessToast, showErrorToast } from "@/application/services/toastService";
 
@@ -17,9 +17,6 @@ export function useAnnouncementsSearch() {
 
   const searchQuery = ref("");
   const currentPage = ref(1);
-
-  const deleteTarget = ref<AnnouncementItem | null>(null);
-  const deleteConfirmVisible = ref(false);
 
   const results = ref<{
     data: AnnouncementItem[];
@@ -44,13 +41,6 @@ export function useAnnouncementsSearch() {
     per_page: results.value.per_page,
   }));
 
-  const columns: TableColumnDef<AnnouncementItem>[] = [
-    { name: "settings.title_en", link: "title_en" },
-    { name: "settings.start_date", link: "start_date" },
-    { name: "settings.end_date", link: "end_date" },
-    { name: "settings.type", link: "type" },
-  ];
-
   function load(page = 1) {
     currentPage.value = page;
     search(
@@ -70,11 +60,6 @@ export function useAnnouncementsSearch() {
     );
   }
 
-  function reset() {
-    searchQuery.value = "";
-    load(1);
-  }
-
   function onPageChange(page: number) {
     load(page);
   }
@@ -86,28 +71,8 @@ export function useAnnouncementsSearch() {
     });
   }
 
-  function requestDelete(row: AnnouncementItem) {
-    deleteTarget.value = row;
-    deleteConfirmVisible.value = true;
-  }
-
-  function confirmDelete() {
-    if (!deleteTarget.value) return;
-    deleteAnnouncement(deleteTarget.value.id, {
-      onSuccess() {
-        showSuccessToast(t("settings.deleted"));
-        deleteTarget.value = null;
-        load(currentPage.value);
-      },
-      onError() {
-        showErrorToast(t("settings.error"));
-        deleteTarget.value = null;
-      },
-    });
-  }
-
-  function doDelete(row: AnnouncementItem) {
-    deleteAnnouncement(row.id, {
+  function onDelete(row: AnnouncementItem) {
+    deleteAnnouncement(row.id ?? row.announcement_id, {
       onSuccess() {
         showSuccessToast(t("settings.deleted"));
         load(currentPage.value);
@@ -117,24 +82,17 @@ export function useAnnouncementsSearch() {
       },
     });
   }
-
-  onMounted(() => load(1));
 
   return {
     searchQuery,
-    columns,
     results,
     meta,
     isLoading,
     deleteLoading,
-    deleteConfirmVisible,
     currentPage,
     load,
-    reset,
     onPageChange,
     goToManage,
-    requestDelete,
-    confirmDelete,
-    doDelete,
+    onDelete,
   };
 }

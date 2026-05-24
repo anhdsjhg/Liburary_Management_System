@@ -1,13 +1,10 @@
 import { ref, computed } from "vue";
-import { useRouter } from "vue-router";
 import { useAdminModulesApi } from "@/api/admin/modules/get";
 import { useServiceUsersSearchApi } from "@/api/service-desk/users/get";
 import { useUsersByModuleApi } from "@/api/admin/users-by-module/post";
 import type { ServiceUser } from "@/api/service-desk/users/get/types";
-import { RouteNames } from "@/application/router/routeNames";
 
 export function usePermissionsPage() {
-  const router = useRouter();
 
   const { data: modulesData, isLoading: modulesLoading } = useAdminModulesApi();
   const { mutate: searchUsers, isPending: usersLoading } = useServiceUsersSearchApi();
@@ -81,11 +78,12 @@ export function usePermissionsPage() {
     load(1);
   }
 
-  function goToControl(user: ServiceUser) {
-    router.push({
-      name: RouteNames.ADMIN_CONTROL,
-      params: { userId: user.user_cid },
-    });
+  const controlDialogVisible = ref(false);
+  const controlUser = ref<ServiceUser | null>(null);
+
+  function openControlDialog(user: ServiceUser) {
+    controlUser.value = user;
+    controlDialogVisible.value = true;
   }
 
   return {
@@ -104,6 +102,8 @@ export function usePermissionsPage() {
     onTypeChange,
     onSearch,
     load,
-    goToControl,
+    controlDialogVisible,
+    controlUser,
+    openControlDialog,
   };
 }

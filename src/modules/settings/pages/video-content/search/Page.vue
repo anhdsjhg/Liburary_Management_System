@@ -2,7 +2,6 @@
 import { ref } from "vue";
 import { useVideoContentSearch } from "./composables/useComposable";
 import VideoContentTable from "./components/VideoContentTable.vue";
-import AppConfirmDialog from "@/application/components/AppConfirmDialog.vue";
 import ManageDialog from "../manage/Page.vue";
 import type { VideoContentItem } from "@/api/settings/video-content/get/types";
 
@@ -11,7 +10,7 @@ const {
   isLoading,
   deleteLoading,
   refetch,
-  doDelete,
+  onDelete,
 } = useVideoContentSearch();
 
 const manageVisible = ref(false);
@@ -42,7 +41,7 @@ function openEdit(row: VideoContentItem) {
       :loading="isLoading"
       :delete-loading="deleteLoading"
       @edit="openEdit"
-      @delete="(row) => doDelete(row as VideoContentItem)"
+      @delete="onDelete"
       @refresh="refetch"
     />
 

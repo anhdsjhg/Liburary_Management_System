@@ -3,14 +3,13 @@ import { ref } from "vue";
 import { useQuickLinksSearch } from "./composables/useComposable";
 import QuickLinksTable from "./components/QuickLinksTable.vue";
 import ManageDialog from "../manage/Page.vue";
-import type { QuickLink } from "@/api/settings/quick-links/get/types";
 
 const {
   items,
   isLoading,
   deleteLoading,
   refetch,
-  doDelete,
+  onDelete,
 } = useQuickLinksSearch();
 
 const manageVisible = ref(false);
@@ -41,7 +40,7 @@ function openEdit(row: QuickLink) {
       :loading="isLoading"
       :delete-loading="deleteLoading"
       @edit="openEdit"
-      @delete="(row) => doDelete(row as QuickLink)"
+      @delete="onDelete"
       @refresh="refetch"
     />
 

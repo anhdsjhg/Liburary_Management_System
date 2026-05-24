@@ -9,6 +9,7 @@ import { serviceDeskI18n } from "@/modules/service-desk/i18n";
 import { catalogingI18n } from "@/modules/cataloging/i18n";
 import { authI18n } from "@/modules/auth/i18n";
 import { defaultLayoutMessages } from "@/application/layouts/admin/i18n";
+import { adminI18n } from "@/modules/admin/i18n";
 
 const messages = {
   ...commonMessages,
@@ -22,6 +23,7 @@ const messages = {
   ...websiteI18n,
   ...catalogingI18n,
   ...authI18n,
+  ...adminI18n,
 } as const;
 
 export default messages;

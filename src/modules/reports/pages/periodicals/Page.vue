@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { usePeriodicalsPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "../../components/ReportTable.vue";
 
 const { t } = useI18n();
 const { filter, modeOptions, results, meta, isLoading, currentPage, load, onPageChange, doExport } = usePeriodicalsPage();
@@ -75,14 +75,12 @@ const columns = computed(() => {
       </div>
     </div>
 
-    <AppDataTable
+    <ReportTable
       :columns="columns"
       :rows="results.data as Record<string, unknown>[]"
       :meta="meta"
       :page="currentPage"
-      :show-row-numbers="false"
-      :show-actions="false"
-      :sortable="false"
+      :loading="isLoading"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
     />

@@ -75,4 +75,8 @@ export default {
   forbidden: "You don't have access to this page",
   goHome: "Go to home page",
   notFound: "Page not found",
+  pagination_nav: "Pagination",
+  previous_page: "Previous page",
+  next_page: "Next page",
+  go_to_page: "Go to page",
 };

@@ -103,8 +103,8 @@ export function useAllEventsSearch() {
     search(page);
   }
 
-  function getEventId(item: AnnouncementItem): number | string | undefined {
-    return (item as any).id ?? item.announcement_id;
+  function getEventId(item: AnnouncementItem): string {
+    return item.id ?? item.announcement_id;
   }
 
   function getLocalizedTitle(item: AnnouncementItem): string {

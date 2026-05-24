@@ -54,13 +54,13 @@ const visiblePages = computed<(number | '...')[]>(() => {
 </script>
 
 <template>
-  <div class="app-paginator" role="navigation" :aria-label="t('pagination')">
+  <div class="app-paginator" role="navigation" :aria-label="t('common.pagination_nav')">
     <div class="app-paginator__pages">
       <button
         type="button"
         class="app-paginator__btn"
         :disabled="page <= 1"
-        :aria-label="t('previous_page')"
+        :aria-label="t('common.previous_page')"
         @click="navigate(page - 1)"
       >
         <i class="pi pi-chevron-left" />
@@ -83,7 +83,7 @@ const visiblePages = computed<(number | '...')[]>(() => {
         type="button"
         class="app-paginator__btn"
         :disabled="page >= meta.last_page"
-        :aria-label="t('next_page')"
+        :aria-label="t('common.next_page')"
         @click="navigate(page + 1)"
       >
         <i class="pi pi-chevron-right" />
@@ -98,9 +98,9 @@ const visiblePages = computed<(number | '...')[]>(() => {
         class="app-paginator__jump-input"
         :min="1"
         :max="meta.last_page"
-        :aria-label="t('go_to_page')"
+        :aria-label="t('common.go_to_page')"
       />
-      <button type="submit" class="app-paginator__jump-btn" :aria-label="t('go_to_page')">
+      <button type="submit" class="app-paginator__jump-btn" :aria-label="t('common.go_to_page')">
         <i class="pi pi-arrow-right" />
       </button>
     </form>

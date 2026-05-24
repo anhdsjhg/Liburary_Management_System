@@ -1,4 +1,5 @@
 import { RouteNames } from "@/application/router/routeNames";
+import { EPermissions } from "@/application/enums/permissions";
 import type { AppRouteRecordRaw } from "@/application/router";
 
 export const catalogingRoutes: AppRouteRecordRaw[] = [
@@ -6,7 +7,7 @@ export const catalogingRoutes: AppRouteRecordRaw[] = [
     path: "/admin/cataloging",
     name: RouteNames.CATALOGING,
     component: () => import("@/application/layouts/admin/AdminLayout.vue"),
-    meta: { requiresAuth: true, title: "Cataloging" },
+    meta: { requiresAuth: true, title: "Cataloging", permissions: [EPermissions.cataloging] },
     redirect: { name: RouteNames.CATALOGING_SEARCH },
     children: [
       {

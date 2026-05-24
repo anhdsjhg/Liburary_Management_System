@@ -2,7 +2,7 @@
 import { useRouter } from "vue-router";
 import { RouteNames } from "@/application/router/routeNames";
 import type { ArrivalItem } from "@/api/settings/arrivals/get/types";
-import { ASSETS } from "@/application/configs/constants";
+import { ASSETS, buildBackendImageUrl } from "@/application/configs/constants";
 
 const props = defineProps<{ arrivals: ArrivalItem[] }>();
 const router = useRouter();
@@ -13,12 +13,12 @@ const responsiveOptions = [
   { breakpoint: '560px', numVisible: 2, numScroll: 1 },
 ];
 
-function goToBook(id: number) {
+function goToBook(id: string) {
   router.push({ name: RouteNames.WEBSITE_BOOK, params: { id } });
 }
 
 function getImageUrl(item: ArrivalItem): string {
-  return item.image ?? ASSETS.NO_COVER;
+  return buildBackendImageUrl(item.image) ?? ASSETS.NO_COVER;
 }
 </script>
 

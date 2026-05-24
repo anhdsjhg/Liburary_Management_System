@@ -33,6 +33,10 @@ export default {
       videoContent: "Бейне контент",
       settings: "Баптаулар",
     },
+    admin: {
+      title: "Әкімшілік",
+      permissions: "Пайдаланушы құқықтары",
+    },
   },
   topbar: {
     profile: {

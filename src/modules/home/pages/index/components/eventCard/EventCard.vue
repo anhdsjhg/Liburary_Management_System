@@ -3,6 +3,7 @@ import { ref, watchEffect, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { AnnouncementItem } from "@/api/settings/announcements/get/types";
 import axiosInstance from "@/application/configs/axios";
+import { buildBackendImageUrl } from "@/application/configs/constants";
 
 const props = defineProps<{
   event: AnnouncementItem;
@@ -21,6 +22,7 @@ watchEffect(async () => {
 
   if (img.endsWith('.txt')) {
     try {
+      // Relative path → Vite proxy intercepts in dev (no CORS); same-origin in prod
       const response = await axiosInstance.get(img, {
         baseURL: '',
         headers: { Accept: 'text/plain' },
@@ -30,8 +32,7 @@ watchEffect(async () => {
       imageUrl.value = '';
     }
   } else {
-    // relative path — goes through Vite proxy /images → backend
-    imageUrl.value = img;
+    imageUrl.value = buildBackendImageUrl(img) ?? '';
   }
 });
 

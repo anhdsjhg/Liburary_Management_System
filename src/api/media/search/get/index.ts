@@ -8,7 +8,7 @@ export function useMediaSearchApi(params?: Ref<MediaSearchRequest> | ComputedRef
   return useQuery<MediaSearchResponse>({
     queryKey: [EMediaSearchKeys.queryKey, params],
     queryFn: async () => {
-      const res = await axiosInstance.post('media/search', params?.value)
+      const res = await axiosInstance.post('item/search', params?.value)
       return res.data
     },
   })

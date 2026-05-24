@@ -1,5 +1,6 @@
 export type AnnouncementItem = {
-  id: number | string;
+  announcement_id: string;
+  id?: string;
 
   title_en: string | null;
   title_ru: string | null;
@@ -21,7 +22,7 @@ export type AnnouncementItem = {
   end_date: string | null;
   end_time: string | null;
 
-  type: "announcement" | "event";
+  type?: "announcement" | "event";
 
   link: string | null;
 
@@ -33,12 +34,5 @@ export type AnnouncementItem = {
 };
 
 export type AnnouncementsGetResponse = {
-  res: {
-    data: AnnouncementItem[];
-
-    total: number;
-    per_page: number;
-    current_page: number;
-    last_page: number;
-  };
+  res: AnnouncementItem[];
 };

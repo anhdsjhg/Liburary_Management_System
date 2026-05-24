@@ -139,4 +139,16 @@ export const menuItems = ref<AppMenuItemType[]>([
       },
     ],
   },
+  {
+    label: "defaultLayout.sidebar.admin.title",
+    icon: "pi pi-shield",
+    permission: EPermissions.admin,
+    items: [
+      {
+        label: "defaultLayout.sidebar.admin.permissions",
+        icon: "pi pi-lock-open",
+        to: "/admin/permissions",
+      },
+    ],
+  },
 ]);

@@ -47,7 +47,11 @@ export function useBookDetail() {
     enabled: () => !!id.value,
   });
 
-  const book = computed(() => data.value?.res ?? null);
+  const book = computed(() => {
+    const res = data.value?.res;
+    if (!res || Array.isArray(res)) return null;
+    return res;
+  });
   const xmlInfo = computed(() => data.value?.xmlInfo ?? []);
 
   function getFromXml(code: string): string {

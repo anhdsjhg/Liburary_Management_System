@@ -1,12 +1,13 @@
 import { RouteNames, type AppRouteRecordRaw } from "@/application/router";
+import { EPermissions } from "@/application/enums/permissions";
 
 export const acquisitionRoutes: AppRouteRecordRaw[] = [
   {
     path: "/admin/acquisition",
     name: RouteNames.ACQUISITION,
     component: () => import("@/application/layouts/admin/AdminLayout.vue"),
-    meta: { requiresAuth: true, title: "Acquisition" },
-    redirect: { name: RouteNames.ACQUISITION_ACTS },
+    meta: { requiresAuth: true, title: "Acquisition", permissions: [EPermissions.batches] },
+    redirect: { name: RouteNames.ACQUISITION_BATCHES },
     children: [
       {
         path: "acts",

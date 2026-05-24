@@ -7,7 +7,7 @@ export function useMediaShowApi(id: Ref<number | string> | ComputedRef<number | 
   return useQuery<MediaShowResponse>({
     queryKey: ['get:media-show', id],
     queryFn: async () => {
-      const res = await axiosInstance.get(`media/show/${id.value}`)
+      const res = await axiosInstance.get(`item/item/specs/${id.value}`)
       return res.data.data
     },
     enabled: !!id.value,

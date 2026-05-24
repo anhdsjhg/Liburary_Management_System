@@ -7,7 +7,7 @@ export function useMediaExportApi() {
   return useMutation<MediaExportResponse, Error, MediaExportRequest>({
     mutationKey: [EMediaExportKeys.mutationKey],
     mutationFn: async (data) => {
-      const res = await axiosInstance.post('media/save-excel', data)
+      const res = await axiosInstance.post('item/save-excel', data)
       return res.data
     },
   })

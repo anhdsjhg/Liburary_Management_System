@@ -1,3 +1,7 @@
+import noCover from '@/application/assets/images/arrivalsImage/noCover.png'
+import logoHorizontal from '@/application/assets/images/logo_horizontal.png'
+import logoVertical from '@/application/assets/images/logo_vertical.png'
+
 export const apiTimeouts = {
   DEFAULT: 20_000,
   BLOB: 120_000,
@@ -105,14 +109,31 @@ export const IMAGE_COMPRESSION = {
 } as const;
 
 export const ASSETS = {
-  NO_COVER: "/images/arrivalsImage/noCover.png",
-  LOGO_HORIZONTAL: "/images/logo_horizontal.png",
-  LOGO_VERTICAL: "/images/logo_vertical.png",
+  NO_COVER: noCover,
+  LOGO_HORIZONTAL: logoHorizontal,
+  LOGO_VERTICAL: logoVertical,
 } as const;
 
 export const EXTERNAL_API = {
   GOOGLE_BOOKS: "https://www.googleapis.com/books/v1/volumes",
 } as const;
+
+// Image files always live on the production server, independent of the API backend.
+// Override with VITE_IMAGE_BASE_URL in .env.local if needed.
+export const IMAGE_BASE_URL: string =
+  (import.meta.env.VITE_IMAGE_BASE_URL as string | undefined) ??
+  "https://library.sdu.edu.kz";
+
+/** Turns a backend-relative path (/images/...) into an absolute URL.
+ *  Absolute URLs (http/https) are returned as-is. */
+export function buildBackendImageUrl(path: string | null | undefined): string | null {
+  if (!path) return null;
+  if (path.startsWith("http")) return path;
+  return IMAGE_BASE_URL + path;
+}
+
+// Keep BACKEND_ORIGIN for any non-image use
+export const BACKEND_ORIGIN = IMAGE_BASE_URL;
 
 export const RFID = {
   BASE_URL: "http://localhost/LibraryWebService/LibraryWebService.asmx/",

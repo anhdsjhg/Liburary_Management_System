@@ -23,7 +23,7 @@ export function useHomeIndex() {
   );
 
   const events = computed<AnnouncementItem[]>(() =>
-    announcementsData.value?.res?.data ?? []
+    announcementsData.value?.res ?? []
   );
 
   const videos = computed<VideoContentItem[]>(
@@ -31,9 +31,7 @@ export function useHomeIndex() {
   );
 
   const backgroundImages = computed<string[]>(
-    () => (bgImagesData.value?.images ?? []).map((url: string) =>
-      url.replace(/^https?:\/\/[^/]+/, '')
-    )
+    () => bgImagesData.value?.images ?? []
   );
   
   const quickLinks = computed(() => quickLinksData.value?.res ?? []);

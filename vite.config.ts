@@ -19,20 +19,14 @@ export default defineConfig({
   server: {
       proxy: {
         '/api': {
-          target: 'https://5879-109-175-215-60.ngrok-free.app',
+          target: 'https://library.sdu.edu.kz',
           changeOrigin: true,
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-          },
-
+          headers: { 'ngrok-skip-browser-warning': 'true' },
         },
         '/images': {
-          target: 'https://5879-109-175-215-60.ngrok-free.app',
+          target: 'https://library.sdu.edu.kz',
           changeOrigin: true,
-          headers: {
-            'ngrok-skip-browser-warning': 'true',
-          },
-
+          headers: { 'ngrok-skip-browser-warning': 'true' },
         },
       },
     },

@@ -2,6 +2,7 @@ import 'primeicons/primeicons.css'
 import { createApp } from 'vue'
 import App from './application/App.vue'
 import router from './application/router'
+import { setAxiosRouter } from './application/configs/axios'
 import './application/assets/main.css'
 import './application/assets/style.scss'
 import 'bootstrap-icons/font/bootstrap-icons.css'
@@ -71,5 +72,6 @@ installToastService(app);
 const authStore = useAuthStore();
 
 authStore.hydrate();
-app.use(router)
+app.use(router);
+setAxiosRouter(router);
 app.mount('#app')

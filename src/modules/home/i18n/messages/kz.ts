@@ -66,7 +66,7 @@ export default {
     no_results: "Нәтижелер табылмады",
     try_different_filters: "Іздеу сұрауын немесе сүзгілерді өзгертіп көріңіз",
     all: "Барлығы",
-    welcome_to: "қош келдіңіз",
+    welcome_to: "Қош келдіңіз",
     university_name: "SDU Ғылыми кітапханасына",
     welcome_subtitle: "Іздеңіз, үйреніңіз, зерттеңіз",
     library_services: "Кітапхана қызметтері",

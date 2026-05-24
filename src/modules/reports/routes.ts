@@ -1,4 +1,5 @@
 import { RouteNames } from "@/application/router/routeNames";
+import { EPermissions } from "@/application/enums/permissions";
 import type { AppRouteRecordRaw } from "@/application/router";
 
 export const reportsRoutes: AppRouteRecordRaw[] = [
@@ -6,7 +7,7 @@ export const reportsRoutes: AppRouteRecordRaw[] = [
     path: "/admin/reports",
     name: RouteNames.REPORTS,
     component: () => import("@/application/layouts/admin/AdminLayout.vue"),
-    meta: { requiresAuth: true, title: "Reports" },
+    meta: { requiresAuth: true, title: "Reports", permissions: [EPermissions.report] },
     redirect: { name: RouteNames.REPORTS_INVENTORY_BOOKS },
     children: [
       {

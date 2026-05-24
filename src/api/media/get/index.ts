@@ -8,7 +8,7 @@ export function useMediaGetApi(params?: Ref<MediaGetRequest> | ComputedRef<Media
   return useQuery<MediaGetResponse>({
     queryKey: [EMediaKeys.queryKey, params],
     queryFn: async () => {
-      const res = await axiosInstance.get('media/index', {
+      const res = await axiosInstance.get('item/index', {
         params: params?.value,
       })
       return res.data

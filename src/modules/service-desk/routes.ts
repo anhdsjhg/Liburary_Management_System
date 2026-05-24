@@ -1,4 +1,5 @@
 import { RouteNames } from "@/application/router/routeNames";
+import { EPermissions } from "@/application/enums/permissions";
 import type { AppRouteRecordRaw } from "@/application/router";
 
 export const serviceDeskRoutes: AppRouteRecordRaw[] = [
@@ -6,7 +7,7 @@ export const serviceDeskRoutes: AppRouteRecordRaw[] = [
     path: "/admin/service-desk",
     name: RouteNames.SERVICE_DESK,
     component: () => import("@/application/layouts/admin/AdminLayout.vue"),
-    meta: { requiresAuth: true, title: "Service Desk" },
+    meta: { requiresAuth: true, title: "Service Desk", permissions: [EPermissions.serviceDesk] },
     redirect: { name: RouteNames.SERVICE_DESK_USERS },
     children: [
       {

@@ -2,7 +2,7 @@
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
 import { useStatReportPage } from "./composables/useComposable";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "../../components/ReportTable.vue";
 
 const { t } = useI18n();
 const { year, rows, isLoading, refetch, doExport } = useStatReportPage();
@@ -34,14 +34,10 @@ const columns = computed(() => [
       </div>
     </div>
 
-    <AppDataTable
+    <ReportTable
       :columns="columns"
       :rows="rows as Record<string, unknown>[]"
       :loading="isLoading"
-      :show-row-numbers="false"
-      :show-actions="false"
-      :pagination="false"
-      :sortable="false"
     />
   </div>
 </template>

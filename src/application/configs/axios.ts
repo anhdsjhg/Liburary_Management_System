@@ -1,13 +1,29 @@
 import axios from "axios";
+import type { Router } from "vue-router";
 import { StorageKeys } from "./constants";
 
+let _router: Router | null = null;
+export function setAxiosRouter(router: Router) {
+  _router = router;
+}
+
 const axiosInstance = axios.create({
-  baseURL: import.meta.env.APP_URL ?? "https://5879-109-175-215-60.ngrok-free.app/api",
+  baseURL: import.meta.env.VITE_APP_URL ?? "/api",
   timeout: 20_000,
   headers: {
     'ngrok-skip-browser-warning': 'true',
   },
 });
+
+axiosInstance.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error?.response?.status === 403 && _router) {
+      _router.replace({ path: "/403" });
+    }
+    return Promise.reject(error);
+  }
+);
 
 axiosInstance.interceptors.request.use(
   (config) => {

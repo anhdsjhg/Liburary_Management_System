@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useI18n } from "vue-i18n";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "@/modules/reports/components/ReportTable.vue";
 
 const { t } = useI18n();
 
@@ -16,12 +16,8 @@ const columns = computed(() => [
 </script>
 
 <template>
-  <AppDataTable
+  <ReportTable
     :columns="columns"
     :rows="historyItems as unknown as Record<string, unknown>[]"
-    :show-row-numbers="false"
-    :show-actions="false"
-    :pagination="false"
-    :sortable="false"
   />
 </template>

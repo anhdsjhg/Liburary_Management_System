@@ -19,7 +19,7 @@ function canSeeItem(item: AppMenuItemType): boolean {
     <div class="layout-menu-container">
       <ul class="layout-menu flex flex-col">
         <template v-for="(item, i) in menuItems" :key="i">
-          <AppMenuItem :item="item" root :index="i" />
+          <AppMenuItem v-if="canSeeItem(item)" :item="item" root :index="i" />
         </template>
       </ul>
     </div>

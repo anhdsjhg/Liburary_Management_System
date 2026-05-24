@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useAnnouncementsSearch } from "./composables/useComposable";
 import AnnouncementsTable from "./components/AnnouncementsTable.vue";
-import type { AnnouncementItem } from "@/api/settings/announcements/get/types";
 
 const {
   searchQuery,
@@ -11,11 +11,12 @@ const {
   deleteLoading,
   currentPage,
   load,
-  reset,
   onPageChange,
   goToManage,
-  doDelete,
+  onDelete,
 } = useAnnouncementsSearch();
+
+onMounted(() => load(1));
 </script>
 
 <template>
@@ -31,24 +32,14 @@ const {
       </div>
     </div>
 
-    <div class="settings-page__filter">
-      <div class="settings-page__filter-field">
-        <div class="settings-page__filter-label">{{ $t("settings.search") }}</div>
-        <InputText
-          v-model="searchQuery"
-          class="w-full"
-          @keydown.enter="load(1)"
-        />
-      </div>
-      <div style="display: flex; gap: 0.5rem; align-items: flex-end">
-        <Button :label="$t('settings.apply')" @click="load(1)" />
-        <Button
-          :label="$t('settings.reset')"
-          severity="secondary"
-          outlined
-          @click="reset"
-        />
-      </div>
+    <div class="settings-page__search-bar">
+      <InputText
+        v-model="searchQuery"
+        :placeholder="$t('settings.search')"
+        class="settings-page__search-input"
+        @keydown.enter="load(1)"
+      />
+      <Button :label="$t('settings.search')" @click="load(1)" />
     </div>
 
     <AnnouncementsTable
@@ -57,10 +48,21 @@ const {
       :page="currentPage"
       :loading="isLoading"
       :delete-loading="deleteLoading"
-      @edit="(row) => goToManage(row as AnnouncementItem)"
-      @delete="(row) => doDelete(row as AnnouncementItem)"
+      @edit="goToManage"
+      @delete="onDelete"
       @update:page="onPageChange"
       @refresh="load(currentPage)"
     />
   </div>
 </template>
+
+<style scoped>
+.settings-page__search-bar {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.settings-page__search-input {
+  flex: 1;
+}
+</style>

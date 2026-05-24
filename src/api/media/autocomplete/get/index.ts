@@ -9,7 +9,7 @@ export function useMediaAutocompleteApi(
   return useQuery<MediaAutocompleteResponse>({
     queryKey: ["get:media-autocomplete", params],
     queryFn: async () => {
-      const res = await axiosInstance.get("media/autocomplete", {
+      const res = await axiosInstance.get("item/autocomplete", {
         params: params.value,
       });
       return res.data;

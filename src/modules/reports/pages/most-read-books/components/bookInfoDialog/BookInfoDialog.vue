@@ -3,7 +3,7 @@ import { computed } from "vue";
 import { useQuery } from "@tanstack/vue-query";
 import { useI18n } from "vue-i18n";
 import axiosInstance from "@/application/configs/axios";
-import AppDataTable from "@/application/components/AppDataTable/AppDataTable.vue";
+import ReportTable from "@/modules/reports/components/ReportTable.vue";
 
 const { t } = useI18n();
 const props = defineProps<{ bookId: number | null }>();
@@ -41,14 +41,10 @@ const columns = computed(() => [
 
     <Skeleton v-if="isLoading" height="10rem" />
 
-    <AppDataTable
+    <ReportTable
       v-else
       :columns="columns"
       :rows="(data ?? []) as unknown as Record<string, unknown>[]"
-      :show-row-numbers="false"
-      :show-actions="false"
-      :pagination="false"
-      :sortable="false"
     />
   </Dialog>
 </template>

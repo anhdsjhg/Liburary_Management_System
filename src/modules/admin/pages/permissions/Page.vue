@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { usePermissionsPage } from "./composables/useComposable";
 import PermissionsTable from "./components/permissionsTable/PermissionsTable.vue";
+import ControlDialog from "./components/controlDialog/ControlDialog.vue";
 
 const {
   modules,
@@ -19,7 +20,9 @@ const {
   onTypeChange,
   onSearch,
   load,
-  goToControl,
+  controlDialogVisible,
+  controlUser,
+  openControlDialog,
 } = usePermissionsPage();
 
 onMounted(() => load(1));
@@ -105,10 +108,12 @@ onMounted(() => load(1));
           :per-page="perPage"
           :last-page="lastPage"
           @update:page="load"
-          @manage="goToControl"
+          @manage="openControlDialog"
         />
       </div>
     </div>
+
+    <ControlDialog v-model:visible="controlDialogVisible" :user="controlUser" />
   </div>
 </template>
 
