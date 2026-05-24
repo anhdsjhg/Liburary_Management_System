@@ -2,6 +2,7 @@
 import { ref, watchEffect, computed } from "vue";
 import { useI18n } from "vue-i18n";
 import type { AnnouncementItem } from "@/api/settings/announcements/get/types";
+import axiosInstance from "@/application/configs/axios";
 import { IMAGE_BASE_URL, buildBackendImageUrl } from "@/application/configs/constants";
 
 const props = defineProps<{
@@ -20,8 +21,13 @@ watchEffect(async () => {
   }
   if (img.endsWith(".txt")) {
     try {
-      const res = await fetch(IMAGE_BASE_URL + img);
-      imageUrl.value = res.ok ? (await res.text()).trim() : "";
+      if (import.meta.env.DEV) {
+        const res = await axiosInstance.get(img, { baseURL: "", headers: { Accept: "text/plain" } });
+        imageUrl.value = String(res.data).trim();
+      } else {
+        const res = await fetch(IMAGE_BASE_URL + img);
+        imageUrl.value = res.ok ? (await res.text()).trim() : "";
+      }
     } catch {
       imageUrl.value = "";
     }
