@@ -12,7 +12,10 @@ export function usePenaltyDialog(onSuccess?: () => void) {
   function submitSet() {
     if (!form.penalty_id) return;
     setPenalty(
-      { penalty_id: form.penalty_id },
+      {
+      penalty_id: form.penalty_id,
+      user_cid: form.user_cid,
+      },
       {
         onSuccess() {
           showSuccessToast(t("serviceDesk.penalty_set"));
@@ -28,7 +31,10 @@ export function usePenaltyDialog(onSuccess?: () => void) {
   function submitCancel() {
     if (!form.penalty_id) return;
     cancelPenalty(
-      { penalty_id: form.penalty_id },
+      {
+        penalty_id: form.penalty_id,
+        user_cid: form.user_cid,
+      },
       {
         onSuccess() {
           showSuccessToast(t("serviceDesk.penalty_cancelled"));

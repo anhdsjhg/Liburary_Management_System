@@ -3,6 +3,7 @@ import { ref } from "vue";
 import { useQuickLinksSearch } from "./composables/useComposable";
 import QuickLinksTable from "./components/QuickLinksTable.vue";
 import ManageDialog from "../manage/Page.vue";
+import type { QuickLink } from "@/api/settings/quick-links/get/types";
 
 const {
   items,
