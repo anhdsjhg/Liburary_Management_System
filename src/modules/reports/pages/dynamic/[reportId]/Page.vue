@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 import { useDynamicReportDetail } from "./composables/useComposable";
-import ReportTable from "../../components/ReportTable.vue";
+import ReportTable from "../../../components/ReportTable.vue";
 
 const {
   reportInfo,
