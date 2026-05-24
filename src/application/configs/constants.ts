@@ -118,11 +118,11 @@ export const EXTERNAL_API = {
   GOOGLE_BOOKS: "https://www.googleapis.com/books/v1/volumes",
 } as const;
 
-// Image files always live on the production server, independent of the API backend.
-// Override with VITE_IMAGE_BASE_URL in .env.local if needed.
+// Derive image base from VITE_APP_URL (strip trailing /api) or fall back to explicit override.
+const _appUrl = import.meta.env.VITE_APP_URL as string | undefined;
 export const IMAGE_BASE_URL: string =
   (import.meta.env.VITE_IMAGE_BASE_URL as string | undefined) ??
-  "https://library.sdu.edu.kz";
+  (_appUrl ? _appUrl.replace(/\/api\/?$/, "") : "https://library.sdu.edu.kz");
 
 /** Turns a backend-relative path (/images/...) into an absolute URL.
  *  Absolute URLs (http/https) are returned as-is. */

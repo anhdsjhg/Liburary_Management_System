@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed, ref } from "vue";
 import { useBookDetail } from "./composables/useComposable";
-import { ASSETS } from "@/application/configs/constants";
+import { ASSETS, buildBackendImageUrl } from "@/application/configs/constants";
 
 const {
   book,
@@ -97,7 +97,7 @@ const authorList = computed(() =>
           <div class="book-detail-page__cover-card">
             <div
               class="book-detail-page__image"
-              :style="{ backgroundImage: `url(${book.image ?? ASSETS.NO_COVER})` }"
+              :style="{ backgroundImage: `url(${buildBackendImageUrl(book.image) ?? ASSETS.NO_COVER})` }"
             />
 
             <div
