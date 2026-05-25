@@ -1,13 +1,27 @@
 import { ref, computed } from "vue";
+import { useRouter } from "vue-router";
 import { useItemsGetApi } from "@/api/acquisitions/items/get";
 import type { AcquisitionItem } from "@/api/acquisitions/items/get/types";
-import type { PaginationMeta, TableColumnDef } from "@/application/types/table";
+import type { PaginationMeta } from "@/application/types/table";
+import { RouteNames } from "@/application/router/routeNames";
+
+export const searchFieldOptions = [
+  { label: "Title", value: "title" },
+  { label: "Inv №", value: "id" },
+  { label: "Barcode", value: "barcode" },
+  { label: "Author", value: "author" },
+  { label: "ISBN", value: "isbn" },
+  { label: "Batch ID", value: "batch_id" },
+];
 
 export function useItemsSearch() {
+  const router = useRouter();
   const { mutate: search, isPending: isLoading } = useItemsGetApi();
 
   const currentPage = ref(1);
   const searchQuery = ref("");
+  const searchField = ref("title");
+  const hasSearched = ref(false);
 
   const results = ref<{
     data: AcquisitionItem[];
@@ -18,7 +32,7 @@ export function useItemsSearch() {
   }>({
     data: [],
     total: 0,
-    per_page: 25,
+    per_page: 10,
     current_page: 1,
     last_page: 1,
   });
@@ -35,38 +49,26 @@ export function useItemsSearch() {
     per_page: results.value.per_page,
   }));
 
-  const columns: TableColumnDef<AcquisitionItem>[] = [
-    { name: "acquisitions.item.id", link: "id" },
-    { name: "acquisitions.item.barcode", link: "barcode" },
-    { name: "acquisitions.item.title", link: "title" },
-    { name: "acquisitions.item.author", link: "author" },
-    { name: "acquisitions.item.isbn", link: "isbn" },
-    { name: "acquisitions.item.pub_year", link: "pub_year" },
-    { name: "acquisitions.item.item_type", link: "item_type" },
-    { name: "acquisitions.item.publisher", link: "publisher" },
-    { name: "acquisitions.item.supplier", link: "supplier" },
-    { name: "acquisitions.item.cost", link: "cost" },
-    { name: "acquisitions.item.currency", link: "currency" },
-    { name: "acquisitions.item.location_title", link: "location_title" },
-    { name: "acquisitions.item.create_date", link: "create_date", is_date: true },
-    { name: "acquisitions.item.batch_id", link: "batch_id" },
-    { name: "acquisitions.item.act_no", link: "act_no" },
-  ];
-
   function load(page = 1) {
     currentPage.value = page;
     const q = searchQuery.value.trim();
     search(
       {
-        ...(q && {
-          add_options: [{ key: "id", value: q }],
-        }),
+        add_options: [
+          { key: "create_date", value: {} },
+          { key: "cost", value: {} },
+        ],
+        search_options: q
+          ? [{ key: searchField.value, operator: "and", value: q }]
+          : [],
+        order: { key: "id", mode: "desc" },
         page,
-        per_page: 25,
+        per_page: 10,
       },
       {
         onSuccess(data) {
           results.value = data.res;
+          hasSearched.value = true;
         },
       }
     );
@@ -76,14 +78,23 @@ export function useItemsSearch() {
     load(page);
   }
 
+  function goToManage(row?: AcquisitionItem) {
+    router.push({
+      name: RouteNames.ACQUISITION_ITEMS + "-manage",
+      params: row ? { id: row.id } : {},
+    });
+  }
+
   return {
-    columns,
     results,
     meta,
     isLoading,
     currentPage,
     searchQuery,
+    searchField,
+    hasSearched,
     load,
     onPageChange,
+    goToManage,
   };
 }

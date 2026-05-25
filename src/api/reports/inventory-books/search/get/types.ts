@@ -1,5 +1,6 @@
 export type InventoryBooksSearchRequest = {
   add_options?: Array<{ key: string; value: string }>;
+  search_options?: Array<{ key: string; value: string }>;
   order?: { key: string; mode: "asc" | "desc" };
   page?: number;
   per_page?: number;
@@ -7,22 +8,16 @@ export type InventoryBooksSearchRequest = {
 
 export type InventoryBook = {
   id: string;
-  barcode: string | null;
-  title: string | null;
-  author: string | null;
-  isbn: string | null;
-  pub_year: number | null;
-  item_type: string | null;
-  publisher: string | null;
-  supplier: string | null;
-  supply_type: string | null;
-  cost: number | null;
-  currency: string | null;
-  create_date: string | null;
-  location_title: string | null;
+  inventory_no: string | null;
+  invoice_date: string | null;
+  lost_status: string | null;
+  author_title: string | null;
+  batch_id: string | null;
+  callnumber: string | null;
+  cost: string | null;
+  doc_no: string | null;
   location: string | null;
-  status: number | null;
-  batch_id: number | null;
+  year_city: string | null;
 };
 
 export type InventoryBooksSearchResponse = {

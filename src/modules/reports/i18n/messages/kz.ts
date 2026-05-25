@@ -76,6 +76,7 @@ export default {
     total_items: "Жалпы даналар",
     barcode_label: "Штрих-код",
     inv_id: "Инв. №",
+    count: "Саны",
     // title: "Атауы",
     author: "Автор",
     isbn: "ISBN",

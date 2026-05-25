@@ -1,89 +1,72 @@
 import { ref, computed } from "vue";
-import { useServiceLoansApi } from "@/api/service-desk/loans/get";
-import type {
-  ServiceLoansRequest,
-  ServiceLoan,
-} from "@/api/service-desk/loans/get/types";
+import { useBookHistorySearchApi } from "@/api/reports/book-history/search/get";
+import type { BookHistoryEntry } from "@/api/reports/book-history/search/get/types";
 import type { PaginationMeta } from "@/application/types/table";
-
-const PER_PAGE = 25;
 
 const STATUS_OPTIONS = [
   { label: "serviceDesk.all_statuses", value: null },
-  { label: "serviceDesk.status_issued", value: "issued" },
-  { label: "serviceDesk.status_returned", value: "returned" },
-  { label: "serviceDesk.status_overdue", value: "overdue" },
+  { label: "home.status_issued", value: "issued" },
+  { label: "home.status_returned", value: "returned" },
+  { label: "home.status_overdue", value: "overdue" },
 ];
 
-function formatDate(value: Date | null): string | undefined {
-  if (!value) return undefined;
-
-  return value.toISOString().split("T")[0];
-}
-
 export function useBookHistorySearch() {
+  const { mutate: search, isPending: isLoading } = useBookHistorySearchApi();
+
   const searchQuery = ref("");
-
   const selectedStatus = ref<string | null>(null);
-
-  // FIX: DatePicker работает с Date
-  const dateFrom = ref<Date | null>(null);
-  const dateTo = ref<Date | null>(null);
-
   const currentPage = ref(1);
 
-  const params = computed<ServiceLoansRequest>(() => ({
-    query: searchQuery.value.trim() || undefined,
+  const results = ref<{
+    data: BookHistoryEntry[];
+    total: number;
+    per_page: number;
+    current_page: number;
+    last_page: number;
+  }>({
+    data: [],
+    total: 0,
+    per_page: 25,
+    current_page: 1,
+    last_page: 1,
+  });
 
-    status: selectedStatus.value ?? undefined,
-
-    // FIX: backend обычно ждет yyyy-mm-dd string
-    date_from: formatDate(dateFrom.value),
-
-    date_to: formatDate(dateTo.value),
-
-    page: currentPage.value,
-
-    per_page: PER_PAGE,
+  const meta = computed<PaginationMeta>(() => ({
+    total: results.value.total,
+    from: results.value.total === 0 ? 0 : (results.value.current_page - 1) * results.value.per_page + 1,
+    to: Math.min(results.value.current_page * results.value.per_page, results.value.total),
+    current_page: results.value.current_page,
+    last_page: results.value.last_page,
+    per_page: results.value.per_page,
   }));
 
-  const {
-    data,
-    isFetching: isLoading,
-    refetch,
-  } = useServiceLoansApi(params);
-
-  const rows = computed<ServiceLoan[]>(
-    () => data.value?.res?.data ?? []
-  );
-
-  const meta = computed<PaginationMeta>(() => {
-    const res = data.value?.res;
-
-    const page = res?.current_page ?? 1;
-
-    const total = res?.total ?? 0;
-
-    return {
-      total,
-
-      current_page: page,
-
-      last_page: res?.last_page ?? 1,
-
-      per_page: PER_PAGE,
-
-      from: total === 0
-        ? 0
-        : (page - 1) * PER_PAGE + 1,
-
-      to: Math.min(page * PER_PAGE, total),
-    };
-  });
+  function buildSearchOptions() {
+    const opts: Array<{ key: string; operator: string; value: string }> = [];
+    const q = searchQuery.value.trim();
+    if (q) opts.push({ key: "username", operator: "and", value: q });
+    if (selectedStatus.value) opts.push({ key: "status", operator: "and", value: selectedStatus.value });
+    return opts;
+  }
 
   function load(page = 1) {
     currentPage.value = page;
-    refetch();
+    search(
+      {
+        add_options: [
+          { key: "borrow_date", value: {} },
+          { key: "due_date", value: {} },
+          { key: "delivery_date", value: {} },
+        ],
+        search_options: buildSearchOptions(),
+        page,
+        per_page: 25,
+      },
+      {
+        onSuccess(data) {
+          results.value = data.res;
+        },
+      }
+    );
   }
 
   function onPageChange(page: number) {
@@ -92,25 +75,13 @@ export function useBookHistorySearch() {
 
   return {
     searchQuery,
-
     selectedStatus,
-
-    dateFrom,
-
-    dateTo,
-
     statusOptions: STATUS_OPTIONS,
-
-    rows,
-
+    rows: computed(() => results.value.data),
     meta,
-
     isLoading,
-
     currentPage,
-
     load,
-
     onPageChange,
   };
 }

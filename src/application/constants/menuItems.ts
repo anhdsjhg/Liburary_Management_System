@@ -97,15 +97,9 @@ export const menuItems = ref<AppMenuItemType[]>([
   },
   {
     label: "defaultLayout.sidebar.cataloging.title",
-    icon: "pi pi-book",
+    icon: "pi pi-search",
     permission: EPermissions.cataloging,
-    items: [
-      {
-        label: "defaultLayout.sidebar.cataloging.search",
-        icon: "pi pi-search",
-        to: "/admin/cataloging/search",
-      },
-    ],
+    to: "/admin/cataloging/search",
   },
   {
     label: "defaultLayout.sidebar.website.title",

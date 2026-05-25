@@ -68,15 +68,12 @@ export function useCatalogingSearch() {
   ];
 
   function load(page = 1) {
-    const options = buildAddOptions();
-    if (!options.length) return;
-
     currentPage.value = page;
     search(
-      { add_options: options, page, per_page: 10 },
+      { add_options: buildAddOptions(), search_options: [], page, per_page: 10 },
       {
         onSuccess(data) {
-          results.value = data?.res ?? (data as unknown as typeof results.value);
+          results.value = data.res;
         },
       }
     );
@@ -106,6 +103,13 @@ export function useCatalogingSearch() {
       name: RouteNames.CATALOGING_EDIT,
       params: { id: row.id },
       query: { type: row.type_key },
+    });
+  }
+
+  function goToIdList(row: CatalogingMaterial) {
+    router.push({
+      name: RouteNames.ACQUISITION_ITEMS,
+      query: { book_id: row.id, type: row.type_key },
     });
   }
 
@@ -150,6 +154,7 @@ export function useCatalogingSearch() {
     resetFilter,
     onPageChange,
     goToEdit,
+    goToIdList,
     onDelete,
   };
 }

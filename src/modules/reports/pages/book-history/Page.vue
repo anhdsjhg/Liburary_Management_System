@@ -3,7 +3,7 @@ import { useBookHistoryPage } from "./composables/useComposable";
 import BookHistoryTable from "./components/BookHistoryTable.vue";
 
 const {
-  searchQuery,
+  filter,
   results,
   meta,
   isLoading,
@@ -12,6 +12,7 @@ const {
   selectedIds,
   load,
   onPageChange,
+  reset,
   doExport,
 } = useBookHistoryPage();
 </script>
@@ -26,6 +27,7 @@ const {
           :loading="isExporting"
           :disabled="!selectedIds.length"
           icon="pi pi-download"
+          outlined
           @click="doExport"
         />
       </div>
@@ -33,12 +35,24 @@ const {
 
     <div class="report-page__filter">
       <div class="report-page__filter-field">
-        <div class="report-page__filter-label">{{ $t("reports.search") }}</div>
-        <InputText v-model="searchQuery" class="w-full" @keydown.enter="load(1)" />
+        <div class="report-page__filter-label">{{ $t("reports.barcode_label") }}</div>
+        <InputText v-model="filter.barcode" class="w-full" @keydown.enter="load(1)" />
+      </div>
+      <div class="report-page__filter-field">
+        <div class="report-page__filter-label">{{ $t("reports.inv_id") }}</div>
+        <InputText v-model="filter.id" class="w-full" @keydown.enter="load(1)" />
+      </div>
+      <div class="report-page__filter-field">
+        <div class="report-page__filter-label">{{ $t("reports.author") }}</div>
+        <InputText v-model="filter.author" class="w-full" @keydown.enter="load(1)" />
+      </div>
+      <div class="report-page__filter-field">
+        <div class="report-page__filter-label">Title</div>
+        <InputText v-model="filter.title" class="w-full" @keydown.enter="load(1)" />
       </div>
       <div class="report-page__filter-actions">
-        <Button :label="$t('reports.apply')" @click="load(1)" />
-        <Button :label="$t('reports.reset')" severity="secondary" outlined @click="searchQuery = ''" />
+        <Button :label="$t('reports.apply')" icon="pi pi-search" @click="load(1)" />
+        <Button :label="$t('reports.reset')" severity="secondary" outlined @click="reset" />
       </div>
     </div>
 

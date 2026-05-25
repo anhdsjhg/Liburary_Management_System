@@ -76,6 +76,7 @@ export default {
     total_items: "Total items",
     barcode_label: "Barcode",
     inv_id: "Inv №",
+    count: "Count",
     // title: "Title",
     author: "Author",
     isbn: "ISBN",

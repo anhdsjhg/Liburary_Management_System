@@ -11,9 +11,11 @@ export function useInventoryBooksPage() {
 
   const { mutate: search, isPending: isLoading } = useInventoryBooksSearchApi();
 
-  const searchQuery = ref("");
+  const inventoryNoFrom = ref("");
+  const rownum = ref("");
   const currentPage = ref(1);
   const selectedIds = ref<string[]>([]);
+  const hasSearched = ref(false);
 
   const results = ref<{
     data: InventoryBook[];
@@ -40,17 +42,25 @@ export function useInventoryBooksPage() {
 
   function load(page = 1) {
     currentPage.value = page;
+    const addOptions: Array<{ key: string; value: string }> = [];
+    if (inventoryNoFrom.value.trim()) {
+      addOptions.push({ key: "inventory_no", value: inventoryNoFrom.value.trim() });
+    }
+    if (rownum.value.trim()) {
+      addOptions.push({ key: "rownum", value: rownum.value.trim() });
+    }
     search(
       {
-        add_options: searchQuery.value.trim()
-          ? [{ key: "all", value: searchQuery.value.trim() }]
-          : [],
+        add_options: addOptions,
+        search_options: [],
+        order: { key: "inventory_no", mode: "asc" },
         page,
         per_page: 25,
       },
       {
         onSuccess(data) {
           results.value = data.res;
+          hasSearched.value = true;
         },
       }
     );
@@ -73,12 +83,14 @@ export function useInventoryBooksPage() {
   }
 
   return {
-    searchQuery,
+    inventoryNoFrom,
+    rownum,
     results,
     meta,
     isLoading,
     currentPage,
     selectedIds,
+    hasSearched,
     load,
     onPageChange,
     doExport,

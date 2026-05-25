@@ -1,5 +1,6 @@
 export type BookHistorySearchRequest = {
-  add_options?: Array<{ key: string; value: string }>;
+  add_options?: Array<{ key: string; value: unknown }>;
+  search_options?: Array<{ key: string; operator: string; value: string }>;
   order?: { key: string; mode: "asc" | "desc" };
   page?: number;
   per_page?: number;
@@ -8,18 +9,15 @@ export type BookHistorySearchRequest = {
 export type BookHistoryEntry = {
   id: string;
   barcode: string | null;
+  type: string | null;
   title: string | null;
   author: string | null;
-  isbn: string | null;
-  inv_id: string;
-  batch_id: number | null;
-  item_type: string | null;
-  supplier: string | null;
-  location: string | null;
-  location_title: string | null;
-  cost: number | null;
-  currency: string | null;
-  create_date: string | null;
+  borrow_date: string | null;
+  due_date: string | null;
+  delivery_date: string | null;
+  status: string | null;
+  user_cid: string | null;
+  username: string | null;
 };
 
 export type BookHistorySearchResponse = {

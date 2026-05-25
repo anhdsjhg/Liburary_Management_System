@@ -9,8 +9,6 @@ const { t } = useI18n();
 const {
   searchQuery,
   selectedStatus,
-  dateFrom,
-  dateTo,
   statusOptions,
   rows,
   meta,
@@ -42,21 +40,8 @@ onMounted(() => load(1));
         :option-label="(o) => t(o.label)"
         option-value="value"
         :placeholder="$t('serviceDesk.all_statuses')"
+        show-clear
         style="min-width: 11rem"
-      />
-      <DatePicker
-        v-model="dateFrom"
-        :placeholder="$t('serviceDesk.date_from')"
-        date-format="yy-mm-dd"
-        show-button-bar
-        style="min-width: 10rem"
-      />
-      <DatePicker
-        v-model="dateTo"
-        :placeholder="$t('serviceDesk.date_to')"
-        date-format="yy-mm-dd"
-        show-button-bar
-        style="min-width: 10rem"
       />
       <Button :label="$t('serviceDesk.search')" @click="load(1)" />
     </div>

@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import { useI18n } from "vue-i18n";
-import type { ServiceLoan } from "@/api/service-desk/loans/get/types";
+import type { BookHistoryEntry } from "@/api/reports/book-history/search/get/types";
 import type { PaginationMeta } from "@/application/types/table";
 import { formatDate } from "@/application/utils/date";
 import AppPaginator from "@/application/components/AppPaginator.vue";
 import AppSkeleton from "@/application/components/AppSkeleton.vue";
 
 defineProps<{
-  rows: ServiceLoan[];
+  rows: BookHistoryEntry[];
   meta: PaginationMeta;
   page: number;
   loading: boolean;
@@ -20,16 +20,16 @@ const emit = defineEmits<{
 
 const { t } = useI18n();
 
-function statusSeverity(status: string, isOverdue: boolean) {
-  if (isOverdue) return "danger";
+function statusSeverity(status: string | null) {
   if (status === "returned") return "success";
   if (status === "issued") return "warn";
+  if (status === "overdue") return "danger";
   return "secondary";
 }
 </script>
 
 <template>
-  <AppSkeleton v-if="loading" variant="table" :rows="5" :cols="7" />
+  <AppSkeleton v-if="loading" variant="table" :rows="5" :cols="9" />
 
   <template v-else>
     <DataTable
@@ -45,36 +45,64 @@ function statusSeverity(status: string, isOverdue: boolean) {
         </div>
       </template>
 
-      <Column field="id" header="ID" style="min-width: 5rem" />
-      <Column field="user_name" :header="t('serviceDesk.user_name')" style="min-width: 12rem" />
-      <Column field="user_cid" :header="t('serviceDesk.user_cid')" style="min-width: 10rem" />
-      <Column field="media_title" :header="t('serviceDesk.media_title')" style="min-width: 16rem" />
-      <Column field="inventory_number" :header="t('serviceDesk.inventory_number')" style="min-width: 10rem" />
-
-      <Column :header="t('serviceDesk.given_at')" style="min-width: 9rem">
-        <template #body="{ data }: { data: ServiceLoan }">
-          {{ formatDate(data.given_at) ?? "-" }}
+      <Column field="barcode" :header="t('serviceDesk.barcode')" style="min-width: 9rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.barcode ?? "-" }}
         </template>
       </Column>
 
-      <Column :header="t('serviceDesk.due_at')" style="min-width: 9rem">
-        <template #body="{ data }: { data: ServiceLoan }">
-          {{ formatDate(data.due_at) ?? "-" }}
+      <Column field="id" :header="t('serviceDesk.inventory_number')" style="min-width: 9rem" />
+
+      <Column field="type" header="Type" style="min-width: 7rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.type ?? "-" }}
         </template>
       </Column>
 
-      <Column :header="t('serviceDesk.returned_at')" style="min-width: 9rem">
-        <template #body="{ data }: { data: ServiceLoan }">
-          {{ data.returned_at ? formatDate(data.returned_at) : "—" }}
+      <Column field="title" :header="t('serviceDesk.media_title')" style="min-width: 16rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.title ?? "-" }}
+        </template>
+      </Column>
+
+      <Column field="author" header="Author" style="min-width: 12rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.author ?? "-" }}
+        </template>
+      </Column>
+
+      <Column field="borrow_date" :header="t('serviceDesk.given_at')" style="min-width: 9rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ formatDate(data.borrow_date) ?? "-" }}
+        </template>
+      </Column>
+
+      <Column field="due_date" :header="t('serviceDesk.due_at')" style="min-width: 9rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ formatDate(data.due_date) ?? "-" }}
+        </template>
+      </Column>
+
+      <Column field="delivery_date" :header="t('serviceDesk.returned_at')" style="min-width: 9rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.delivery_date ? formatDate(data.delivery_date) : "—" }}
+        </template>
+      </Column>
+
+      <Column field="username" :header="t('serviceDesk.user_name')" style="min-width: 12rem">
+        <template #body="{ data }: { data: BookHistoryEntry }">
+          {{ data.username ?? "-" }}
         </template>
       </Column>
 
       <Column :header="t('serviceDesk.status')" style="min-width: 8rem" frozen align-frozen="right">
-        <template #body="{ data }: { data: ServiceLoan }">
+        <template #body="{ data }: { data: BookHistoryEntry }">
           <Tag
+            v-if="data.status"
             :value="data.status"
-            :severity="statusSeverity(data.status, data.is_overdue)"
+            :severity="statusSeverity(data.status)"
           />
+          <span v-else>-</span>
         </template>
       </Column>
     </DataTable>

@@ -1,22 +1,21 @@
 <script setup lang="ts">
-import { onMounted } from "vue";
 import { useInventoryBooksPage } from "./composables/useComposable";
 import InventoryBooksTable from "./components/InventoryBooksTable.vue";
 
 const {
-  searchQuery,
+  inventoryNoFrom,
+  rownum,
   results,
   meta,
   isLoading,
   currentPage,
   selectedIds,
+  hasSearched,
   load,
   onPageChange,
   doExport,
   doPrint,
 } = useInventoryBooksPage();
-
-onMounted(() => load(1));
 </script>
 
 <template>
@@ -42,15 +41,22 @@ onMounted(() => load(1));
 
     <div class="report-page__search-bar">
       <InputText
-        v-model="searchQuery"
-        :placeholder="$t('reports.search')"
+        v-model="inventoryNoFrom"
+        :placeholder="$t('reports.inv_id')"
         class="report-page__search-input"
+        @keydown.enter="load(1)"
+      />
+      <InputText
+        v-model="rownum"
+        :placeholder="$t('reports.count')"
+        class="report-page__search-input--small"
         @keydown.enter="load(1)"
       />
       <Button :label="$t('reports.apply')" @click="load(1)" />
     </div>
 
     <InventoryBooksTable
+      v-if="hasSearched"
       :rows="results.data"
       :meta="meta"
       :page="currentPage"
@@ -71,5 +77,9 @@ onMounted(() => load(1));
 
 .report-page__search-input {
   flex: 1;
+}
+
+.report-page__search-input--small {
+  width: 8rem;
 }
 </style>

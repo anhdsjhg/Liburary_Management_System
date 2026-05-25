@@ -23,11 +23,11 @@ export function useCatalogingFilterForm() {
   function buildAddOptions(): CatalogingSearchAddOption[] {
     const options: CatalogingSearchAddOption[] = [];
 
-    if (form.query.trim()) {
-      options.push({ key: "query", value: form.query.trim() });
-    }
     if (form.type) {
       options.push({ key: "type", value: form.type });
+    }
+    if (form.query.trim()) {
+      options.push({ key: "query", value: form.query.trim() });
     }
     if (form.state) {
       options.push({ key: "state", value: form.state });
@@ -41,6 +41,9 @@ export function useCatalogingFilterForm() {
     if (form.genres.trim()) {
       options.push({ key: "genres", value: form.genres.trim() });
     }
+
+    // always include language (empty = no language filter)
+    options.push({ key: "language", value: [] });
 
     return options;
   }

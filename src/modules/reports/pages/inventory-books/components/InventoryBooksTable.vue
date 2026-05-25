@@ -26,16 +26,21 @@ function onSelectionChange(selection: InventoryBook[]) {
   emit("update:selectedIds", selection.map((r) => r.id));
 }
 
-function getStatusSeverity(status: number | null) {
-  if (status === 1) return "success";
-  if (status === 0) return "danger";
+function getLostSeverity(lost_status: string | null) {
+  if (lost_status === "0") return "success";
+  if (lost_status === "1") return "danger";
   return "secondary";
 }
 
-function getStatusLabel(status: number | null) {
-  if (status === 1) return t("reports.in_balance");
-  if (status === 0) return t("reports.not_in_balance");
+function getLostLabel(lost_status: string | null) {
+  if (lost_status === "0") return t("reports.in_balance");
+  if (lost_status === "1") return t("reports.not_in_balance");
   return "-";
+}
+
+function getCallnumber(row: InventoryBook): string {
+  const raw = row as Record<string, unknown>;
+  return (raw["coalesce(b.callnumber,j.callnumber,d.callnumber)"] as string) ?? row.callnumber ?? "-";
 }
 </script>
 
@@ -61,62 +66,45 @@ function getStatusLabel(status: number | null) {
 
       <Column selection-mode="multiple" style="min-width: 3rem" />
 
-      <Column field="id" :header="t('reports.inv_id')" style="min-width: 7rem" />
-
-      <Column field="barcode" :header="t('reports.barcode_label')" style="min-width: 9rem">
+      <Column field="inventory_no" :header="t('reports.inv_id')" style="min-width: 7rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.barcode ?? "-" }}
+          {{ data.inventory_no ?? "-" }}
         </template>
       </Column>
 
-      <Column field="title" :header="t('reports.title')" style="min-width: 14rem">
+      <Column field="author_title" :header="t('reports.title')" style="min-width: 18rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.title ?? "-" }}
+          {{ data.author_title ?? "-" }}
         </template>
       </Column>
 
-      <Column field="author" :header="t('reports.author')" style="min-width: 12rem">
+      <Column field="year_city" :header="t('reports.pub_year')" style="min-width: 10rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.author ?? "-" }}
+          {{ data.year_city ?? "-" }}
         </template>
       </Column>
 
-      <Column field="isbn" :header="t('reports.isbn')" style="min-width: 8rem">
+      <Column field="doc_no" :header="t('reports.batch_id')" style="min-width: 7rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.isbn ?? "-" }}
+          {{ data.doc_no ?? "-" }}
         </template>
       </Column>
 
-      <Column field="pub_year" :header="t('reports.pub_year')" style="min-width: 6rem">
+      <Column field="invoice_date" :header="t('reports.create_date')" style="min-width: 9rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.pub_year ?? "-" }}
+          {{ formatDate(data.invoice_date) ?? "-" }}
         </template>
       </Column>
 
-      <Column field="item_type" :header="t('reports.item_type')" style="min-width: 7rem">
-        <template #body="{ data }: { data: InventoryBook }">
-          {{ data.item_type ?? "-" }}
-        </template>
-      </Column>
-
-      <Column field="location_title" :header="t('reports.location')" style="min-width: 10rem">
-        <template #body="{ data }: { data: InventoryBook }">
-          {{ data.location_title ?? "-" }}
-        </template>
-      </Column>
-
-      <Column field="location" :header="t('reports.callnumber')" style="min-width: 9rem">
+      <Column field="location" :header="t('reports.location')" style="min-width: 8rem">
         <template #body="{ data }: { data: InventoryBook }">
           {{ data.location ?? "-" }}
         </template>
       </Column>
 
-      <Column field="status" :header="t('reports.status')" style="min-width: 9rem">
+      <Column :header="t('reports.callnumber')" style="min-width: 10rem">
         <template #body="{ data }: { data: InventoryBook }">
-          <Tag
-            :value="getStatusLabel(data.status)"
-            :severity="getStatusSeverity(data.status)"
-          />
+          {{ getCallnumber(data) }}
         </template>
       </Column>
 
@@ -126,15 +114,12 @@ function getStatusLabel(status: number | null) {
         </template>
       </Column>
 
-      <Column field="currency" :header="t('reports.currency')" style="min-width: 6rem">
+      <Column field="lost_status" :header="t('reports.status')" style="min-width: 9rem">
         <template #body="{ data }: { data: InventoryBook }">
-          {{ data.currency ?? "-" }}
-        </template>
-      </Column>
-
-      <Column field="create_date" :header="t('reports.create_date')" style="min-width: 9rem">
-        <template #body="{ data }: { data: InventoryBook }">
-          {{ formatDate(data.create_date) ?? "-" }}
+          <Tag
+            :value="getLostLabel(data.lost_status)"
+            :severity="getLostSeverity(data.lost_status)"
+          />
         </template>
       </Column>
 

@@ -76,6 +76,7 @@ export default {
     total_items: "Всего экземпляров",
     barcode_label: "Штрих-код",
     inv_id: "Инв. №",
+    count: "Количество",
     // title: "Название",
     author: "Автор",
     isbn: "ISBN",
