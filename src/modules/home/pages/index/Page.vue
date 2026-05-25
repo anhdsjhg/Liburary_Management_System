@@ -334,7 +334,7 @@ const monthEvents = computed(() => {
     <!-- Footer -->
     <footer class="home-landing__footer">
       <div class="home-landing__container">
-        <div class="home-landing__fooxter-grid">
+        <div class="home-landing__footer-grid">
           <div class="home-landing__footer-brand">
             <img src="@/application/assets/images/logo_vertical.png" alt="SDU Library" class="home-landing__footer-logo" />
             <p class="home-landing__footer-tagline">SDU Scientific Library</p>
