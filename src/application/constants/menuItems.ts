@@ -95,12 +95,12 @@ export const menuItems = ref<AppMenuItemType[]>([
       },
     ],
   },
-  {
-    label: "defaultLayout.sidebar.cataloging.title",
-    icon: "pi pi-search",
-    permission: EPermissions.cataloging,
-    to: "/admin/cataloging/search",
-  },
+  // {
+  //   label: "defaultLayout.sidebar.cataloging.title",
+  //   icon: "pi pi-search",
+  //   permission: EPermissions.cataloging,
+  //   to: "/admin/cataloging/search",
+  // },
   {
     label: "defaultLayout.sidebar.website.title",
     icon: "pi pi-cog",
