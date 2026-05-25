@@ -16,111 +16,95 @@
       pcCloseButton: { root: 'ml-auto' },
     }"
   >
-    <div class="flex flex-col gap-4">
-      <div>
-        <span class="text-lg font-semibold">Primary</span>
-        <div class="flex flex-wrap gap-2 pt-2">
+    <div class="config-sections">
+      <div class="config-section">
+        <span class="config-section-title">Primary</span>
+        <div class="swatch-row">
           <button
             v-for="primaryColor of primaryColors"
             :key="primaryColor.name"
             type="button"
-            :class="[
-              'flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full p-0 outline-none outline-offset-1',
-              { 'outline-primary': layoutConfig.primary === primaryColor.name },
-            ]"
+            class="swatch-btn"
+            :class="{ 'swatch-btn--active': layoutConfig.primary === primaryColor.name }"
             :style="{
-              backgroundColor: `${primaryColor.name === 'noir' ? 'var(--text-color)' : primaryColor.palette['500']}`,
+              backgroundColor: primaryColor.name === 'noir' ? 'var(--text-color)' : primaryColor.palette['500'],
             }"
             @click="updateColors('primary', primaryColor)"
           ></button>
         </div>
       </div>
 
-      <div>
-        <span class="text-lg font-semibold">Surface</span>
-        <div class="flex flex-wrap gap-2 pt-2">
+      <div class="config-section">
+        <span class="config-section-title">Surface</span>
+        <div class="swatch-row">
           <button
             v-for="surface of surfaces"
             :key="surface.name"
             type="button"
-            :class="[
-              'flex size-6 shrink-0 cursor-pointer items-center justify-center rounded-full p-0 outline-none outline-offset-1',
-              {
-                'outline-primary': layoutConfig.surface
-                  ? layoutConfig.surface === surface.name
-                  : isDarkTheme
-                    ? surface.name === 'zinc'
-                    : surface.name === 'slate',
-              },
-            ]"
-            :style="{ backgroundColor: `${surface.palette['500']}` }"
+            class="swatch-btn"
+            :class="{
+              'swatch-btn--active': layoutConfig.surface
+                ? layoutConfig.surface === surface.name
+                : isDarkTheme
+                  ? surface.name === 'zinc'
+                  : surface.name === 'slate',
+            }"
+            :style="{ backgroundColor: surface.palette['500'] }"
             @click="updateColors('surface', surface)"
           ></button>
         </div>
       </div>
 
-      <div>
-        <div class="flex flex-col gap-2">
-          <span class="text-lg font-semibold">Presets</span>
-          <SelectButton
-            v-model="preset"
-            :options="presetOptions"
-            :allowEmpty="false"
-          />
-        </div>
+      <div class="config-section">
+        <span class="config-section-title">Presets</span>
+        <SelectButton
+          v-model="preset"
+          :options="presetOptions"
+          :allowEmpty="false"
+        />
       </div>
 
-      <div>
-        <div class="flex flex-col gap-2">
-          <span class="text-lg font-semibold">Color Scheme</span>
-          <SelectButton
-            v-model="darkTheme"
-            :options="themeOptions"
-            optionLabel="name"
-            optionValue="value"
-            :allowEmpty="false"
-            @change="toggleDarkMode"
-          />
-          {{ darkTheme }}
-        </div>
+      <div class="config-section">
+        <span class="config-section-title">Color Scheme</span>
+        <SelectButton
+          v-model="darkTheme"
+          :options="themeOptions"
+          optionLabel="name"
+          optionValue="value"
+          :allowEmpty="false"
+          @change="toggleDarkMode"
+        />
       </div>
 
       <template v-if="!simple">
-        <div>
-          <div class="flex flex-col gap-2">
-            <span class="text-lg font-semibold">Menu Type</span>
-            <div class="grid grid-cols-2 gap-3">
-              <div v-for="menu in menuModes" class="flex items-center gap-2">
-                <RadioButton
-                  v-model="menuMode"
-                  name="menuMode"
-                  :value="menu.value"
-                  :inputId="menu.value"
-                  @update:model-value="setMenuMode"
-                ></RadioButton>
-                <label for="static">{{ menu.title }}</label>
-              </div>
+        <div class="config-section">
+          <span class="config-section-title">Menu Type</span>
+          <div class="config-radio-grid">
+            <div v-for="menu in menuModes" :key="menu.value" class="config-radio-row">
+              <RadioButton
+                v-model="menuMode"
+                name="menuMode"
+                :value="menu.value"
+                :inputId="menu.value"
+                @update:model-value="setMenuMode"
+              />
+              <label :for="menu.value">{{ menu.title }}</label>
             </div>
           </div>
         </div>
 
-        <div>
-          <div class="flex flex-col gap-2">
-            <span class="text-lg font-semibold">Layout Theme</span>
-            <div class="flex flex-col gap-4">
-              <div
-                v-for="theme in layoutThemes"
-                class="flex items-center gap-2"
-              >
-                <RadioButton
-                  v-model="layoutTheme"
-                  name="layoutTheme"
-                  :value="theme.value"
-                  :inputId="theme.value"
-                  @change="changeLayoutTheme"
-                ></RadioButton>
-                <label :for="theme.value">{{ theme.title }}</label>
-              </div>
+        <div class="config-section">
+          <span class="config-section-title">Layout Theme</span>
+          <div class="config-radio-list">
+            <div v-for="theme in layoutThemes" :key="theme.value" class="config-radio-row">
+              <RadioButton
+                v-model="layoutTheme"
+                name="layoutTheme"
+                :value="theme.value"
+                :inputId="theme.value"
+                @change="changeLayoutTheme"
+              />
+              <label :for="theme.value">{{ theme.title }}</label>
             </div>
           </div>
         </div>
@@ -365,3 +349,73 @@ watch(
   }
 );
 </script>
+
+<style scoped>
+/* ── Sections layout ── */
+.config-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.config-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.config-section-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+/* ── Radio groups ── */
+.config-radio-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.config-radio-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.config-radio-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  cursor: pointer;
+}
+
+/* ── Color swatches ── */
+.swatch-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.swatch-btn {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 9999px;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  flex-shrink: 0;
+  display: block;
+  transition: transform 0.15s ease;
+}
+
+.swatch-btn:hover {
+  transform: scale(1.2);
+}
+
+.swatch-btn--active {
+  outline: 2px solid var(--p-primary-color, #6366f1);
+  outline-offset: 2px;
+}
+</style>

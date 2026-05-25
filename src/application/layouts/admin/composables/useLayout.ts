@@ -17,13 +17,23 @@ type TLayoutConfig = {
   theme?: string;
 };
 
-const layoutConfig = ref<TLayoutConfig>({
+const defaultConfig: TLayoutConfig = {
   preset: "Aura",
   primary: "emerald",
   darkTheme: false,
   menuMode: "slim-plus",
   layoutTheme: "colorScheme",
-});
+};
+
+const _saved = localStorage.getItem("config");
+const layoutConfig = ref<TLayoutConfig>(
+  _saved ? { ...defaultConfig, ...JSON.parse(_saved) } : defaultConfig
+);
+
+// Restore dark mode class immediately on load
+if (layoutConfig.value.darkTheme) {
+  document.documentElement.className = "app-dark";
+}
 
 type TLayoutState = {
   staticMenuDesktopInactive: boolean;

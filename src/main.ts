@@ -38,8 +38,11 @@ app.component('Column', Column)
 app.component('Tag', Tag)
 app.use(PrimeVue, {
   theme: {
-    preset: Aura
-  }
+    preset: Aura,
+    options: {
+      darkModeSelector: '.app-dark',
+    },
+  },
 });
 
 app.component('Select', Select)
